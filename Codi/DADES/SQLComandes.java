@@ -10,12 +10,13 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 
 import MODEL.*;
+import VISTA.CrearUsuari;
+import VISTA.LogIn;
+import VISTA.Principal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 import javax.swing.JOptionPane;
-
-
 public class SQLComandes {
 	Connection c;
 	JComponent frame;
@@ -24,7 +25,7 @@ public class SQLComandes {
 	public Connection conectar() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Marc Sanjust\\eclipse-workspace\\OnTimeAgency\\src\\DADES\\onTimeDB.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\DADES\\onTimeDB.db");
 			System.out.println("Exito al conectar con base de datos");
 
 		} catch (Exception e) {
@@ -87,4 +88,65 @@ public class SQLComandes {
 
 	}
 	
+	public int contarComandesFin() throws SQLException, ClassNotFoundException {
+		conectar();
+		int amount = 0;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM comanda WHERE estatComanda = 'f';";
+		
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			System.out.println(consultaSql);
+		
+			while (rs.next()) {
+				++amount;
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		return amount;
+		
+	}
+	
+	public int contarComandesEnProces() throws SQLException, ClassNotFoundException {
+		conectar();
+		int amount = 0;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM comanda WHERE estatComanda = 'ep';";
+		
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+		
+			while (rs.next()) {
+				++amount;
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		return amount;
+		
+	}
+	
+	public int contarComandesP() throws SQLException, ClassNotFoundException {
+		conectar();
+		int amount = 0;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM comanda WHERE estatComanda = 'p';";
+		
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+		
+			while (rs.next()) {
+				++amount;
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+			
+		return amount;
+		
+	}
 }

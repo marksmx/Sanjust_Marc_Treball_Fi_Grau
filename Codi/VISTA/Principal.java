@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 
 import DADES.*;
 import MODEL.*;
+import java.awt.Label;
 
 public class Principal {
 
@@ -315,9 +316,22 @@ public class Principal {
 		scrollPane_1.setBounds(19, 318, 153, 130);
 		frame.getContentPane().add(scrollPane_1);
 		scrollPane_1.setViewportView(table_2);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(Color.GREEN);
+		panel_4.setBounds(19, 155, 159, 30);
+		frame.getContentPane().add(panel_4);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(Color.YELLOW);
+		panel_5.setBounds(19, 191, 159, 30);
+		frame.getContentPane().add(panel_5);
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setBounds(19, 227, 159, 30);
+		frame.getContentPane().add(panel_6);
 
 		//FI SCROLL PANEL
 		
 	}
-	
 }

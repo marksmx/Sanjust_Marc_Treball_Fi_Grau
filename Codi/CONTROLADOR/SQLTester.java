@@ -13,8 +13,10 @@ public class SQLTester {
 		//sqlU.exist();
 		//sqlU.crearPerfil("", "", "", "", "");
 		//sqlU.iniciarSessió("qwd", "qwd");
-		sqlC.consultarClient();
-		sqlCo.consultarComandes();
+		//sqlC.consultarClient();
+		//sqlCo.consultarComandes();
+		//sqlCo.conectar();
+		sqlCo.contarComandesFin();
 	}
 	
 	
