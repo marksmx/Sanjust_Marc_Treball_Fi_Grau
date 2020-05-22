@@ -35,6 +35,41 @@ public class SQLComandes {
 		return c;
 	}
 	
+	public void crearComanda(String estatComanda, String numComanda, String idProducte, String data, String hores, String base, String iva, String total, String idEmpresa) {
+		conectar();
+		String consultaSql = "INSERT INTO client (estatComanda, numComanda, idProducte, data, hores, base, iva, total, idEmpresa)"+
+		"VALUES ("
+		+ "'"+estatComanda+"'"
+		+","
+		+ "'"+numComanda+"'"
+		+","
+		+ "'"+idProducte+"'"
+		+","
+		+ "'"+data+"'"
+		+","
+		+ "'"+hores+"'"
+		+","
+		+ "'"+base+"'"
+		+","
+		+ "'"+iva+"'"
+		+","
+		+ "'"+total+"'"
+		+","
+		+ "'"+idEmpresa+"')"
+		+ ";";
+		
+		try {
+			sentencia = c.createStatement();
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+	}
+	
+	
 	public ArrayList<ComandaCl> consultarComandes() throws SQLException {
 		conectar();
 		ArrayList<ComandaCl> miLista = new ArrayList<ComandaCl>();
@@ -45,11 +80,9 @@ public class SQLComandes {
 		
 		try {
 			ResultSet rs = sentencia.executeQuery(consultaSql);
-			System.out.println(consultaSql);
 			
 			while (rs.next()) {
 				String test = rs.getString("estatComanda");
-				System.out.println(test);
 				
 				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("base"), rs.getString("iva"), rs.getString("total"), rs.getString("idEmpresa"));
 
@@ -75,8 +108,6 @@ public class SQLComandes {
 		try {
 			ResultSet rs = sentencia.executeQuery(consultaSql);
 			
-			
-			
 			rs.close();
 			sentencia.close();
 			c.close();
@@ -88,6 +119,26 @@ public class SQLComandes {
 
 	}
 	
+	public int contarComandes() throws SQLException, ClassNotFoundException {
+		conectar();
+		int amount = 0;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM comanda;";
+		
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+		
+			while (rs.next()) {
+				++amount;
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		return amount;
+		
+	}
+	
 	public int contarComandesFin() throws SQLException, ClassNotFoundException {
 		conectar();
 		int amount = 0;
@@ -96,8 +147,7 @@ public class SQLComandes {
 		String consultaSql = "SELECT * FROM comanda WHERE estatComanda = 'f';";
 		
 			ResultSet rs = sentencia.executeQuery(consultaSql);
-			System.out.println(consultaSql);
-		
+
 			while (rs.next()) {
 				++amount;
 			}
@@ -147,6 +197,22 @@ public class SQLComandes {
 			c.close();
 			
 		return amount;
+	}
+	
+	public String consultarEstatComanda(String num) throws SQLException, ClassNotFoundException {
+		conectar();
+		String stat = null;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM comanda WHERE numComanda = '"+num+"';";
 		
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			stat = rs.getString("estatComanda");
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+			
+		return stat;
 	}
 }

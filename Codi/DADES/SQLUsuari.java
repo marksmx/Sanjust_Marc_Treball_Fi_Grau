@@ -25,7 +25,7 @@ public class SQLUsuari {
 	public Connection conectar() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Marc Sanjust\\eclipse-workspace\\OnTimeAgency\\src\\DADES\\onTimeDB.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\DADES\\onTimeDB.db");
 			System.out.println("Exito al conectar con base de datos");
 
 		} catch (Exception e) {

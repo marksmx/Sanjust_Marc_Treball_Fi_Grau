@@ -31,15 +31,21 @@ import MODEL.*;
 import java.awt.Label;
 
 public class Principal {
+	SQLComandes sqlC = new SQLComandes();
+	SQLClients sqlCl = new SQLClients();
+	SQLProductes sqlPr = new SQLProductes();
 
 	public JFrame frame;
 	private JTable table_1;
 	private JTable table_2;
-	int filaIndex;
-	int columnaIndex;
+	private int filaIndex;
+	private int columnaIndex;
+	private int perF = 0;
+	private int perEP = 0;
+	private int perP = 0;
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
-
+	
 	
 	public Principal() throws ClassNotFoundException, SQLException {
 		initialize();
@@ -90,17 +96,23 @@ public class Principal {
 		
 		
 		private String[][] obtenirMatr() throws ClassNotFoundException, SQLException {
-			SQLComandes sqlC = new SQLComandes();
-				ArrayList<ComandaCl> miLista = sqlC.consultarComandes();
-				
-				String matInfo[][] = new String[miLista.size()] [2];
-
+			ArrayList<ComandaCl> miLista = sqlC.consultarComandes();
+			String matInfo[][] = new String[miLista.size()] [2];
+			
+			if(sqlC.contarComandes()==0) {
+				sqlC.crearComanda("", "", "", "", "", "", "", "", "");
 				for (int x = 0; x < miLista.size(); x++) {
-					matInfo[x][0] = miLista.get(x).getIdEmpresa()+"eee";
+					matInfo[x][0] = sqlC.consultarEstatComanda(Integer.toString(x+1)) + " " + sqlCl.consultarNomClient(miLista.get(x).getIdEmpresa())+" - "+sqlPr.consultarProducte(miLista.get(x).getIdProducte());
 				}
-				
-		
+			} else {
+				for (int x = 0; x < miLista.size(); x++) {
+					matInfo[x][0] = sqlC.consultarEstatComanda(Integer.toString(x+1)) + " " + sqlCl.consultarNomClient(miLista.get(x).getIdEmpresa())+" - "+sqlPr.consultarProducte(miLista.get(x).getIdProducte());
+				}
+			
+			}
+			
 			return matInfo;
+
 		}
 
 	/**FI FUNCIONS TAULER*/
@@ -270,6 +282,14 @@ public class Principal {
 		button_1.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					CrearClient frm = new CrearClient();
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		button_1.setBounds(182, 404, 164, 44);
@@ -317,21 +337,53 @@ public class Principal {
 		frame.getContentPane().add(scrollPane_1);
 		scrollPane_1.setViewportView(table_2);
 		
+		//FI SCROLL PANEL
+		try {
+			
+			if(sqlC.contarComandes()>0) {
+				perF = sqlC.contarComandesFin() * 100 / sqlC.contarComandes();
+				perEP = sqlC.contarComandesEnProces() * 100 / sqlC.contarComandes();
+				perP = sqlC.contarComandesP() * 100 / sqlC.contarComandes();
+			}
+
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		if(perF>0) {
+			perF = perF+60;
+		}
+
+		if(perEP>0) {
+			perEP = perEP+60;
+		}
+
+		if(perP>0) {
+			perP = perP+60;
+		}
+
+		System.out.println(perF);
+		System.out.println(perEP);
+		System.out.println(perP);
+		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBackground(Color.GREEN);
-		panel_4.setBounds(19, 155, 159, 30);
+		panel_4.setBounds(19, 155, perF, 30);
 		frame.getContentPane().add(panel_4);
 		
 		JPanel panel_5 = new JPanel();
 		panel_5.setBackground(Color.YELLOW);
-		panel_5.setBounds(19, 191, 159, 30);
+		panel_5.setBounds(19, 191, perEP, 30);
 		frame.getContentPane().add(panel_5);
 		
 		JPanel panel_6 = new JPanel();
-		panel_6.setBounds(19, 227, 159, 30);
+		panel_6.setBounds(19, 227, perP, 30);
 		frame.getContentPane().add(panel_6);
 
-		//FI SCROLL PANEL
 		
 	}
 }

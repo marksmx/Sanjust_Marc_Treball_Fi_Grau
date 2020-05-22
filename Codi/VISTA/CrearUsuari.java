@@ -215,9 +215,7 @@ public class CrearUsuari {
 					} else {
 						sqlU.crearPerfil(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_8.getText(), textPane_6.getText());
 					}
-				
 				}
-			
 			}
 		});
 		button.setBounds(159, 377, 159, 42);

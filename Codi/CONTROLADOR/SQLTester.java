@@ -16,7 +16,8 @@ public class SQLTester {
 		//sqlC.consultarClient();
 		//sqlCo.consultarComandes();
 		//sqlCo.conectar();
-		sqlCo.contarComandesFin();
+		//sqlCo.contarComandesFin();
+		//sqlC.crearClient("coco", "carpes", "test", "5", "test");
 	}
 	
 	

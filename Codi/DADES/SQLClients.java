@@ -28,7 +28,7 @@ public class SQLClients {
 	public Connection conectar() {
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Marc Sanjust\\eclipse-workspace\\OnTimeAgency\\src\\DADES\\onTimeDB.db");
+			c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\DADES\\onTimeDB.db");
 			System.out.println("Exito al conectar con base de datos");
 
 		} catch (Exception e) {
@@ -37,6 +37,33 @@ public class SQLClients {
 
 		return c;
 	}
+	
+	public void crearClient(String empresa, String concepte, String nif, String id, String mail) {
+		conectar();
+		String consultaSql = "INSERT INTO client (empresa, concepte, nif, id, mail)"+
+		"VALUES ("
+		+ "'"+empresa+"'"
+		+","
+		+ "'"+concepte+"'"
+		+","
+		+ "'"+nif.toLowerCase()+"'"
+		+","
+		+ "'"+id+"'"
+		+","
+		+ "'"+mail+"')"
+		+ ";";
+		
+		try {
+			sentencia = c.createStatement();
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+	}
+	
 	
 	public ArrayList<ClientCl> consultarClient() throws SQLException {
 		conectar();
@@ -63,7 +90,55 @@ public class SQLClients {
 		}
 		
 		return miLista;
-		
 	}
 	
+	public String consultarNomClient(String id) throws SQLException {
+		conectar();
+		String fullName = null;
+		
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT concepte FROM client WHERE id = '"+id+"';";
+		System.out.println(consultaSql);
+
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			while (rs.next()) {
+				fullName = rs.getString("concepte");
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return fullName;
+	}
+	
+	public int recompteClients() throws SQLException {
+		conectar();
+		int rec = 1;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM client;";
+
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			while (rs.next()) {
+				++rec;
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return rec;
+	}
 }
