@@ -33,22 +33,6 @@ public class CrearProducte {
 	private boolean servei=false;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					CrearProducte window = new CrearProducte();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the application.
 	 */
 	public CrearProducte() {
@@ -92,7 +76,7 @@ public class CrearProducte {
 		txtLogIn.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\Desktop\\logo.png"));
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\VISTA\\img\\logo.png"));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
@@ -388,22 +372,27 @@ public class CrearProducte {
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(producte==true) {
-					if(textPane.getText().length()==0 || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_11.getText().length()==0 || textPane_12.getText().length()==0 || textPane_6.getText().length()==0) {
+					if(textPane.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_11.getText().length()==0 || textPane_12.getText().length()==0 || textPane_6.getText().length()==0) {
 						JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
 					}else {
-						sqlP.crearProducte(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(), textPane_6.getText());
-						JOptionPane.showMessageDialog(null, "S'ha afegit correctament","",JOptionPane.INFORMATION_MESSAGE);
-						CrearProducte frm = new CrearProducte();
-						frm.frame.setVisible(true);
-						frame.setVisible(false);
+						try {
+							Integer.parseInt(textPane_5.getText());
+							sqlP.crearProducte(textPane.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(), textPane_6.getText());
+							JOptionPane.showMessageDialog(null, "S'ha afegit correctament","",JOptionPane.INFORMATION_MESSAGE);
+							CrearProducte frm = new CrearProducte();
+							frm.frame.setVisible(true);
+							frame.setVisible(false);
+						} catch (Exception e2) {
+							JOptionPane.showMessageDialog(null, "Les unitats han de ser números!","ERROR",JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				}
 				
 				if(servei==true) {
-					if(textPane.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_11.getText().length()==0 || textPane_12.getText().length()==0 || textPane_6.getText().length()==0) {
+					if(textPane.getText().length()==0 || textPane_2.getText().length()==0  || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_11.getText().length()==0 || textPane_12.getText().length()==0 || textPane_6.getText().length()==0) {
 						JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
 					}else {
-						sqlP.crearServei(textPane.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(), textPane_6.getText());
+						sqlP.crearServei(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(), textPane_6.getText());
 						JOptionPane.showMessageDialog(null, "S'ha afegit correctament","",JOptionPane.INFORMATION_MESSAGE);
 						CrearProducte frm = new CrearProducte();
 						frm.frame.setVisible(true);

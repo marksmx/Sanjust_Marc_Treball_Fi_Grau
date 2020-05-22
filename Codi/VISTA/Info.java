@@ -63,7 +63,7 @@ public class Info {
 		textField.setBorder(null);
 		textField.setBackground(Color.BLACK);
 		textField.setAutoscrolls(false);
-		textField.setBounds(10, 11, 399, 60);
+		textField.setBounds(45, 11, 399, 60);
 		frame.getContentPane().add(textField);
 		
 		textField_1 = new JTextField();

@@ -40,6 +40,8 @@ public class Client {
 	private JTable table;
 	private JScrollPane scrollPane; 
 	JButton button = new JButton("INICIAR PROJECTE");
+	JButton button2 = new JButton("FINALITZAR PROJECTE");
+
 	JButton btnNewButton_1 = new JButton("ELIMINAR PROJECTE");
 	JButton button_4 = new JButton("MARCAR COM A PAGAT");
 	JButton button_f = new JButton("MARCAR COM FINALITZAT");
@@ -52,17 +54,33 @@ public class Client {
 	}
 
 	private void construirTaula() throws ClassNotFoundException, SQLException {
-		String cap[] = {"Producte","Estat", "Data", "Hores", "Cost Total"};
+		String cap[] = {"Producte","Estat", "Data", "Hores", "Cost Total", "Numero Comanda"};
 		String info[][] = obtenirMatriu();
 		
 		table = new JTable(info, cap);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseReleased(MouseEvent arg0) {
+				
+				button.setVisible(false);
+				button2.setVisible(false);
+				btnNewButton_1.setVisible(false);
+
 				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("p")) {
 					button.setVisible(true);
+					button_4.setVisible(false);
 					btnNewButton_1.setVisible(true);
-
+				}
+				
+				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("ep")) {
+					button2.setVisible(true);
+					button_4.setVisible(true);
+					btnNewButton_1.setVisible(false);
+				}
+				
+				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("f")) {
+					button_4.setVisible(true);
+					btnNewButton_1.setVisible(false);
 				}
 			}
 		});
@@ -74,7 +92,7 @@ public class Client {
 	private String[][] obtenirMatriu() throws ClassNotFoundException, SQLException {
 			ArrayList<ComandaCl> miLista = sqlC.consultarComandesClient(idEmpresa);
 			
-			String matInfo[][] = new String[miLista.size()] [5];
+			String matInfo[][] = new String[miLista.size()] [6];
 
 			for (int i = 0; i < miLista.size(); i++) {
 				matInfo[i][0] = sqlP.consultarProducte(miLista.get(i).getIdProducte())+"";
@@ -82,7 +100,7 @@ public class Client {
 				matInfo[i][2] = miLista.get(i).getData()+"";
 				matInfo[i][3] = miLista.get(i).getHores()+"";
 				matInfo[i][4] = miLista.get(i).getTotal()+"";
-
+				matInfo[i][5] = miLista.get(i).getNumComanda()+"";
 			}
 			
 	
@@ -130,7 +148,7 @@ public class Client {
 		
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\Desktop\\logo.png"));
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\VISTA\\img\\logo.png"));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
@@ -249,6 +267,15 @@ public class Client {
 		button_1.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					ModificarClient frm = new ModificarClient(idEmpresa);
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
 			}
 		});
 		button_1.setBounds(0, 135, 162, 69);
@@ -349,6 +376,20 @@ public class Client {
 		btnNewButton_1.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					sqlC.eliminarComandes(table.getModel().getValueAt(table.getSelectedRow(), 5).toString(), idEmpresa);
+					Client frm = new Client(idEmpresa);
+					frm.frame.setVisible(true); 
+					frame.setVisible(false); 
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				//table.getModel().getValueAt(table.getSelectedRow(), 5)
+				catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnNewButton_1.setBounds(30, 342, 190, 51);
@@ -385,6 +426,7 @@ public class Client {
 		});
 		button_4.setBounds(495, 343, 190, 51);
 		frame.getContentPane().add(button_4);
+		
 		
 		JButton button_5 = new JButton("FILTRAR COMANDA");
 		button_5.setForeground(Color.BLACK);
@@ -437,11 +479,54 @@ public class Client {
 		button.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+				try {
+					sqlC.modificarEstatComanda("ep", table.getModel().getValueAt(table.getSelectedRow(), 5).toString());
+					Client frm = new Client(idEmpresa);
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		button.setBounds(263, 342, 190, 51);
 		frame.getContentPane().add(button);
+		
+		button2.setVisible(false);
+		button2.setForeground(Color.BLACK);
+		button2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button2.setBackground(Color.BLACK);
+				button2.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button2.setBackground(Color.WHITE);
+				button2.setForeground(Color.BLACK);
+			}
+		});
+		button2.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button2.setFocusPainted(false);
+		button2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		button2.setBackground(Color.WHITE);
+		button2.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
+		button2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					sqlC.modificarEstatComanda("f", table.getModel().getValueAt(table.getSelectedRow(), 5).toString());
+					Client frm = new Client(idEmpresa);
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		button2.setBounds(263, 342, 190, 51);
+		frame.getContentPane().add(button2);
 		
 		//FI BOTÓ INICIAR PROJECTE
 		

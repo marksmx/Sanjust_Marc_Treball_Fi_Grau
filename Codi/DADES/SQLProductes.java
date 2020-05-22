@@ -36,13 +36,11 @@ public class SQLProductes {
 		return c;
 	}
 	
-	public void crearProducte(String element, String frequencia, String unitats, String base, String iva, String total, String idProducte) {
+	public void crearProducte(String element, String unitats, String base, String iva, String total, String idProducte) {
 		conectar();
-		String consultaSql = "INSERT INTO producte (element, frequencia, unitats, base, iva, total, idProducte)"+
+		String consultaSql = "INSERT INTO producte (element, unitats, base, iva, total, idProducte)"+
 		"VALUES ("
 		+ "'"+element+"'"
-		+","
-		+ "'"+frequencia+"'"
 		+","
 		+ "'"+unitats+"'"
 		+","
@@ -66,11 +64,13 @@ public class SQLProductes {
 		}
 	}
 	
-	public void crearServei(String element, String unitats, String base, String iva, String total, String idProducte) {
+	public void crearServei(String element, String frequencia, String unitats, String base, String iva, String total, String idProducte) {
 		conectar();
-		String consultaSql = "INSERT INTO servei (element, unitats, base, iva, total, idProducte)"+
+		String consultaSql = "INSERT INTO servei (element, frequencia, unitats, base, iva, total, idProducte)"+
 		"VALUES ("
 		+ "'"+element+"'"
+		+","
+		+ "'"+frequencia+"'"
 		+","
 		+ "'"+unitats+"'"
 		+","

@@ -18,8 +18,6 @@ import java.sql.DriverManager;
 
 import javax.swing.JOptionPane;
 
-
-
 public class SQLClients {
 	Connection c;
 	JComponent frame;
@@ -64,6 +62,31 @@ public class SQLClients {
 		}
 	}
 	
+	public void modificarClient(String actId, String empresa, String concepte, String nif, String id, String mail) {
+		conectar();
+		String consultaSql = "UPDATE client SET " 
+		+"empresa = '"+empresa+"'"
+		+","
+		+ "concepte = '"+concepte+"'"
+		+","
+		+ "nif = '"+nif.toLowerCase()+"'"
+		+","
+		+ "id = '"+id+"'"
+		+","
+		+ "mail = '"+mail+"' WHERE id = '"+ actId
+		+ "';";
+		System.out.println(consultaSql);
+		try {
+			sentencia = c.createStatement();
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+	}
+	
 	
 	public ArrayList<ClientCl> consultarClient() throws SQLException {
 		conectar();
@@ -72,6 +95,32 @@ public class SQLClients {
 		sentencia = c.createStatement();
 
 		String consultaSql = "SELECT * FROM client;";
+
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			while (rs.next()) {
+				cli = new ClientCl(rs.getString("empresa"), rs.getString("concepte"), rs.getString("nif"), rs.getString("id"), rs.getString("mail"));
+				miLista.add(cli);
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return miLista;
+	}
+	
+	public ArrayList<ClientCl> consultarClientperID(String id) throws SQLException {
+		conectar();
+		ArrayList<ClientCl> miLista = new ArrayList<ClientCl>();
+		ClientCl cli = null;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM client WHERE id = '"+id+"';";
 
 		try {
 			ResultSet rs = sentencia.executeQuery(consultaSql);

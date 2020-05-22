@@ -4,43 +4,79 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
-import javax.swing.border.BevelBorder;
+import javax.swing.JButton;
 import javax.swing.border.SoftBevelBorder;
 
-import DADES.*;
+import DADES.SQLClients;
+import MODEL.ClientCl;
+import MODEL.ComandaCl;
 
-public class CrearUsuari {
+import javax.swing.border.BevelBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;
 
-	SQLUsuari sqlU = new SQLUsuari();
-	public JFrame frame;
+public class ModificarClient {
+	SQLClients sqlCl = new SQLClients();
+	JFrame frame;
+	private boolean fet=false;
+	private String idClient;
 	
+	JTextPane textPane = new JTextPane();
+	JTextPane textPane_1 = new JTextPane();
+	JTextPane textPane_2 = new JTextPane();
+	JTextPane textPane_3 = new JTextPane();
+	JTextPane textPane_4 = new JTextPane();
+	JTextPane textPane_5 = new JTextPane();
+	JTextPane textPane_6 = new JTextPane();
+	JTextPane textPane_8 = new JTextPane();
 
+	/**
+	 * Create the application.
+	 * @throws SQLException 
+	 */
+	
+	public void omplirCamps() throws SQLException {
 
-	public CrearUsuari() {
-		initialize();
+	ArrayList<ClientCl> miLista = sqlCl.consultarClientperID(idClient);
+		
+		for (int i = 0; i < miLista.size(); i++) {
+			textPane.setText(miLista.get(i).getEmpresa());
+			textPane_2.setText(miLista.get(i).getConcepte());
+			textPane_5.setText(miLista.get(i).getNif());
+			textPane_6.setText(miLista.get(i).getId());
+			textPane_8.setText(miLista.get(i).getMail());
+		}
 	}
 	
-	private void initialize() {
+	public ModificarClient(String idClient) throws SQLException {
+		this.idClient = idClient;
+		initialize();
+		omplirCamps();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 * @throws SQLException 
+	 */
+	private void initialize() throws SQLException {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
 		frame.getContentPane().setFocusable(false);
 		frame.getContentPane().setFocusTraversalKeysEnabled(false);
-		frame.setBounds(730, 300, 473, 478);
+		frame.setBounds(730, 300, 473, 536);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -48,12 +84,12 @@ public class CrearUsuari {
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(0, 0, 467, 82);
+		panel.setBounds(0, 0, 688, 82);
 		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 		
 		JTextField txtLogIn = new JTextField();
-		txtLogIn.setBounds(77, 11, 374, 60);
+		txtLogIn.setBounds(81, 11, 387, 60);
 		txtLogIn.setForeground(Color.BLACK);
 		panel.add(txtLogIn);
 		txtLogIn.setBorder(null);
@@ -74,18 +110,16 @@ public class CrearUsuari {
 		
 		//CAPÇALERA FINAL
 		
-		JTextPane textPane = new JTextPane();
 		textPane.setText("");
 		textPane.setForeground(Color.BLACK);
-		textPane.setFont(new Font("Dialog", Font.PLAIN, 22));
+		textPane.setFont(new Font("HelveticaNeue", Font.PLAIN, 24));
 		textPane.setFocusTraversalKeysEnabled(false);
 		textPane.setFocusCycleRoot(false);
 		textPane.setBackground(Color.WHITE);
 		textPane.setBounds(44, 135, 159, 35);
 		frame.getContentPane().add(textPane);
 		
-		JTextPane textPane_1 = new JTextPane();
-		textPane_1.setText("Nom");
+		textPane_1.setText("Empresa");
 		textPane_1.setForeground(Color.WHITE);
 		textPane_1.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
 		textPane_1.setFocusable(false);
@@ -93,10 +127,9 @@ public class CrearUsuari {
 		textPane_1.setFocusCycleRoot(false);
 		textPane_1.setEditable(false);
 		textPane_1.setBackground(Color.BLACK);
-		textPane_1.setBounds(100, 93, 61, 42);
+		textPane_1.setBounds(71, 93, 101, 42);
 		frame.getContentPane().add(textPane_1);
 		
-		JTextPane textPane_2 = new JTextPane();
 		textPane_2.setText("");
 		textPane_2.setForeground(Color.BLACK);
 		textPane_2.setFont(new Font("Dialog", Font.PLAIN, 22));
@@ -106,8 +139,7 @@ public class CrearUsuari {
 		textPane_2.setBounds(268, 135, 159, 35);
 		frame.getContentPane().add(textPane_2);
 		
-		JTextPane textPane_3 = new JTextPane();
-		textPane_3.setText("Cognom");
+		textPane_3.setText("Concepte");
 		textPane_3.setForeground(Color.WHITE);
 		textPane_3.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
 		textPane_3.setFocusable(false);
@@ -115,11 +147,10 @@ public class CrearUsuari {
 		textPane_3.setFocusCycleRoot(false);
 		textPane_3.setEditable(false);
 		textPane_3.setBackground(Color.BLACK);
-		textPane_3.setBounds(304, 93, 103, 42);
+		textPane_3.setBounds(293, 93, 103, 42);
 		frame.getContentPane().add(textPane_3);
 		
-		JTextPane textPane_4 = new JTextPane();
-		textPane_4.setText("DNI");
+		textPane_4.setText("NIF");
 		textPane_4.setForeground(Color.WHITE);
 		textPane_4.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
 		textPane_4.setFocusable(false);
@@ -127,31 +158,30 @@ public class CrearUsuari {
 		textPane_4.setFocusCycleRoot(false);
 		textPane_4.setEditable(false);
 		textPane_4.setBackground(Color.BLACK);
-		textPane_4.setBounds(105, 181, 47, 42);
+		textPane_4.setBounds(105, 201, 47, 42);
 		frame.getContentPane().add(textPane_4);
 		
-		JTextPane textPane_5 = new JTextPane();
 		textPane_5.setText("");
 		textPane_5.setForeground(Color.BLACK);
 		textPane_5.setFont(new Font("Dialog", Font.PLAIN, 22));
 		textPane_5.setFocusTraversalKeysEnabled(false);
 		textPane_5.setFocusCycleRoot(false);
 		textPane_5.setBackground(Color.WHITE);
-		textPane_5.setBounds(44, 223, 159, 35);
+		textPane_5.setBounds(44, 243, 159, 35);
 		frame.getContentPane().add(textPane_5);
 		
-		JTextPane textPane_6 = new JTextPane();
-		textPane_6.setText("");
+		textPane_6.setEditable(false);
+		textPane_6.setText(Integer.toString(sqlCl.recompteClients()));
 		textPane_6.setForeground(Color.BLACK);
 		textPane_6.setFont(new Font("Dialog", Font.PLAIN, 22));
 		textPane_6.setFocusTraversalKeysEnabled(false);
 		textPane_6.setFocusCycleRoot(false);
 		textPane_6.setBackground(Color.WHITE);
-		textPane_6.setBounds(268, 223, 159, 35);
+		textPane_6.setBounds(268, 243, 159, 35);
 		frame.getContentPane().add(textPane_6);
 		
 		JTextPane textPane_7 = new JTextPane();
-		textPane_7.setText("Contrasenya");
+		textPane_7.setText("ID Client");
 		textPane_7.setForeground(Color.WHITE);
 		textPane_7.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
 		textPane_7.setFocusable(false);
@@ -159,19 +189,60 @@ public class CrearUsuari {
 		textPane_7.setFocusCycleRoot(false);
 		textPane_7.setEditable(false);
 		textPane_7.setBackground(Color.BLACK);
-		textPane_7.setBounds(290, 181, 135, 42);
+		textPane_7.setBounds(306, 201, 101, 42);
 		frame.getContentPane().add(textPane_7);
 		
-
 		
-		JTextPane textPane_8 = new JTextPane();
+		
+		//INICI BOTÓ CANCEL·LAR OPERACIÓ
+		
+		JButton button_1 = new JButton("CANCEL·LAR OPERACIÓ");
+		button_1.setForeground(Color.BLACK);
+		button_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button_1.setBackground(Color.BLACK);
+				button_1.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button_1.setBackground(Color.WHITE);
+				button_1.setForeground(Color.BLACK);
+			}
+		});
+		button_1.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button_1.setFocusPainted(false);
+		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		button_1.setBackground(Color.WHITE);
+		button_1.setFont(new Font("HelveticaNeue", Font.BOLD, 10));
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Client frm = new Client(idClient);
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
+			}
+		});
+		button_1.setBounds(246, 431, 150, 42);
+		frame.getContentPane().add(button_1);
+		
+		//FI BOTÓ CANCEL·LAR OPERACIÓ
+		
 		textPane_8.setText("");
 		textPane_8.setForeground(Color.BLACK);
 		textPane_8.setFont(new Font("Dialog", Font.PLAIN, 22));
 		textPane_8.setFocusTraversalKeysEnabled(false);
 		textPane_8.setFocusCycleRoot(false);
 		textPane_8.setBackground(Color.WHITE);
-		textPane_8.setBounds(44, 310, 383, 35);
+		textPane_8.setBounds(71, 344, 325, 35);
 		frame.getContentPane().add(textPane_8);
 		
 		JTextPane textPane_9 = new JTextPane();
@@ -183,10 +254,15 @@ public class CrearUsuari {
 		textPane_9.setFocusCycleRoot(false);
 		textPane_9.setEditable(false);
 		textPane_9.setBackground(Color.BLACK);
-		textPane_9.setBounds(215, 269, 47, 42);
+		textPane_9.setBounds(209, 299, 47, 42);
 		frame.getContentPane().add(textPane_9);
 		
-		JButton button = new JButton("ACABAR I CONTINUAR");
+		//INICI BOTÓ AFEGIR CLIENT
+		
+
+	
+		
+		JButton button = new JButton("APLICAR CANVIS");
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
 			@Override
@@ -207,27 +283,41 @@ public class CrearUsuari {
 		button.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(textPane.getText().length()==0 || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_6.getText().length()==0) {
-					JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
-				}else {
-					if(textPane_5.getText().length()>9) {
-						JOptionPane.showMessageDialog(null, "El DNI és massa llarg","ERROR",JOptionPane.ERROR_MESSAGE);
+				
+				if(textPane_5.getText().length()>9) {
+					JOptionPane.showMessageDialog(null, "El NIF és massa llarg","ERROR",JOptionPane.ERROR_MESSAGE);
+				} else {
+					if(textPane.getText().length()==0 || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0) {
+						JOptionPane.showMessageDialog(null, "Hi ha camps vuits!","ERROR",JOptionPane.ERROR_MESSAGE);
 					} else {
-						sqlU.crearPerfil(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_8.getText(), textPane_6.getText());
-						try {
-							LogIn frm = new LogIn();
-							frm.frame.setVisible(true);
-							frame.setVisible(false);
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						}
-						
+						sqlCl.modificarClient(idClient, textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_6.getText(), textPane_8.getText());
+						fet = true;
 					}
 				}
+				
+				if(fet == true) {
+					try {
+						Client frm = new Client(idClient);
+						frm.frame.setVisible(true);
+						frame.setVisible(false);
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				} 
+				
+				fet = false;
+				
 			}
 		});
-		button.setBounds(159, 377, 159, 42);
+		button.setBounds(71, 431, 150, 42);
 		frame.getContentPane().add(button);
+		
+		//FI BOTÓ AFEGIR CLIENT
+
 	}
 
 }

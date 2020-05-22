@@ -71,7 +71,6 @@ public class SQLComandes {
 		}
 	}
 	
-	
 	public ArrayList<ComandaCl> consultarComandes() throws SQLException {
 		conectar();
 		ArrayList<ComandaCl> miLista = new ArrayList<ComandaCl>();
@@ -99,6 +98,23 @@ public class SQLComandes {
 		}
 		
 		return miLista;
+	}
+	
+	public void eliminarComandes(String numC, String idEmp) throws SQLException {
+		conectar();
+		sentencia = c.createStatement();
+
+		String consultaSql = "DELETE FROM comanda WHERE numComanda = '"+numC+"' AND idEmpresa = '"+idEmp+"';";
+		System.out.println(consultaSql);
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
 		
 	}
 	
@@ -244,6 +260,26 @@ public class SQLComandes {
 			rs.close();
 			sentencia.close();
 			c.close();
+			
+		return stat;
+	}
+	
+	public String modificarEstatComanda(String est, String nCom) throws SQLException, ClassNotFoundException {
+		conectar();
+		String stat = null;
+		sentencia = c.createStatement();
+
+		String consultaSql = "UPDATE comanda SET estatComanda = '"+est+"' WHERE numComanda = '"+nCom+"';";
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		sentencia.close();
+		c.close();
 			
 		return stat;
 	}

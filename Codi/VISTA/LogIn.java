@@ -111,10 +111,8 @@ public class LogIn {
 		txtLogIn.setText("OnTime Agency");
 		txtLogIn.setColumns(10);
 		
-		
-		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\Desktop\\logo.png"));
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\VISTA\\img\\logo.png"));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		

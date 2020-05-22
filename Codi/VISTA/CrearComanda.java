@@ -44,7 +44,7 @@ public class CrearComanda {
 	ArrayList<ProducteCl> miLista = sqlP.veureProducte();
 	ArrayList<ServeiCl> miLista2 = sqlP.veureServei();
 	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-	Date data = new Date(0);
+	Date data;
 	/**
 	 * Launch the application.
 	 */
@@ -98,7 +98,7 @@ public class CrearComanda {
 		
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\Desktop\\logo.png"));
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\VISTA\\img\\logo.png"));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
@@ -291,17 +291,32 @@ public class CrearComanda {
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					iva = Integer.parseInt(miLista.get(comboBox.getSelectedIndex()-1).getBase())*0.21;
-					total = Integer.parseInt(miLista.get(comboBox.getSelectedIndex()-1).getBase())+(Integer.parseInt(miLista.get(comboBox.getSelectedIndex()-1).getBase())*0.21);
-					
-					String rec = Integer.toString(sqlC.contarComandes()+1);
-					String id =  miLista.get(comboBox.getSelectedIndex()-1).getIdProducte();
-					String dataS = dateFormat.format(data).toString();
-					String baseS = miLista.get(comboBox.getSelectedIndex()-1).getBase()+"€";
-					String ivaS = Double.toString(iva)+"€";
-					String totalS = Double.toString(total)+"€";
+					if(comboBox.getSelectedIndex()>=1 && comboBox_1.getSelectedIndex()==0) {
+						data = new Date(0);
+						iva = Integer.parseInt(miLista.get(comboBox.getSelectedIndex()-1).getBase())*0.21;
+						total = Integer.parseInt(miLista.get(comboBox.getSelectedIndex()-1).getBase())+(Integer.parseInt(miLista.get(comboBox.getSelectedIndex()-1).getBase())*0.21);
+						String rec = Integer.toString(sqlC.contarComandes()+1);
+						String id =  miLista.get(comboBox.getSelectedIndex()-1).getIdProducte();
+						String dataS = dateFormat.format(data).toString();
+						String baseS = miLista.get(comboBox.getSelectedIndex()-1).getBase()+"€";
+						String ivaS = Double.toString(iva)+"€";
+						String totalS = Double.toString(total)+"€";
 
-					sqlC.crearComanda("p", rec, id, dataS, "", baseS, ivaS, totalS, idClient);
+						sqlC.crearComanda("p", rec, id, dataS, "", baseS, ivaS, totalS, idClient);
+					} 
+					
+					if(comboBox_1.getSelectedIndex()>=1 && comboBox.getSelectedIndex()==0) {
+						iva = Integer.parseInt(miLista2.get(comboBox_1.getSelectedIndex()-1).getBase())*0.21;
+						total = Integer.parseInt(miLista2.get(comboBox_1.getSelectedIndex()-1).getBase())+(Integer.parseInt(miLista2.get(comboBox_1.getSelectedIndex()-1).getBase())*0.21);
+						String rec = Integer.toString(sqlC.contarComandes()+1);
+						String id =  miLista2.get(comboBox_1.getSelectedIndex()-1).getIdProducte();
+						String dataS = dateFormat.format(data).toString();
+						String baseS = miLista2.get(comboBox_1.getSelectedIndex()-1).getBase()+"€";
+						String ivaS = Double.toString(iva)+"€";
+						String totalS = Double.toString(total)+"€";
+
+						sqlC.crearComanda("p", rec, id, dataS, "", baseS, ivaS, totalS, idClient);
+					} 
 					
 					JOptionPane.showMessageDialog(null, "S'ha afegit la comanda","",JOptionPane.INFORMATION_MESSAGE);
 					Client frm = new Client(idClient);
