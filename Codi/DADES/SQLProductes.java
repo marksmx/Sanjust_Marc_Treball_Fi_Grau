@@ -36,6 +36,64 @@ public class SQLProductes {
 		return c;
 	}
 	
+	public void crearProducte(String element, String frequencia, String unitats, String base, String iva, String total, String idProducte) {
+		conectar();
+		String consultaSql = "INSERT INTO producte (element, frequencia, unitats, base, iva, total, idProducte)"+
+		"VALUES ("
+		+ "'"+element+"'"
+		+","
+		+ "'"+frequencia+"'"
+		+","
+		+ "'"+unitats+"'"
+		+","
+		+ "'"+base+"'"
+		+","
+		+ "'"+iva+"'"
+		+","
+		+ "'"+total+"'"
+		+","
+		+ "'"+idProducte+"')"
+		+ ";";
+		
+		try {
+			sentencia = c.createStatement();
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+	}
+	
+	public void crearServei(String element, String unitats, String base, String iva, String total, String idProducte) {
+		conectar();
+		String consultaSql = "INSERT INTO servei (element, unitats, base, iva, total, idProducte)"+
+		"VALUES ("
+		+ "'"+element+"'"
+		+","
+		+ "'"+unitats+"'"
+		+","
+		+ "'"+base+"'"
+		+","
+		+ "'"+iva+"'"
+		+","
+		+ "'"+total+"'"
+		+","
+		+ "'"+idProducte+"')"
+		+ ";";
+		
+		try {
+			sentencia = c.createStatement();
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+	}
+	
 	public String consultarProducte(String id) throws SQLException {
 		conectar();
 		String name = null;
@@ -57,4 +115,23 @@ public class SQLProductes {
 		return name;
 	}
 	
+	public int contarProductes() throws SQLException, ClassNotFoundException {
+		conectar();
+		int amount = 0;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM comanda;";
+		
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+		
+			while (rs.next()) {
+				++amount;
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		return amount;
+		
+	}
 }

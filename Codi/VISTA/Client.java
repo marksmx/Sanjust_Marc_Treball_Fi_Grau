@@ -12,6 +12,12 @@ import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import DADES.SQLClients;
+import DADES.SQLComandes;
+import MODEL.ClientCl;
+import MODEL.ComandaCl;
+
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -19,12 +25,16 @@ import java.awt.Cursor;
 import javax.swing.border.BevelBorder;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Client {
 
+	SQLComandes sqlC = new SQLComandes();
 	private JFrame frame;
 	private JTable table;
-
+	private JScrollPane scrollPane; 
+	
 	/**
 	 * Launch the application.
 	 */
@@ -41,13 +51,40 @@ public class Client {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
-	public Client() {
+	public Client() throws ClassNotFoundException, SQLException {
 		initialize();
+		construirTaula();
 	}
 
+	private void construirTaula() throws ClassNotFoundException, SQLException {
+		String cap[] = {"Producte","Estat", "Data", "Hores", "Cost Total"};
+		String info[][] = obtenirMatriu();
+		
+		table = new JTable(info, cap);
+		scrollPane.setViewportView(table);
+
+	}
+	
+	
+	private String[][] obtenirMatriu() throws ClassNotFoundException, SQLException {
+			ArrayList<ComandaCl> miLista = sqlC.consultarComandes();
+			
+			String matInfo[][] = new String[miLista.size()] [5];
+
+			for (int i = 0; i < miLista.size(); i++) {
+				matInfo[i][0] = miLista.get(i).getIdProducte()+"";
+				matInfo[i][1] = miLista.get(i).getEstatComanda()+"";
+				matInfo[i][2] = miLista.get(i).getData()+"";
+				matInfo[i][3] = miLista.get(i).getHores()+"";
+				matInfo[i][4] = miLista.get(i).getTotal()+"";
+
+			}
+			
+	
+		return matInfo;
+	}
+	
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
@@ -93,28 +130,14 @@ public class Client {
 		panel.add(lblNewLabel);
 		
 	//CAPÇALERA FINAL
-		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(30, 138, 655, 181);
 		frame.getContentPane().add(scrollPane);
-		
-		table = new JTable();
-		table.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null},
-				{null, null, null, null, null, null, null, null, null},
-			},
-			new String[] {
-				"Estat", "Numero", "Producte", "Data", "Hores", "Base", "IVA", "Total"
-			}
-		));
-		
+		scrollPane.setViewportView(table);
+
 	//INICI BARRA LATERAL BOTONS
 		
 
-		scrollPane.setViewportView(table);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);

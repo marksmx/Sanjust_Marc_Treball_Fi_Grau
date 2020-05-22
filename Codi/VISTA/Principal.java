@@ -25,6 +25,9 @@ import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 
 import DADES.*;
 import MODEL.*;
@@ -315,6 +318,9 @@ public class Principal {
 		button_2.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				CrearProducte frm = new CrearProducte();
+				frm.frame.setVisible(true);
+				frame.setVisible(false);
 			}
 		});
 		button_2.setBounds(488, 404, 164, 44);
