@@ -94,6 +94,32 @@ public class SQLProductes {
 		}
 	}
 	
+	public ArrayList<ServeiCl> veureServei() throws SQLException {
+		conectar();
+		sentencia = c.createStatement();
+		ArrayList<ServeiCl> miLista = new ArrayList<ServeiCl>();
+		ServeiCl ser = null;
+
+		String consultaSql = "SELECT * FROM servei;";
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			while (rs.next()) {
+				ser = new ServeiCl(rs.getString("element"), rs.getString("frequencia"), rs.getString("unitats"), rs.getString("base"), rs.getString("iva"), rs.getString("total"), rs.getString("idProducte"));
+				miLista.add(ser);
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return miLista;
+	}
+	
 	public String consultarProducte(String id) throws SQLException {
 		conectar();
 		String name = null;
@@ -131,7 +157,36 @@ public class SQLProductes {
 			rs.close();
 			sentencia.close();
 			c.close();
-		return amount;
-		
+		return amount;	
 	}
+	
+	public ArrayList<ProducteCl> veureProducte() throws SQLException {
+		conectar();
+		sentencia = c.createStatement();
+		ArrayList<ProducteCl> miLista = new ArrayList<ProducteCl>();
+		ProducteCl pr = null;
+
+		String consultaSql = "SELECT * FROM producte;";
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			while (rs.next()) {
+				pr = new ProducteCl(rs.getString("element"), rs.getString("unitats"), rs.getString("base"), rs.getString("iva"), rs.getString("total"), rs.getString("idProducte"));
+				miLista.add(pr);
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return miLista;
+	}
+	
+
+	
+	
 }

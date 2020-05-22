@@ -3,6 +3,7 @@ package VISTA;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.TextField;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -15,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 
 import DADES.SQLClients;
 import DADES.SQLComandes;
+import DADES.SQLProductes;
 import MODEL.ClientCl;
 import MODEL.ComandaCl;
 
@@ -31,27 +33,20 @@ import java.util.ArrayList;
 public class Client {
 
 	SQLComandes sqlC = new SQLComandes();
-	private JFrame frame;
+	SQLClients sqlCl = new SQLClients();
+	SQLProductes sqlP = new SQLProductes();
+	private String idEmpresa;
+	JFrame frame;
 	private JTable table;
 	private JScrollPane scrollPane; 
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Client window = new Client();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	JButton button = new JButton("INICIAR PROJECTE");
+	JButton btnNewButton_1 = new JButton("ELIMINAR PROJECTE");
+	JButton button_4 = new JButton("MARCAR COM A PAGAT");
+	JButton button_f = new JButton("MARCAR COM FINALITZAT");
+	private JTextField textField;
 
-	public Client() throws ClassNotFoundException, SQLException {
+	public Client(String idEmpresa) throws ClassNotFoundException, SQLException {
+		this.idEmpresa = idEmpresa;
 		initialize();
 		construirTaula();
 	}
@@ -61,18 +56,28 @@ public class Client {
 		String info[][] = obtenirMatriu();
 		
 		table = new JTable(info, cap);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("p")) {
+					button.setVisible(true);
+					btnNewButton_1.setVisible(true);
+
+				}
+			}
+		});
 		scrollPane.setViewportView(table);
 
 	}
 	
 	
 	private String[][] obtenirMatriu() throws ClassNotFoundException, SQLException {
-			ArrayList<ComandaCl> miLista = sqlC.consultarComandes();
+			ArrayList<ComandaCl> miLista = sqlC.consultarComandesClient(idEmpresa);
 			
 			String matInfo[][] = new String[miLista.size()] [5];
 
 			for (int i = 0; i < miLista.size(); i++) {
-				matInfo[i][0] = miLista.get(i).getIdProducte()+"";
+				matInfo[i][0] = sqlP.consultarProducte(miLista.get(i).getIdProducte())+"";
 				matInfo[i][1] = miLista.get(i).getEstatComanda()+"";
 				matInfo[i][2] = miLista.get(i).getData()+"";
 				matInfo[i][3] = miLista.get(i).getHores()+"";
@@ -168,6 +173,15 @@ public class Client {
 		btnNewButton.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					CrearComanda frm = new CrearComanda(idEmpresa);
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 			}
 		});
 		btnNewButton.setBounds(0, 0, 162, 69);
@@ -198,6 +212,13 @@ public class Client {
 		btnConsultarInformaciDe.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		btnConsultarInformaciDe.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					Info frm = new Info(idEmpresa);
+					frm.frame.setVisible(true); 
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnConsultarInformaciDe.setBounds(0, 68, 162, 69);
@@ -288,6 +309,14 @@ public class Client {
 		button_3.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					Principal frm = new Principal();
+					frm.frame.setVisible(true); 
+					frame.setVisible(false); 
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		button_3.setBounds(0, 270, 162, 76);
@@ -299,7 +328,7 @@ public class Client {
 		
 		//INICI BOTÓ ELIMINAR PROJECTE
 		
-		JButton btnNewButton_1 = new JButton("ELIMINAR PROJECTE");
+		btnNewButton_1.setVisible(false);
 		btnNewButton_1.setForeground(Color.BLACK);
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -327,39 +356,10 @@ public class Client {
 		
 		//FI BOTÓ ELIMINAR PROJECTE
 		
-		//INICI BOTÓ INICIAR PROJECTE
-
-		JButton button = new JButton("INICIAR PROJECTE");
-		button.setForeground(Color.BLACK);
-		button.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				button.setBackground(Color.BLACK);
-				button.setForeground(Color.WHITE);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				button.setBackground(Color.WHITE);
-				button.setForeground(Color.BLACK);
-			}
-		});
-		button.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
-		button.setFocusPainted(false);
-		button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		button.setBackground(Color.WHITE);
-		button.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		button.setBounds(263, 342, 190, 51);
-		frame.getContentPane().add(button);
-		
-		//FI BOTÓ INICIAR PROJECTE
+	
 
 		//INICI BOTÓ MARCAR COM A PAGAT
 		
-		JButton button_4 = new JButton("MARCAR COM A PAGAT");
 		button_4.setForeground(Color.BLACK);
 		button_4.addMouseListener(new MouseAdapter() {
 			@Override
@@ -374,6 +374,7 @@ public class Client {
 			}
 		});
 		button_4.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button_4.setVisible(false);
 		button_4.setFocusPainted(false);
 		button_4.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button_4.setBackground(Color.WHITE);
@@ -413,5 +414,85 @@ public class Client {
 		
 		//FI BOTÓ MARCAR COM A PAGAT
 		
+		//INICI BOTÓ INICIAR PROJECTE
+
+		button.setVisible(false);
+		button.setForeground(Color.BLACK);
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button.setBackground(Color.BLACK);
+				button.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button.setBackground(Color.WHITE);
+				button.setForeground(Color.BLACK);
+			}
+		});
+		button.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button.setFocusPainted(false);
+		button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		button.setBackground(Color.WHITE);
+		button.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+			}
+		});
+		button.setBounds(263, 342, 190, 51);
+		frame.getContentPane().add(button);
+		
+		//FI BOTÓ INICIAR PROJECTE
+		
+		//INICI BOTÓ MARCAR COM FINALITZAT
+
+		button_f.setVisible(false);
+		button_f.setForeground(Color.BLACK);
+		button_f.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button_f.setBackground(Color.BLACK);
+				button_f.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button_f.setBackground(Color.WHITE);
+				button_f.setForeground(Color.BLACK);
+			}
+		});
+		button_f.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button_f.setFocusPainted(false);
+		button_f.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		button_f.setBackground(Color.WHITE);
+		button_f.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
+		button_f.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+			}
+		});
+		button_f.setBounds(263, 342, 190, 51);
+		frame.getContentPane().add(button_f);
+		
+		textField = new JTextField();
+		textField.setBackground(Color.BLACK);
+		try {
+			textField.setText(sqlCl.consultarNomClient(idEmpresa).toUpperCase());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		textField.setSelectionColor(Color.GRAY);
+		textField.setForeground(Color.WHITE);
+		textField.setFont(new Font("HelveticaNeue", Font.PLAIN, 20));
+		textField.setFocusable(false);
+		textField.setFocusTraversalKeysEnabled(false);
+		textField.setEditable(false);
+		textField.setColumns(10);
+		textField.setBorder(null);
+		textField.setAutoscrolls(false);
+		textField.setBounds(24, 93, 196, 47);
+		frame.getContentPane().add(textField);
+		
+		//FI BOTÓ INICIAR PROJECTE
 	}
 }

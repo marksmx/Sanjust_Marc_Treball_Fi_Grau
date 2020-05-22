@@ -37,7 +37,7 @@ public class Principal {
 	SQLComandes sqlC = new SQLComandes();
 	SQLClients sqlCl = new SQLClients();
 	SQLProductes sqlPr = new SQLProductes();
-
+	
 	public JFrame frame;
 	private JTable table_1;
 	private JTable table_2;
@@ -48,7 +48,7 @@ public class Principal {
 	private int perP = 0;
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
-	
+	private boolean isSelected = false;
 	
 	public Principal() throws ClassNotFoundException, SQLException {
 		initialize();
@@ -59,10 +59,17 @@ public class Principal {
 	//INICI FUNCIONS TAULA PRINCIPAL
 
 	private void construirTaula() throws ClassNotFoundException, SQLException {
-		String cap[] = {"Empresa","Concepte", "NIF"};
+		String cap[] = {"Empresa","Concepte", "NIF", "ID"};
 		String info[][] = obtenirMatriu();
 		
 		table_1 = new JTable(info, cap);
+		table_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				isSelected = true;
+				System.out.println("ara");
+			}
+		});
 		scrollPane.setViewportView(table_1);
 
 	}
@@ -72,12 +79,14 @@ public class Principal {
 		SQLClients sqlU = new SQLClients();
 			ArrayList<ClientCl> miLista = sqlU.consultarClient();
 			
-			String matInfo[][] = new String[miLista.size()] [3];
+			String matInfo[][] = new String[miLista.size()] [4];
 
 			for (int i = 0; i < miLista.size(); i++) {
 				matInfo[i][0] = miLista.get(i).getEmpresa()+"";
 				matInfo[i][1] = miLista.get(i).getConcepte()+"";
 				matInfo[i][2] = miLista.get(i).getNif()+"";
+				matInfo[i][3] = miLista.get(i).getId()+"";
+
 			}
 			
 	
@@ -103,10 +112,6 @@ public class Principal {
 			String matInfo[][] = new String[miLista.size()] [2];
 			
 			if(sqlC.contarComandes()==0) {
-				sqlC.crearComanda("", "", "", "", "", "", "", "", "");
-				for (int x = 0; x < miLista.size(); x++) {
-					matInfo[x][0] = sqlC.consultarEstatComanda(Integer.toString(x+1)) + " " + sqlCl.consultarNomClient(miLista.get(x).getIdEmpresa())+" - "+sqlPr.consultarProducte(miLista.get(x).getIdProducte());
-				}
 			} else {
 				for (int x = 0; x < miLista.size(); x++) {
 					matInfo[x][0] = sqlC.consultarEstatComanda(Integer.toString(x+1)) + " " + sqlCl.consultarNomClient(miLista.get(x).getIdEmpresa())+" - "+sqlPr.consultarProducte(miLista.get(x).getIdProducte());
@@ -233,6 +238,19 @@ public class Principal {
 		btnNewButton.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					if(isSelected == false) {
+						
+					} else {
+						Client frm = new Client(table_1.getModel().getValueAt(table_1.getSelectedRow(), 3).toString());
+						frm.frame.setVisible(true);
+						frame.setVisible(false);	
+					}
+				} catch (ClassNotFoundException | SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
 			}
 		});
 		btnNewButton.setBounds(221, 332, 125, 44);

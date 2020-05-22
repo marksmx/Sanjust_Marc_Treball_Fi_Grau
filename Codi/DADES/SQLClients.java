@@ -77,7 +77,6 @@ public class SQLClients {
 			ResultSet rs = sentencia.executeQuery(consultaSql);
 			
 			while (rs.next()) {
-				System.out.println(rs.getString("empresa"));
 				cli = new ClientCl(rs.getString("empresa"), rs.getString("concepte"), rs.getString("nif"), rs.getString("id"), rs.getString("mail"));
 				miLista.add(cli);
 			}
@@ -106,6 +105,58 @@ public class SQLClients {
 			
 			while (rs.next()) {
 				fullName = rs.getString("concepte");
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return fullName;
+	}
+	
+	public String consultarEmpresaClient(String id) throws SQLException {
+		conectar();
+		String fullName = null;
+		
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT empresa FROM client WHERE id = '"+id+"';";
+		System.out.println(consultaSql);
+
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			while (rs.next()) {
+				fullName = rs.getString("empresa");
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return fullName;
+	}
+	
+	public String consultarMailClient(String id) throws SQLException {
+		conectar();
+		String fullName = null;
+		
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT mail FROM client WHERE id = '"+id+"';";
+		System.out.println(consultaSql);
+
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			while (rs.next()) {
+				fullName = rs.getString("mail");
 			}
 			
 			rs.close();

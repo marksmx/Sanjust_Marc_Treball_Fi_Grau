@@ -37,7 +37,7 @@ public class SQLComandes {
 	
 	public void crearComanda(String estatComanda, String numComanda, String idProducte, String data, String hores, String base, String iva, String total, String idEmpresa) {
 		conectar();
-		String consultaSql = "INSERT INTO client (estatComanda, numComanda, idProducte, data, hores, base, iva, total, idEmpresa)"+
+		String consultaSql = "INSERT INTO comanda (estatComanda, numComanda, idProducte, data, hores, base, iva, total, idEmpresa)"+
 		"VALUES ("
 		+ "'"+estatComanda+"'"
 		+","
@@ -58,6 +58,8 @@ public class SQLComandes {
 		+ "'"+idEmpresa+"')"
 		+ ";";
 		
+		System.out.println(consultaSql);
+		
 		try {
 			sentencia = c.createStatement();
 			ResultSet rs = sentencia.executeQuery(consultaSql);
@@ -77,6 +79,36 @@ public class SQLComandes {
 		sentencia = c.createStatement();
 
 		String consultaSql = "SELECT * FROM comanda;";
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			while (rs.next()) {
+				String test = rs.getString("estatComanda");
+				
+				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("base"), rs.getString("iva"), rs.getString("total"), rs.getString("idEmpresa"));
+
+				miLista.add(com);
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return miLista;
+		
+	}
+	
+	public ArrayList<ComandaCl> consultarComandesClient(String idEmpresa) throws SQLException {
+		conectar();
+		ArrayList<ComandaCl> miLista = new ArrayList<ComandaCl>();
+		ComandaCl com = null;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM comanda WHERE idEmpresa = '"+idEmpresa+"';";
 		
 		try {
 			ResultSet rs = sentencia.executeQuery(consultaSql);
