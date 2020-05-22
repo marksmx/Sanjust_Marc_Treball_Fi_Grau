@@ -22,7 +22,6 @@ public class SQLTester {
 		//sqlP.crearProducte("Test", "1 per Setmana", "1", "33", "2", "35", "1");
 		//sqlP.crearServei("Test", "1 per Setmana", "1", "33", "2", "35");
 		//sqlC.modificarClient("1", "BroMomento", "Coco2", "1234", "1", "coco@coco.co");
+		sqlCo.finalitzarComanda("2", "15:10:19.113");
 	}
-	
-	
 }

@@ -37,7 +37,7 @@ public class SQLComandes {
 	
 	public void crearComanda(String estatComanda, String numComanda, String idProducte, String data, String hores, String base, String iva, String total, String idEmpresa) {
 		conectar();
-		String consultaSql = "INSERT INTO comanda (estatComanda, numComanda, idProducte, data, hores, base, iva, total, idEmpresa)"+
+		String consultaSql = "INSERT INTO comanda (estatComanda, numComanda, idProducte, data, hores, base, iva, total, idEmpresa, pagat)"+
 		"VALUES ("
 		+ "'"+estatComanda+"'"
 		+","
@@ -55,7 +55,9 @@ public class SQLComandes {
 		+","
 		+ "'"+total+"'"
 		+","
-		+ "'"+idEmpresa+"')"
+		+ "'"+idEmpresa+"'"
+		+","
+		+ "'no')"
 		+ ";";
 		
 		System.out.println(consultaSql);
@@ -85,7 +87,7 @@ public class SQLComandes {
 			while (rs.next()) {
 				String test = rs.getString("estatComanda");
 				
-				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("base"), rs.getString("iva"), rs.getString("total"), rs.getString("idEmpresa"));
+				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("base"), rs.getString("iva"), rs.getString("total"), rs.getString("idEmpresa"),rs.getString("pagat"));
 
 				miLista.add(com);
 			}
@@ -132,7 +134,7 @@ public class SQLComandes {
 			while (rs.next()) {
 				String test = rs.getString("estatComanda");
 				
-				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("base"), rs.getString("iva"), rs.getString("total"), rs.getString("idEmpresa"));
+				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("base"), rs.getString("iva"), rs.getString("total"), rs.getString("idEmpresa"),rs.getString("pagat"));
 
 				miLista.add(com);
 			}
@@ -252,8 +254,25 @@ public class SQLComandes {
 		String stat = null;
 		sentencia = c.createStatement();
 
-		String consultaSql = "SELECT * FROM comanda WHERE numComanda = '"+num+"';";
+		String consultaSql = "SELECT estatComanda FROM comanda WHERE numComanda = '"+num+"';";
 		
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			stat = rs.getString("estatComanda");
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+			
+		return stat;
+	}
+	
+	public String omplirTauler(String num) throws SQLException, ClassNotFoundException {
+		conectar();
+		String stat = null;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT estatComanda FROM comanda WHERE numComanda = '"+num+"' AND estatComanda = 'ep' AND estatComanda = 'p';";
+		System.out.println(consultaSql);
 			ResultSet rs = sentencia.executeQuery(consultaSql);
 			stat = rs.getString("estatComanda");
 			
@@ -282,5 +301,118 @@ public class SQLComandes {
 		c.close();
 			
 		return stat;
+	}
+	
+	public String modificarPagament(String nCom) throws SQLException, ClassNotFoundException {
+		conectar();
+		String stat = null;
+		sentencia = c.createStatement();
+
+		String consultaSql = "UPDATE comanda SET pagat = 'si' WHERE numComanda = '"+nCom+"';";
+
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		sentencia.close();
+		c.close();
+			
+		return stat;
+	}
+	
+	public String iniciarComanda(String nCom) throws SQLException, ClassNotFoundException {
+		conectar();
+		String hora = java.time.LocalTime.now().toString();
+		sentencia = c.createStatement();
+
+		String consultaSql = "UPDATE comanda SET hores = '"+hora+"' WHERE numComanda = '"+nCom+"';";
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		sentencia.close();
+		c.close();
+			
+		return hora;
+	}
+	
+	public String finalitzarComanda(String nCom, String priHora) throws SQLException, ClassNotFoundException {
+		conectar();
+		String stat = null;
+		sentencia = c.createStatement();
+
+		int tHores = 0;
+		
+		int horaA = 0;
+		int minutA = 0;
+		horaA += java.time.LocalTime.now().toString().charAt(0);
+		horaA += java.time.LocalTime.now().toString().charAt(1);
+		minutA += java.time.LocalTime.now().toString().charAt(3);
+		minutA += java.time.LocalTime.now().toString().charAt(4);
+		
+		int horaP = 0;
+		int minutP = 0;
+		horaP += priHora.charAt(0);
+		horaP += priHora.charAt(1);
+		minutP += priHora.charAt(3);
+		minutP += priHora.charAt(4);
+		
+		if((horaA - horaP) == 0) {
+			tHores = 1;
+		} 
+		
+		if((horaA - horaP) > 0 && (minutA - minutP) == 0) {
+			tHores = horaA - horaP;
+		}
+		
+		if((horaA - horaP) == 0 && (minutA - minutP) > 0) {
+			tHores = 1;
+		}
+		
+		if((horaA - horaP) > 0 && (minutA - minutP) > 0) {
+			tHores = (horaA - horaP)+1;
+		}
+		
+		String consultaSql = "UPDATE comanda SET hores = '"+Integer.toString(tHores)+"' WHERE numComanda = '"+nCom+"';";
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		sentencia.close();
+		c.close();
+			
+		return Integer.toString(tHores);
+	}
+	
+	public String incrementarPreu(String nCom, String costAct) throws SQLException, ClassNotFoundException {
+		conectar();
+		String hora = java.time.LocalTime.now().toString();
+		sentencia = c.createStatement();
+
+		String consultaSql = "UPDATE comanda SET total = '"+costAct+"' WHERE numComanda = '"+nCom+"';";
+		System.out.println(consultaSql);
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		sentencia.close();
+		c.close();
+			
+		return hora;
 	}
 }

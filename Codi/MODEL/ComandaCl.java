@@ -10,8 +10,9 @@ public class ComandaCl {
 	String iva;
 	String total;
 	String idEmpresa;
+	String pagat;
 
-	public ComandaCl (String estatComanda, String numComanda, String idProducte, String data, String hores, String base, String iva, String total, String idEmpresa) {
+	public ComandaCl (String estatComanda, String numComanda, String idProducte, String data, String hores, String base, String iva, String total, String idEmpresa, String pagat) {
 		this.estatComanda = estatComanda;
 		this.numComanda = numComanda;
 		this.idProducte = idProducte;
@@ -21,6 +22,7 @@ public class ComandaCl {
 		this.iva = iva;
 		this.total = total;
 		this.idEmpresa = idEmpresa;
+		this.pagat = pagat;
 	}
 
 
@@ -68,6 +70,9 @@ public class ComandaCl {
 		this.idEmpresa = idEmpresa;
 	}
 
+	public void setPagat(String pagat) {
+		this.pagat = pagat;
+	}
 
 	public String getEstatComanda() {
 		return estatComanda;
@@ -112,7 +117,10 @@ public class ComandaCl {
 	public String getIdEmpresa() {
 		return idEmpresa;
 	}
-
+	
+	public String getPagat() {
+		return pagat;
+	}
 
 	@Override
 	public String toString() {

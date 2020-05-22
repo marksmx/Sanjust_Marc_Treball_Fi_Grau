@@ -126,6 +126,35 @@ public class SQLProductes {
 		sentencia = c.createStatement();
 
 		String consultaSql = "SELECT * FROM producte WHERE idProducte = '"+id+"';";
+		System.out.println(consultaSql);
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			name = rs.getString("element");
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			consultaSql = "SELECT * FROM servei WHERE idProducte = '"+id+"';";
+			System.out.println(consultaSql);
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			name = rs.getString("element");
+			rs.close();
+			sentencia.close();
+			c.close();
+		}
+		
+		return name;
+	}
+	
+	public String consultarServei(String id) throws SQLException {
+		conectar();
+		String name = null;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM servei WHERE idProducte = '"+id+"';";
+		System.out.println(consultaSql);
 		
 		try {
 			ResultSet rs = sentencia.executeQuery(consultaSql);

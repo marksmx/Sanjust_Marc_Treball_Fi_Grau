@@ -307,8 +307,6 @@ public class CrearProducte {
 			public void actionPerformed(ActionEvent e) {
 				textPane.setBackground(Color.WHITE);
 				textPane.setEnabled(true);
-				textPane_2.setBackground(Color.WHITE);
-				textPane_2.setEnabled(true);
 				textPane_5.setBackground(Color.WHITE);
 				textPane_5.setEnabled(true);
 				textPane_6.setBackground(Color.WHITE);
@@ -323,6 +321,7 @@ public class CrearProducte {
 				button_4.setVisible(true);
 				button_5.setVisible(true);
 				producte = true;
+				servei = false;
 			}
 		});
 		button.setBounds(50, 135, 146, 55);
@@ -350,6 +349,8 @@ public class CrearProducte {
 			public void actionPerformed(ActionEvent e) {
 				textPane.setBackground(Color.WHITE);
 				textPane.setEnabled(true);
+				textPane_2.setBackground(Color.WHITE);
+				textPane_2.setEnabled(true);
 				textPane_5.setBackground(Color.WHITE);
 				textPane_5.setEnabled(true);
 				textPane_6.setBackground(Color.WHITE);
@@ -363,6 +364,7 @@ public class CrearProducte {
 				button.setVisible(false);
 				button_4.setVisible(true);
 				button_5.setVisible(true);
+				producte = false;
 				servei = true;
 			}
 		});
@@ -371,7 +373,7 @@ public class CrearProducte {
 		
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(producte==true) {
+				if(producte==true && servei==false) {
 					if(textPane.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_11.getText().length()==0 || textPane_12.getText().length()==0 || textPane_6.getText().length()==0) {
 						JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
 					}else {
@@ -388,8 +390,8 @@ public class CrearProducte {
 					}
 				}
 				
-				if(servei==true) {
-					if(textPane.getText().length()==0 || textPane_2.getText().length()==0  || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_11.getText().length()==0 || textPane_12.getText().length()==0 || textPane_6.getText().length()==0) {
+				if(producte==false && servei==true) {
+					if(textPane.getText().length()==0  || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_11.getText().length()==0 || textPane_12.getText().length()==0 || textPane_6.getText().length()==0) {
 						JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
 					}else {
 						sqlP.crearServei(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(), textPane_6.getText());
