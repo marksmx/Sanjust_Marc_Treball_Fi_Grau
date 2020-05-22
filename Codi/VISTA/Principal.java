@@ -22,24 +22,89 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+
+import DADES.*;
+import MODEL.*;
 
 public class Principal {
 
 	public JFrame frame;
 	private JTable table_1;
+	private JTable table_2;
 	int filaIndex;
 	int columnaIndex;
-	private JTable table;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_1;
 
 	
-	public Principal() {
+	public Principal() throws ClassNotFoundException, SQLException {
 		initialize();
+		construirTaula();
+		construirTauler();
+	}
+	
+	//INICI FUNCIONS TAULA PRINCIPAL
+
+	private void construirTaula() throws ClassNotFoundException, SQLException {
+		String cap[] = {"Empresa","Concepte", "NIF"};
+		String info[][] = obtenirMatriu();
+		
+		table_1 = new JTable(info, cap);
+		scrollPane.setViewportView(table_1);
+
+	}
+	
+	
+	private String[][] obtenirMatriu() throws ClassNotFoundException, SQLException {
+		SQLClients sqlU = new SQLClients();
+			ArrayList<ClientCl> miLista = sqlU.consultarClient();
+			
+			String matInfo[][] = new String[miLista.size()] [3];
+
+			for (int i = 0; i < miLista.size(); i++) {
+				matInfo[i][0] = miLista.get(i).getEmpresa()+"";
+				matInfo[i][1] = miLista.get(i).getConcepte()+"";
+				matInfo[i][2] = miLista.get(i).getNif()+"";
+			}
+			
+	
+		return matInfo;
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	//FI FUNCIONS TAULA PRINCIPAL
+
+	/**INICI FUNCIONS TAULER*/
+
+		private void construirTauler() throws ClassNotFoundException, SQLException {
+			String cap[] = {"Tauler"};
+			String info[][] = obtenirMatr();
+			
+			table_2 = new JTable(info, cap);
+			scrollPane_1.setViewportView(table_2);
+
+		}
+		
+		
+		private String[][] obtenirMatr() throws ClassNotFoundException, SQLException {
+			SQLComandes sqlC = new SQLComandes();
+				ArrayList<ComandaCl> miLista = sqlC.consultarComandes();
+				
+				String matInfo[][] = new String[miLista.size()] [2];
+
+				for (int x = 0; x < miLista.size(); x++) {
+					matInfo[x][0] = miLista.get(x).getIdEmpresa()+"eee";
+				}
+				
+		
+			return matInfo;
+		}
+
+	/**FI FUNCIONS TAULER*/
+	
+	
 	private void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -236,54 +301,22 @@ public class Principal {
 		
 		//INICI SCROLL PANEL
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		scrollPane.setBounds(182, 144, 470, 171);
 		frame.getContentPane().add(scrollPane);
 		
-		//FI SCROLL PANEL
-		
-		//INICI TAULA PRINCIPAL
-		
-		table = new JTable();
-		table.addMouseListener(new MouseAdapter() {
-		});
-		table.setFocusable(false);
-		table.setFocusTraversalKeysEnabled(false);
-		table.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
-		table.setModel(new DefaultTableModel(
-			new Object[][] {
-		
-				{"1", "2", "3"},
-				{null, null, null},
-				{null, null, null},
-			},
-			new String[] {
-				"Nom", "Concepte", "NIF"
-			}
-		));
-		scrollPane.setViewportView(table);
-		
-		//FI TAULA PRINCIPAL
+		scrollPane.setViewportView(table_1);
 
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
+		//FI SCROLL PANEL
+
+		//INICI SCROLL PANEL
+
+		scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(19, 318, 153, 130);
 		frame.getContentPane().add(scrollPane_1);
-		
-		table_1 = new JTable();
-		table_1.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
-		table_1.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null},
-				{null},
-				{null},
-			},
-			new String[] {
-				"Tauler"
-			}
-		));
-		
-		scrollPane_1.setViewportView(table_1);
+		scrollPane_1.setViewportView(table_2);
+
+		//FI SCROLL PANEL
 		
 	}
 	

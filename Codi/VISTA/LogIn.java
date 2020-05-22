@@ -183,7 +183,13 @@ public class LogIn {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if(sqlU.iniciarSessió(textField.getText(), passwordField.getText()) == true) {
-						Principal frm = new Principal();
+						Principal frm = null;
+						try {
+							frm = new Principal();
+						} catch (ClassNotFoundException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 						frm.frame.setVisible(true);
 						frame.setVisible(false);
 					} else {
