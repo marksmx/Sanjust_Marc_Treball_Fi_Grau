@@ -35,9 +35,9 @@ public class SQLComandes {
 		return c;
 	}
 	
-	public void crearComanda(String estatComanda, String numComanda, String idProducte, String data, String hores, String base, String iva, String total, String idEmpresa) {
+	public void crearComanda(String estatComanda, String numComanda, String idProducte, String data, String hores, String total, String idEmpresa, String dataLimit, String descripcio) {
 		conectar();
-		String consultaSql = "INSERT INTO comanda (estatComanda, numComanda, idProducte, data, hores, base, iva, total, idEmpresa, pagat)"+
+		String consultaSql = "INSERT INTO comanda (estatComanda, numComanda, idProducte, data, hores, total, idEmpresa, pagat, dataLimit, descripcio)"+
 		"VALUES ("
 		+ "'"+estatComanda+"'"
 		+","
@@ -49,15 +49,15 @@ public class SQLComandes {
 		+","
 		+ "'"+hores+"'"
 		+","
-		+ "'"+base+"'"
-		+","
-		+ "'"+iva+"'"
-		+","
 		+ "'"+total+"'"
 		+","
 		+ "'"+idEmpresa+"'"
 		+","
-		+ "'no')"
+		+ "'no'"
+		+","
+		+ "'"+dataLimit+"'"
+		+","
+		+ "'"+descripcio+"')"
 		+ ";";
 		
 		System.out.println(consultaSql);
@@ -87,7 +87,7 @@ public class SQLComandes {
 			while (rs.next()) {
 				String test = rs.getString("estatComanda");
 				
-				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("base"), rs.getString("iva"), rs.getString("total"), rs.getString("idEmpresa"),rs.getString("pagat"));
+				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("total"), rs.getString("idEmpresa"),rs.getString("pagat"), rs.getString("dataLimit"));
 
 				miLista.add(com);
 			}
@@ -134,7 +134,7 @@ public class SQLComandes {
 			while (rs.next()) {
 				String test = rs.getString("estatComanda");
 				
-				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("base"), rs.getString("iva"), rs.getString("total"), rs.getString("idEmpresa"),rs.getString("pagat"));
+				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("total"), rs.getString("idEmpresa"),rs.getString("pagat"), rs.getString("dataLimit"));
 
 				miLista.add(com);
 			}
@@ -167,6 +167,25 @@ public class SQLComandes {
 		
 		return consultaSql;
 
+	}
+	
+	public String consultarNumComanda(String id) throws SQLException {
+		conectar();
+		sentencia = c.createStatement();
+		String num = null;
+		String consultaSql = "SELECT numComanda FROM comanda WHERE numComanda = '"+id+"';";
+		System.out.println(consultaSql);
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			num = rs.getString("numComanda");
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return num;
 	}
 	
 	public int contarComandes() throws SQLException, ClassNotFoundException {
@@ -323,6 +342,27 @@ public class SQLComandes {
 		return stat;
 	}
 	
+	public String modificarNum(String nCom, String nComO) throws SQLException, ClassNotFoundException {
+		conectar();
+		String stat = null;
+		sentencia = c.createStatement();
+
+		String consultaSql = "UPDATE comanda SET numComanda = '"+nCom+"' WHERE numComanda = '"+nComO+"';";
+		System.out.println(consultaSql);
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		sentencia.close();
+		c.close();
+			
+		return stat;
+	}
+	
 	public String iniciarComanda(String nCom) throws SQLException, ClassNotFoundException {
 		conectar();
 		String hora = java.time.LocalTime.now().toString();
@@ -414,5 +454,22 @@ public class SQLComandes {
 		c.close();
 			
 		return hora;
+	}
+	
+	public String veureDescripcio(String numComanda) throws SQLException, ClassNotFoundException {
+		conectar();
+		String stat = null;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT descripcio FROM comanda WHERE numComanda = '"+numComanda+"';";
+		System.out.println(consultaSql);
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			stat = rs.getString("descripcio");
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+			
+		return stat;
 	}
 }

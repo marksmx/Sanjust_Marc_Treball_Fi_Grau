@@ -10,7 +10,7 @@ public class SQLTester {
 		SQLClients sqlC = new SQLClients();
 		SQLComandes sqlCo = new SQLComandes();
 		SQLProductes sqlP = new SQLProductes();
-		//sqlU.conectar();
+		sqlC.conectar();
 		//sqlU.exist();
 		//sqlU.crearPerfil("", "", "", "", "");
 		//sqlU.iniciarSessió("qwd", "qwd");
@@ -22,6 +22,8 @@ public class SQLTester {
 		//sqlP.crearProducte("Test", "1 per Setmana", "1", "33", "2", "35", "1");
 		//sqlP.crearServei("Test", "1 per Setmana", "1", "33", "2", "35");
 		//sqlC.modificarClient("1", "BroMomento", "Coco2", "1234", "1", "coco@coco.co");
-		sqlCo.finalitzarComanda("2", "15:10:19.113");
+		//sqlCo.finalitzarComanda("2", "15:10:19.113");
+		//System.out.println(sqlP.contarProductes());
+		//System.out.println(sqlP.contarServeis());
 	}
 }

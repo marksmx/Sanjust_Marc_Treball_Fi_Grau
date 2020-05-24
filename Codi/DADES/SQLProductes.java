@@ -175,7 +175,26 @@ public class SQLProductes {
 		int amount = 0;
 		sentencia = c.createStatement();
 
-		String consultaSql = "SELECT * FROM comanda;";
+		String consultaSql = "SELECT * FROM producte;";
+		
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+		
+			while (rs.next()) {
+				++amount;
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		return amount;	
+	}
+	
+	public int contarServeis() throws SQLException, ClassNotFoundException {
+		conectar();
+		int amount = 0;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM servei;";
 		
 			ResultSet rs = sentencia.executeQuery(consultaSql);
 		

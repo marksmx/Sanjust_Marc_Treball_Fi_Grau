@@ -78,7 +78,7 @@ public class Info {
 		textField_1.setBorder(null);
 		textField_1.setBackground(Color.BLACK);
 		textField_1.setAutoscrolls(false);
-		textField_1.setBounds(35, 82, 111, 41);
+		textField_1.setBounds(45, 82, 111, 41);
 		frame.getContentPane().add(textField_1);
 		
 		textField_3 = new JTextField();
@@ -93,7 +93,7 @@ public class Info {
 		textField_3.setBorder(null);
 		textField_3.setBackground(Color.BLACK);
 		textField_3.setAutoscrolls(false);
-		textField_3.setBounds(274, 82, 114, 41);
+		textField_3.setBounds(330, 82, 114, 41);
 		frame.getContentPane().add(textField_3);
 		
 		textField_4 = new JTextField();
@@ -108,7 +108,7 @@ public class Info {
 		textField_4.setBorder(null);
 		textField_4.setBackground(Color.BLACK);
 		textField_4.setAutoscrolls(false);
-		textField_4.setBounds(193, 153, 53, 41);
+		textField_4.setBounds(232, 153, 53, 41);
 		frame.getContentPane().add(textField_4);
 		
 		textField_5 = new JTextField();
@@ -156,7 +156,7 @@ public class Info {
 		textField_7.setBorder(null);
 		textField_7.setBackground(Color.BLACK);
 		textField_7.setAutoscrolls(false);
-		textField_7.setBounds(210, 120, 249, 41);
+		textField_7.setBounds(295, 120, 177, 41);
 		frame.getContentPane().add(textField_7);
 		
 	}

@@ -32,6 +32,8 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 import javax.swing.JDesktopPane;
+import java.io.File;
+import java.io.IOException;
 
 import DADES.*;
 
@@ -58,12 +60,23 @@ public class LogIn {
 			}
 		});
 	}
+	
+	public void trobarBBDD() throws SQLException {
+	    File miDir = new File (".");
+	    try {
+			System.out.println ("Directorio actual: " + miDir.getCanonicalPath()+"\\DADES\\onTimeDB.db");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Create the application.
 	 * @throws SQLException 
 	 */
 	public LogIn() throws SQLException {
+		trobarBBDD();
 		initialize();
 
 		if(sqlU.exist() == false) {
@@ -112,7 +125,7 @@ public class LogIn {
 		txtLogIn.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\VISTA\\img\\logo.png"));
+		lblNewLabel.setIcon(new ImageIcon(LogIn.class.getResource("/VISTA/img/logo.png")));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		

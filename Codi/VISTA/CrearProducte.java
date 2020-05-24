@@ -31,18 +31,24 @@ public class CrearProducte {
 	private double total = 0;
 	private boolean producte=false;
 	private boolean servei=false;
+	private int idCom = sqlP.contarProductes() + sqlP.contarServeis() + 1;
+
 
 	/**
 	 * Create the application.
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
 	 */
-	public CrearProducte() {
+	public CrearProducte() throws ClassNotFoundException, SQLException {
 		initialize();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
 	 */
-	private void initialize() {
+	private void initialize() throws ClassNotFoundException, SQLException {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -76,7 +82,7 @@ public class CrearProducte {
 		txtLogIn.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\VISTA\\img\\logo.png"));
+		lblNewLabel.setIcon(new ImageIcon(CrearProducte.class.getResource("/VISTA/img/logo.png")));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
@@ -152,18 +158,19 @@ public class CrearProducte {
 		frame.getContentPane().add(textPane_5);
 		
 		JTextPane textPane_6 = new JTextPane();
-		textPane_6.setEnabled(false);
-		textPane_6.setText("");
+		textPane_6.setEnabled(true);
+		textPane_6.setEditable(false);
+		textPane_6.setText(Integer.toString(idCom));
 		textPane_6.setForeground(Color.BLACK);
 		textPane_6.setFont(new Font("Dialog", Font.PLAIN, 22));
 		textPane_6.setFocusTraversalKeysEnabled(false);
 		textPane_6.setFocusCycleRoot(false);
-		textPane_6.setBackground(Color.LIGHT_GRAY);
-		textPane_6.setBounds(593, 243, 127, 35);
+		textPane_6.setBackground(Color.WHITE);
+		textPane_6.setBounds(630, 243, 66, 35);
 		frame.getContentPane().add(textPane_6);
 		
 		JTextPane textPane_7 = new JTextPane();
-		textPane_7.setText("ID Producte");
+		textPane_7.setText("ID Element");
 		textPane_7.setForeground(Color.WHITE);
 		textPane_7.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
 		textPane_7.setFocusable(false);
@@ -244,6 +251,19 @@ public class CrearProducte {
 		frame.getContentPane().add(textPane_13);
 		
 		JButton button_2 = new JButton("TORNAR A INICI");
+		button_2.setForeground(Color.BLACK);
+		button_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button_2.setBackground(Color.BLACK);
+				button_2.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button_2.setBackground(Color.WHITE);
+				button_2.setForeground(Color.BLACK);
+			}
+		});
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -264,13 +284,35 @@ public class CrearProducte {
 		button_2.setBounds(50, 352, 146, 35);
 		frame.getContentPane().add(button_2);
 		
+		
 		JButton button_3 = new JButton("CANCEL·LAR OPERACIÓ");
+		button_3.setForeground(Color.BLACK);
+		button_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button_3.setBackground(Color.BLACK);
+				button_3.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button_3.setBackground(Color.WHITE);
+				button_3.setForeground(Color.BLACK);
+			}
+		});
 		button_3.setVisible(false);
 		button_3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CrearProducte frm = new CrearProducte();
-				frm.frame.setVisible(true);
-				frame.setVisible(false);
+				try {
+					CrearProducte frm = new CrearProducte();
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		button_3.setForeground(Color.BLACK);
@@ -309,8 +351,6 @@ public class CrearProducte {
 				textPane.setEnabled(true);
 				textPane_5.setBackground(Color.WHITE);
 				textPane_5.setEnabled(true);
-				textPane_6.setBackground(Color.WHITE);
-				textPane_6.setEnabled(true);
 				textPane_8.setBackground(Color.WHITE);
 				textPane_8.setEnabled(true);
 				textPane_11.setBackground(Color.WHITE);
@@ -353,8 +393,6 @@ public class CrearProducte {
 				textPane_2.setEnabled(true);
 				textPane_5.setBackground(Color.WHITE);
 				textPane_5.setEnabled(true);
-				textPane_6.setBackground(Color.WHITE);
-				textPane_6.setEnabled(true);
 				textPane_8.setBackground(Color.WHITE);
 				textPane_8.setEnabled(true);
 				textPane_11.setBackground(Color.WHITE);
@@ -371,6 +409,19 @@ public class CrearProducte {
 		button_1.setBounds(50, 223, 146, 55);
 		frame.getContentPane().add(button_1);
 		
+		button_4.setForeground(Color.BLACK);
+		button_4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button_4.setBackground(Color.BLACK);
+				button_4.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button_4.setBackground(Color.WHITE);
+				button_4.setForeground(Color.BLACK);
+			}
+		});
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(producte==true && servei==false) {
@@ -379,7 +430,7 @@ public class CrearProducte {
 					}else {
 						try {
 							Integer.parseInt(textPane_5.getText());
-							sqlP.crearProducte(textPane.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(), textPane_6.getText());
+							sqlP.crearProducte(textPane.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(),Integer.toString(idCom));
 							JOptionPane.showMessageDialog(null, "S'ha afegit correctament","",JOptionPane.INFORMATION_MESSAGE);
 							CrearProducte frm = new CrearProducte();
 							frm.frame.setVisible(true);
@@ -394,11 +445,16 @@ public class CrearProducte {
 					if(textPane.getText().length()==0  || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_11.getText().length()==0 || textPane_12.getText().length()==0 || textPane_6.getText().length()==0) {
 						JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
 					}else {
-						sqlP.crearServei(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(), textPane_6.getText());
-						JOptionPane.showMessageDialog(null, "S'ha afegit correctament","",JOptionPane.INFORMATION_MESSAGE);
-						CrearProducte frm = new CrearProducte();
-						frm.frame.setVisible(true);
-						frame.setVisible(false);
+						try {
+							Integer.parseInt(textPane_5.getText());
+							sqlP.crearServei(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(), Integer.toString(idCom));
+							JOptionPane.showMessageDialog(null, "S'ha afegit correctament","",JOptionPane.INFORMATION_MESSAGE);
+							CrearProducte frm = new CrearProducte();
+							frm.frame.setVisible(true);
+							frame.setVisible(false);
+						} catch (Exception e2) {
+							JOptionPane.showMessageDialog(null, "Les unitats han de ser números!","ERROR",JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				}
 			}
@@ -412,6 +468,20 @@ public class CrearProducte {
 		button_4.setBounds(50, 188, 146, 55);
 		frame.getContentPane().add(button_4);
 		
+		
+		button_5.setForeground(Color.BLACK);
+		button_5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button_5.setBackground(Color.BLACK);
+				button_5.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button_5.setBackground(Color.WHITE);
+				button_5.setForeground(Color.BLACK);
+			}
+		});
 		button_5.setVisible(false);
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

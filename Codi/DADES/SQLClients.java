@@ -1,4 +1,5 @@
 package DADES;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -17,6 +18,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 
 import javax.swing.JOptionPane;
+import java.io.File;
+import java.io.IOException;
 
 public class SQLClients {
 	Connection c;
@@ -240,5 +243,46 @@ public class SQLClients {
 		}
 		
 		return rec;
+	}
+	
+	public void eliminarClient(String idClient) throws SQLException {
+		conectar();
+		sentencia = c.createStatement();
+
+		String consultaSql = "DELETE FROM client WHERE id='"+idClient+"';";
+
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+	}
+	
+	public int contarClients() throws SQLException {
+		conectar();
+		int quant = 0;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT * FROM client;";
+
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			while (rs.next()) {
+				++quant;
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return quant;
 	}
 }

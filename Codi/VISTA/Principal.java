@@ -110,15 +110,17 @@ public class Principal {
 		private String[][] obtenirMatr() throws ClassNotFoundException, SQLException {
 			ArrayList<ComandaCl> miLista = sqlC.consultarComandes();
 			String matInfo[][] = new String[miLista.size()] [2];
-			
-			if(sqlC.contarComandes()==0) {
-			} else {
-				for (int x = 0; x < miLista.size(); x++) {
-					matInfo[x][0] = sqlC.consultarEstatComanda(Integer.toString(x+1)) + " " + sqlCl.consultarNomClient(miLista.get(x).getIdEmpresa())+" - "+sqlPr.consultarProducte(miLista.get(x).getIdProducte());
+			try {
+				if(sqlC.contarComandes()==0) {
+				} else {
+					for (int x = 0; x < miLista.size(); x++) {
+						matInfo[x][0] = sqlC.consultarEstatComanda(Integer.toString(x+1)) + " " + sqlCl.consultarNomClient(miLista.get(x).getIdEmpresa())+" - "+sqlPr.consultarProducte(miLista.get(x).getIdProducte());
+					}
 				}
-			
+				
+			} catch (Exception e) {
+				System.out.println("");
 			}
-			
 			return matInfo;
 
 		}
@@ -132,7 +134,7 @@ public class Principal {
 		frame.setResizable(false);
 		frame.getContentPane().setFocusable(false);
 		frame.getContentPane().setFocusTraversalKeysEnabled(false);
-		frame.setBounds(730, 300, 686, 551);
+		frame.setBounds(730, 300, 686, 558);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
@@ -160,7 +162,7 @@ public class Principal {
 		txtLogIn.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\VISTA\\img\\logo.png"));
+		lblNewLabel.setIcon(new ImageIcon(Principal.class.getResource("/VISTA/img/logo.png")));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
@@ -316,7 +318,7 @@ public class Principal {
 		button_1.setBounds(182, 404, 164, 44);
 		frame.getContentPane().add(button_1);
 		
-		JButton button_2 = new JButton("Afegir Producte");
+		JButton button_2 = new JButton("Afegir Producte/Servei");
 		button_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -336,9 +338,17 @@ public class Principal {
 		button_2.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				CrearProducte frm = new CrearProducte();
-				frm.frame.setVisible(true);
-				frame.setVisible(false);
+				try {
+					CrearProducte frm = new CrearProducte();
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		button_2.setBounds(488, 404, 164, 44);
@@ -407,6 +417,39 @@ public class Principal {
 		JPanel panel_6 = new JPanel();
 		panel_6.setBounds(19, 227, perP, 30);
 		frame.getContentPane().add(panel_6);
+		
+		JButton button_3 = new JButton("Eines d'Admin");
+		button_3.setForeground(Color.BLACK);
+		button_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button_3.setBackground(Color.BLACK);
+				button_3.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button_3.setBackground(Color.WHITE);
+				button_3.setForeground(Color.BLACK);
+			}
+		});
+		button_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					EinesAdmin frm = new EinesAdmin();
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+				} catch (Exception e2) {
+					System.out.println("ERROR");
+				}
+			}
+		});
+		button_3.setForeground(Color.BLACK);
+		button_3.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
+		button_3.setFocusPainted(false);
+		button_3.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button_3.setBackground(Color.WHITE);
+		button_3.setBounds(345, 467, 143, 44);
+		frame.getContentPane().add(button_3);
 
 		
 	}

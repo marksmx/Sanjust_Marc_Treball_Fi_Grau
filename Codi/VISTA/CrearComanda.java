@@ -35,6 +35,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import javax.swing.JScrollPane;
 
 public class CrearComanda {
 	private String idClient;
@@ -46,7 +47,8 @@ public class CrearComanda {
 	ArrayList<ProducteCl> miLista = sqlP.veureProducte();
 	ArrayList<ServeiCl> miLista2 = sqlP.veureServei();
 	SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy"); 
-	
+	JTextPane textPane_6 = new JTextPane();
+
 	/**
 	 * Launch the application.
 	 */
@@ -97,10 +99,8 @@ public class CrearComanda {
 		txtLogIn.setText("OnTime Agency");
 		txtLogIn.setColumns(10);
 		
-		
-		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\VISTA\\img\\logo.png"));
+		lblNewLabel.setIcon(new ImageIcon(CrearComanda.class.getResource("/VISTA/img/logo.png")));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
@@ -113,7 +113,7 @@ public class CrearComanda {
 		textPane.setFocusCycleRoot(false);
 		textPane.setEditable(false);
 		textPane.setBackground(Color.BLACK);
-		textPane.setBounds(42, 228, 89, 70);
+		textPane.setBounds(20, 186, 89, 70);
 		frame.getContentPane().add(textPane);
 		
 		JTextPane textPane_1 = new JTextPane();
@@ -125,7 +125,7 @@ public class CrearComanda {
 		textPane_1.setFocusCycleRoot(false);
 		textPane_1.setEditable(false);
 		textPane_1.setBackground(Color.BLACK);
-		textPane_1.setBounds(42, 147, 105, 70);
+		textPane_1.setBounds(20, 105, 105, 70);
 		frame.getContentPane().add(textPane_1);
 		
 		JTextPane textPane_2 = new JTextPane();
@@ -136,7 +136,7 @@ public class CrearComanda {
 		textPane_2.setFocusTraversalKeysEnabled(false);
 		textPane_2.setFocusCycleRoot(false);
 		textPane_2.setBackground(Color.WHITE);
-		textPane_2.setBounds(494, 202, 89, 45);
+		textPane_2.setBounds(464, 232, 89, 45);
 		frame.getContentPane().add(textPane_2);
 		
 		JTextPane textPane_3 = new JTextPane();
@@ -148,13 +148,16 @@ public class CrearComanda {
 		textPane_3.setFocusCycleRoot(false);
 		textPane_3.setEditable(false);
 		textPane_3.setBackground(Color.BLACK);
-		textPane_3.setBounds(367, 211, 117, 36);
+		textPane_3.setBounds(337, 241, 117, 36);
 		frame.getContentPane().add(textPane_3);
 		
 		
 		JComboBox<String> comboBox = new JComboBox<String>();
 		JComboBox<String> comboBox_1 = new JComboBox<String>();
-		
+		JComboBox<String> comboBox_2 = new JComboBox<String>();
+		JComboBox<String> comboBox_3 = new JComboBox<String>();
+		JComboBox<String> comboBox_4 = new JComboBox<String>();
+
 		JButton button2 = new JButton("FINALITZAR COMANDA");
 		
 		
@@ -205,7 +208,7 @@ public class CrearComanda {
 		frame.getContentPane().add(button_1);
 		
 		comboBox.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
-		comboBox.setBounds(157, 157, 128, 36);
+		comboBox.setBounds(135, 115, 128, 36);
 		frame.getContentPane().add(comboBox);
 		comboBox.addItem("");
 		
@@ -214,7 +217,7 @@ public class CrearComanda {
 		}
 		
 		comboBox_1.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
-		comboBox_1.setBounds(157, 241, 128, 36);
+		comboBox_1.setBounds(135, 199, 128, 36);
 		frame.getContentPane().add(comboBox_1);
 		comboBox_1.addItem("");
 
@@ -299,11 +302,16 @@ public class CrearComanda {
 						String rec = Integer.toString(sqlC.contarComandes()+1);
 						String id =  miLista.get(comboBox.getSelectedIndex()-1).getIdProducte();
 						LocalDate dataS = java.time.LocalDate.now();  
-						String baseS = miLista.get(comboBox.getSelectedIndex()-1).getBase();
-						String ivaS = Double.toString(iva);
 						String totalS = Double.toString(total);
-
-						sqlC.crearComanda("p", rec, id, dataS.toString(), "", baseS, ivaS, totalS, idClient);
+						String dLimit = "";
+						if(comboBox_2.getSelectedItem().toString().equals("") || comboBox_3.getSelectedItem().toString().equals("") || comboBox_3.getSelectedItem().toString().equals("")) {
+							dLimit = "Sense data límit";
+						}else {
+							 dLimit =  comboBox_2.getSelectedItem().toString() + "-" + comboBox_3.getSelectedItem().toString() + "-" + comboBox_4.getSelectedItem().toString();
+						}
+						
+						
+						sqlC.crearComanda("p", rec, id, dataS.toString(), "", totalS, idClient, dLimit,textPane_6.getText());
 					} 
 					
 					if(comboBox_1.getSelectedIndex()>=1 && comboBox.getSelectedIndex()==0) {
@@ -315,8 +323,14 @@ public class CrearComanda {
 						String baseS = miLista2.get(comboBox_1.getSelectedIndex()-1).getBase();
 						String ivaS = Double.toString(iva);
 						String totalS = Double.toString(total);
-
-						sqlC.crearComanda("p", rec, id, dataS.toString(), "", baseS, ivaS, totalS, idClient);
+						String dLimit = "";
+						if(comboBox_2.getSelectedItem().toString().equals("") || comboBox_3.getSelectedItem().toString().equals("") || comboBox_3.getSelectedItem().toString().equals("")) {
+							dLimit = "Sense data límit";
+						}else {
+							 dLimit =  comboBox_2.getSelectedItem().toString() + "-" + comboBox_3.getSelectedItem().toString() + "-" + comboBox_4.getSelectedItem().toString();
+						}
+						
+						sqlC.crearComanda("p", rec, id, dataS.toString(), "", totalS, idClient, dLimit,textPane_6.getText());
 					} 
 					
 					JOptionPane.showMessageDialog(null, "S'ha afegit la comanda","",JOptionPane.INFORMATION_MESSAGE);
@@ -330,5 +344,84 @@ public class CrearComanda {
 		});
 		button2.setBounds(262, 327, 169, 53);
 		frame.getContentPane().add(button2);
+		
+		JTextPane textPane_5 = new JTextPane();
+		textPane_5.setText("Data Límit");
+		textPane_5.setForeground(Color.WHITE);
+		textPane_5.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
+		textPane_5.setFocusable(false);
+		textPane_5.setFocusTraversalKeysEnabled(false);
+		textPane_5.setFocusCycleRoot(false);
+		textPane_5.setEditable(false);
+		textPane_5.setBackground(Color.BLACK);
+		textPane_5.setBounds(406, 93, 117, 36);
+		frame.getContentPane().add(textPane_5);
+		
+		comboBox_2.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
+		comboBox_2.setBounds(340, 147, 48, 36);
+		frame.getContentPane().add(comboBox_2);
+		comboBox_2.addItem("");
+		for(int i = 1; i<=31; i++) {
+			comboBox_2.addItem(Integer.toString(i));
+		}
+
+		
+		comboBox_3.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
+		comboBox_3.setBounds(406, 147, 117, 36);
+		frame.getContentPane().add(comboBox_3);
+		comboBox_3.addItem("");
+		comboBox_3.addItem("Gener");
+		comboBox_3.addItem("Febrer");
+		comboBox_3.addItem("Març");
+		comboBox_3.addItem("Abril");
+		comboBox_3.addItem("Maig");
+		comboBox_3.addItem("Juny");
+		comboBox_3.addItem("Juliol");
+		comboBox_3.addItem("Agost");
+		comboBox_3.addItem("Setembre");
+		comboBox_3.addItem("Octubre");
+		comboBox_3.addItem("Novembre");
+		comboBox_3.addItem("Desembre");
+
+		comboBox_4.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
+		comboBox_4.setBounds(533, 147, 69, 36);
+		frame.getContentPane().add(comboBox_4);
+		
+		JTextPane textPane_4 = new JTextPane();
+		textPane_4.setText("Descripció Comanda");
+		textPane_4.setForeground(Color.WHITE);
+		textPane_4.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
+		textPane_4.setFocusable(false);
+		textPane_4.setFocusTraversalKeysEnabled(false);
+		textPane_4.setFocusCycleRoot(false);
+		textPane_4.setEditable(false);
+		textPane_4.setBackground(Color.BLACK);
+		textPane_4.setBounds(20, 280, 217, 36);
+		frame.getContentPane().add(textPane_4);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(20, 310, 227, 70);
+		frame.getContentPane().add(scrollPane);
+		scrollPane.setViewportView(textPane_6);
+		
+		textPane_6.setText("");
+		textPane_6.setForeground(Color.BLACK);
+		textPane_6.setFont(new Font("Dialog", Font.PLAIN, 13));
+		textPane_6.setFocusTraversalKeysEnabled(false);
+		textPane_6.setFocusCycleRoot(false);
+		textPane_6.setEditable(true);
+		textPane_6.setBackground(Color.WHITE);
+		comboBox_4.addItem("");
+
+		for(int x=0; x<4; x++) {
+			String dataLlista = "";
+			int dataLlistInt = 0;
+			for(int i=0; i<4; i++) {
+				LocalDate data = java.time.LocalDate.now();
+				dataLlista += data.toString().charAt(i);
+			}
+			dataLlistInt = Integer.parseInt(dataLlista)+x;
+			comboBox_4.addItem(Integer.toString(dataLlistInt));
+		}
 	}
 }

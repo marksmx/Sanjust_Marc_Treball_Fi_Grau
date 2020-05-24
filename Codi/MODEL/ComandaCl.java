@@ -6,23 +6,21 @@ public class ComandaCl {
 	String idProducte;
 	String data;
 	String hores;
-	String base;
-	String iva;
 	String total;
 	String idEmpresa;
 	String pagat;
+	String dataLimit;
 
-	public ComandaCl (String estatComanda, String numComanda, String idProducte, String data, String hores, String base, String iva, String total, String idEmpresa, String pagat) {
+	public ComandaCl (String estatComanda, String numComanda, String idProducte, String data, String hores, String total, String idEmpresa, String pagat, String dataLimit) {
 		this.estatComanda = estatComanda;
 		this.numComanda = numComanda;
 		this.idProducte = idProducte;
 		this.data = data;
 		this.hores = hores;
-		this.base = base;
-		this.iva = iva;
 		this.total = total;
 		this.idEmpresa = idEmpresa;
 		this.pagat = pagat;
+		this.dataLimit = dataLimit;
 	}
 
 
@@ -51,16 +49,6 @@ public class ComandaCl {
 	}
 
 
-	public void setBase(String base) {
-		this.base = base;
-	}
-
-
-	public void setIva(String iva) {
-		this.iva = iva;
-	}
-
-
 	public void setTotal(String total) {
 		this.total = total;
 	}
@@ -73,6 +61,11 @@ public class ComandaCl {
 	public void setPagat(String pagat) {
 		this.pagat = pagat;
 	}
+	
+	public void setDataLimit(String dataLimit) {
+		this.dataLimit = dataLimit;
+	}
+
 
 	public String getEstatComanda() {
 		return estatComanda;
@@ -98,17 +91,6 @@ public class ComandaCl {
 		return hores;
 	}
 
-
-	public String getBase() {
-		return base;
-	}
-
-
-	public String getIva() {
-		return iva;
-	}
-
-
 	public String getTotal() {
 		return total;
 	}
@@ -121,11 +103,15 @@ public class ComandaCl {
 	public String getPagat() {
 		return pagat;
 	}
+	
+	public String getDataLimit() {
+		return dataLimit;
+	}
 
 	@Override
 	public String toString() {
 		return "ComandaCl [estatComanda=" + estatComanda + ", numComanda=" + numComanda + ", idProducte=" + idProducte
-				+ ", data=" + data + ", hores=" + hores + ", base=" + base + ", iva=" + iva + ", total=" + total
+				+ ", data=" + data + ", hores=" + hores + ", total=" + total
 				+ ", idEmpresa=" + idEmpresa + "]";
 	}
 

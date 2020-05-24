@@ -8,6 +8,7 @@ import java.awt.TextField;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
@@ -40,7 +41,6 @@ public class Client {
 	
 	LocalTime data2S  =java.time.LocalTime.now();
 
-	
 	private String idEmpresa;
 	JFrame frame;
 	private JTable table;
@@ -48,13 +48,14 @@ public class Client {
 	JButton button = new JButton("INICIAR PROJECTE");
 	JButton button2 = new JButton("FINALITZAR PROJECTE");
 	JButton btnNewButton_1 = new JButton("ELIMINAR PROJECTE");
+	JButton btnNewButton_2 = new JButton("ANULAR PROJECTE");
+	JButton btnNewButton_3 = new JButton("RECUPERAR PROJECTE");
 	JButton button_4 = new JButton("MARCAR COM A PAGAT");
 	JButton button4 = new JButton("CALCULAR COST TOTAL");
+	JButton button_6 = new JButton("VEURE DESCRIPCIÓ");
 	JButton button_f = new JButton("MARCAR COM FINALITZAT");
 	private JTextField textField;
 
-	
-	
 	public Client(String idEmpresa) throws ClassNotFoundException, SQLException {
 		this.idEmpresa = idEmpresa;
 		initialize();
@@ -62,7 +63,7 @@ public class Client {
 	}
 
 	private void construirTaula() throws ClassNotFoundException, SQLException {
-		String cap[] = {"Producte","Estat", "Data", "Hores", "Cost Total", "Numero Comanda","Pagat"};
+		String cap[] = {"Producte","Estat", "Data", "Data Límit", "Hores", "Cost Total", "Numero Comanda","Pagat"};
 		String info[][] = obtenirMatriu();
 		
 		table = new JTable(info, cap);
@@ -73,14 +74,20 @@ public class Client {
 				button.setVisible(false);
 				button2.setVisible(false);
 				btnNewButton_1.setVisible(false);
+				btnNewButton_2.setVisible(false);
+				btnNewButton_3.setVisible(false);
 				button_4.setVisible(false);
 				button4.setVisible(false);
+				button_6.setVisible(true);
 
 				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("p")) {
 					button.setVisible(true);
 					button_4.setVisible(false);
 					button4.setVisible(false);
 					btnNewButton_1.setVisible(true);
+					btnNewButton_2.setVisible(false);
+					btnNewButton_3.setVisible(false);
+					button_6.setVisible(true);
 				}
 				
 				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("ep")) {
@@ -88,10 +95,13 @@ public class Client {
 					button_4.setVisible(false);
 					button4.setVisible(false);
 					btnNewButton_1.setVisible(false);
+					btnNewButton_2.setVisible(true);
+					btnNewButton_3.setVisible(false);
+					button_6.setVisible(true);
 				}
 				
 				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("f")) {
-					String lTest = (String)table.getModel().getValueAt(table.getSelectedRow(),4);
+					String lTest = (String)table.getModel().getValueAt(table.getSelectedRow(),5);
 					lTest.length();
 					if(lTest.charAt(lTest.length()-1) == '€') {
 						button4.setVisible(false);
@@ -100,9 +110,21 @@ public class Client {
 					}
 					button_4.setVisible(true);
 					btnNewButton_1.setVisible(false);
+					btnNewButton_2.setVisible(false);
+					btnNewButton_3.setVisible(false);
+					button_6.setVisible(true);
 				}
 				
-				if(table.getModel().getValueAt(table.getSelectedRow(), 6).equals("si")) {
+				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("c")) {
+					button.setVisible(false);
+					button2.setVisible(false);
+					btnNewButton_1.setVisible(false);
+					btnNewButton_2.setVisible(false);
+					btnNewButton_3.setVisible(true);
+					button_6.setVisible(true);
+				}
+				
+				if(table.getModel().getValueAt(table.getSelectedRow(), 7).equals("si")) {
 					button_4.setVisible(false);
 				}
 			}
@@ -114,16 +136,17 @@ public class Client {
 	private String[][] obtenirMatriu() throws ClassNotFoundException, SQLException {
 			ArrayList<ComandaCl> miLista = sqlC.consultarComandesClient(idEmpresa);
 			
-			String matInfo[][] = new String[miLista.size()] [7];
+			String matInfo[][] = new String[miLista.size()] [8];
 
 			for (int i = 0; i < miLista.size(); i++) {
 				matInfo[i][0] = sqlP.consultarProducte(miLista.get(i).getIdProducte())+"";
 				matInfo[i][1] = miLista.get(i).getEstatComanda()+"";
 				matInfo[i][2] = miLista.get(i).getData()+"";
-				matInfo[i][3] = miLista.get(i).getHores()+"";
-				matInfo[i][4] = miLista.get(i).getTotal()+"";
-				matInfo[i][5] = miLista.get(i).getNumComanda()+"";
-				matInfo[i][6] = miLista.get(i).getPagat()+"";
+				matInfo[i][3] = miLista.get(i).getDataLimit()+"";
+				matInfo[i][4] = miLista.get(i).getHores()+"";
+				matInfo[i][5] = miLista.get(i).getTotal()+"";
+				matInfo[i][6] = miLista.get(i).getNumComanda()+"";
+				matInfo[i][7] = miLista.get(i).getPagat()+"";
 			}
 			
 	
@@ -171,7 +194,7 @@ public class Client {
 		
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\VISTA\\img\\logo.png"));
+		lblNewLabel.setIcon(new ImageIcon(Client.class.getResource("/VISTA/img/logo.png")));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
@@ -329,6 +352,7 @@ public class Client {
 		button_2.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			//	Document pdf = new Document();
 			}
 		});
 		button_2.setBounds(0, 203, 162, 69);
@@ -364,7 +388,6 @@ public class Client {
 					frm.frame.setVisible(true); 
 					frame.setVisible(false); 
 				} catch (ClassNotFoundException | SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
@@ -400,15 +423,13 @@ public class Client {
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					sqlC.eliminarComandes(table.getModel().getValueAt(table.getSelectedRow(), 5).toString(), idEmpresa);
+					sqlC.eliminarComandes(table.getModel().getValueAt(table.getSelectedRow(), 6).toString(), idEmpresa);
 					Client frm = new Client(idEmpresa);
 					frm.frame.setVisible(true); 
 					frame.setVisible(false); 
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				//table.getModel().getValueAt(table.getSelectedRow(), 5)
 				catch (ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -419,6 +440,80 @@ public class Client {
 		frame.getContentPane().add(btnNewButton_1);
 		
 		//FI BOTÓ ELIMINAR PROJECTE
+		
+		btnNewButton_2.setVisible(false);
+		btnNewButton_2.setForeground(Color.BLACK);
+		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnNewButton_2.setBackground(Color.BLACK);
+				btnNewButton_2.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnNewButton_2.setBackground(Color.WHITE);
+				btnNewButton_2.setForeground(Color.BLACK);
+			}
+		});
+		btnNewButton_2.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		btnNewButton_2.setFocusPainted(false);
+		btnNewButton_2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		btnNewButton_2.setBackground(Color.WHITE);
+		btnNewButton_2.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					sqlC.modificarEstatComanda("c", table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
+					Client frm = new Client(idEmpresa);
+					frm.frame.setVisible(true); 
+					frame.setVisible(false); 
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_2.setBounds(30, 342, 190, 51);
+		frame.getContentPane().add(btnNewButton_2);
+		
+		btnNewButton_3.setVisible(false);
+		btnNewButton_3.setForeground(Color.BLACK);
+		btnNewButton_3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnNewButton_3.setBackground(Color.BLACK);
+				btnNewButton_3.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnNewButton_3.setBackground(Color.WHITE);
+				btnNewButton_3.setForeground(Color.BLACK);
+			}
+		});
+		btnNewButton_3.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		btnNewButton_3.setFocusPainted(false);
+		btnNewButton_3.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		btnNewButton_3.setBackground(Color.WHITE);
+		btnNewButton_3.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
+		btnNewButton_3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					sqlC.modificarEstatComanda("ep", table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
+					Client frm = new Client(idEmpresa);
+					frm.frame.setVisible(true); 
+					frame.setVisible(false); 
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewButton_3.setBounds(30, 342, 190, 51);
+		frame.getContentPane().add(btnNewButton_3);
 		
 		//INICI BOTÓ MARCAR COM A PAGAT
 		
@@ -445,9 +540,8 @@ public class Client {
 		button4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-			
-					double cTot = Double.valueOf((String)table.getModel().getValueAt(table.getSelectedRow(),4)) * Double.valueOf((String) table.getModel().getValueAt(table.getSelectedRow(),3));
-					sqlC.incrementarPreu(table.getModel().getValueAt(table.getSelectedRow(),5).toString(), cTot+"€");
+					double cTot = Double.valueOf((String)table.getModel().getValueAt(table.getSelectedRow(),5)) * Double.valueOf((String) table.getModel().getValueAt(table.getSelectedRow(),4));
+					sqlC.incrementarPreu(table.getModel().getValueAt(table.getSelectedRow(),6).toString(), cTot+"€");
 					Client frm = new Client(idEmpresa);
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
@@ -482,7 +576,7 @@ public class Client {
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					sqlC.modificarPagament(table.getModel().getValueAt(table.getSelectedRow(), 5).toString());
+					sqlC.modificarPagament(table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
 					Client frm = new Client(idEmpresa);
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
@@ -517,9 +611,16 @@ public class Client {
 		button_5.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button_5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					FiltreComandes frm = new FiltreComandes(idEmpresa);
+					frm.frame.setVisible(true); 
+					frame.setVisible(false); 
+				} catch (ClassNotFoundException | SQLException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
-		button_5.setBounds(263, 90, 190, 37);
+		button_5.setBounds(176, 90, 190, 37);
 		frame.getContentPane().add(button_5);
 		
 		//FI BOTÓ MARCAR COM A PAGAT
@@ -548,8 +649,8 @@ public class Client {
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					sqlC.modificarEstatComanda("ep", table.getModel().getValueAt(table.getSelectedRow(), 5).toString());
-					sqlC.iniciarComanda(table.getModel().getValueAt(table.getSelectedRow(), 5).toString());
+					sqlC.modificarEstatComanda("ep", table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
+					sqlC.iniciarComanda(table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
 					Client frm = new Client(idEmpresa);
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
@@ -584,10 +685,8 @@ public class Client {
 		button2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					sqlC.modificarEstatComanda("f", table.getModel().getValueAt(table.getSelectedRow(), 5).toString());
-					sqlC.finalitzarComanda(table.getModel().getValueAt(table.getSelectedRow(),5).toString(), table.getModel().getValueAt(table.getSelectedRow(), 3).toString());
-					System.out.println(table.getModel().getValueAt(table.getSelectedRow(), 3).toString());
-					System.out.println(Double.valueOf((String)table.getModel().getValueAt(table.getSelectedRow(),4)));
+					sqlC.modificarEstatComanda("f", table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
+					sqlC.finalitzarComanda(table.getModel().getValueAt(table.getSelectedRow(),6).toString(), table.getModel().getValueAt(table.getSelectedRow(), 4).toString());
 					Client frm = new Client(idEmpresa);
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
@@ -649,6 +748,41 @@ public class Client {
 		textField.setAutoscrolls(false);
 		textField.setBounds(24, 93, 196, 47);
 		frame.getContentPane().add(textField);
+		
+		button_6.setFocusPainted(false);
+		button_6.setForeground(Color.BLACK);
+		button_6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button_6.setBackground(Color.BLACK);
+				button_6.setForeground(Color.WHITE);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button_6.setBackground(Color.WHITE);
+				button_6.setForeground(Color.BLACK);
+			}
+		});
+		button_6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					JOptionPane.showMessageDialog(null, sqlC.veureDescripcio(table.getModel().getValueAt(table.getSelectedRow(), 6).toString()),"Info Comanda",JOptionPane.INFORMATION_MESSAGE);
+				} catch (ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		button_6.setVisible(false);
+		button_6.setForeground(Color.BLACK);
+		button_6.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
+		button_6.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button_6.setBackground(Color.WHITE);
+		button_6.setBounds(412, 90, 190, 37);
+		frame.getContentPane().add(button_6);
 		
 		//FI BOTÓ INICIAR PROJECTE
 	}
