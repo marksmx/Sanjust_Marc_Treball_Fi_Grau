@@ -321,7 +321,6 @@ public class Client {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			
 			}
 		});
 		button_1.setBounds(0, 135, 162, 69);
@@ -352,7 +351,9 @@ public class Client {
 		button_2.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		button_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			//	Document pdf = new Document();
+				GenerarFactura frm = new GenerarFactura(idEmpresa);
+				frm.frame.setVisible(true);
+				frame.setVisible(false);
 			}
 		});
 		button_2.setBounds(0, 203, 162, 69);

@@ -4,46 +4,65 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileOutputStream;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.crypto.Mac;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
+
+import org.omg.CORBA.portable.InputStream;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import DADES.SQLComandes;
+import DADES.SQLFactura;
+import MODEL.ComandaCl;
+import MODEL.LiniaFacturaCl;
+/**
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+*/
 import javax.swing.JComboBox;
+
+
 
 public class GenerarFactura {
 
-	private JFrame frame;
-	private JTextField textField;
+	SQLFactura sqlF = new SQLFactura();
+	SQLComandes sqlC = new SQLComandes();
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GenerarFactura window = new GenerarFactura();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	JFrame frame;
+	private JTextField textField;
+	private String idEmpresa;
 
 	/**
 	 * Create the application.
 	 */
-	public GenerarFactura() {
+	public GenerarFactura(String idEmpresa) {
+		this.idEmpresa = idEmpresa;
 		initialize();
 	}
 
@@ -111,7 +130,7 @@ public class GenerarFactura {
 		frame.getContentPane().add(comboBox);
 		
 		JButton btnNewButton_1 = new JButton("GENERAR FACTURA");
-		btnNewButton_1.setVisible(false);
+		btnNewButton_1.setVisible(true);
 		btnNewButton_1.setForeground(Color.BLACK);
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
 			@Override
@@ -131,12 +150,31 @@ public class GenerarFactura {
 		btnNewButton_1.setBackground(Color.WHITE);
 		btnNewButton_1.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				String ruta = "C:\\Users\\Marc Sanjust\\Desktop\\test";
+				String contingut = "ID Comanda   Descripció    Unitats    Preu Unitat    Preu Total"+"\n";
+					try {
+						for(int i=0; sqlC.contarComandes()>=i; i++) {
+							ArrayList<ComandaCl> miLista = sqlC.consultarComandesClient(idEmpresa);
+							int unitats = 1;
+							//System.out.println("1" + miLista.get(i).getDescripcio() + Integer.toString(unitats) + miLista.get(i).getTotal() + miLista.get(i).getTotal());
+							sqlF.crearLiniaFactura("1", miLista.get(i).getDescripcio(), Integer.toString(unitats), miLista.get(i).getTotal(), miLista.get(i).getTotal());
+							contingut += "1"+ "    " + miLista.get(i).getDescripcio()+ "    " + Integer.toString(unitats) + "    "+ miLista.get(i).getTotal() + "    " + miLista.get(i).getTotal() +"\n";
+							FileOutputStream pdf = new FileOutputStream(ruta+".pdf");
+							Document doc = new Document();
+							PdfWriter.getInstance(doc, pdf);
+							doc.open();
+							doc.add(new Paragraph(contingut));
+							doc.close();
+						}
+
+					} catch (Exception e2) {
+						System.out.println("bruh");
+					}
 			}
 		});
 		btnNewButton_1.setBounds(204, 233, 190, 51);
 		frame.getContentPane().add(btnNewButton_1);
-		
 		
 		JButton btnNewButton_2 = new JButton("TORNAR A INICI");
 		btnNewButton_2.setVisible(false);

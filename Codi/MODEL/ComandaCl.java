@@ -10,8 +10,9 @@ public class ComandaCl {
 	String idEmpresa;
 	String pagat;
 	String dataLimit;
+	String descripcio;
 
-	public ComandaCl (String estatComanda, String numComanda, String idProducte, String data, String hores, String total, String idEmpresa, String pagat, String dataLimit) {
+	public ComandaCl (String estatComanda, String numComanda, String idProducte, String data, String hores, String total, String idEmpresa, String pagat, String dataLimit, String descripcio) {
 		this.estatComanda = estatComanda;
 		this.numComanda = numComanda;
 		this.idProducte = idProducte;
@@ -21,6 +22,7 @@ public class ComandaCl {
 		this.idEmpresa = idEmpresa;
 		this.pagat = pagat;
 		this.dataLimit = dataLimit;
+		this.descripcio = descripcio;
 	}
 
 
@@ -65,6 +67,10 @@ public class ComandaCl {
 	public void setDataLimit(String dataLimit) {
 		this.dataLimit = dataLimit;
 	}
+	
+	public void setDescripcio(String descripcio) {
+		this.descripcio = descripcio;
+	}
 
 
 	public String getEstatComanda() {
@@ -107,6 +113,11 @@ public class ComandaCl {
 	public String getDataLimit() {
 		return dataLimit;
 	}
+	
+	public String getDescripcio() {
+		return descripcio;
+	}
+
 
 	@Override
 	public String toString() {

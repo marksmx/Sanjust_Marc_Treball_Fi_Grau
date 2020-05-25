@@ -87,7 +87,7 @@ public class SQLComandes {
 			while (rs.next()) {
 				String test = rs.getString("estatComanda");
 				
-				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("total"), rs.getString("idEmpresa"),rs.getString("pagat"), rs.getString("dataLimit"));
+				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("total"), rs.getString("idEmpresa"),rs.getString("pagat"), rs.getString("dataLimit"), rs.getString("descripcio"));
 
 				miLista.add(com);
 			}
@@ -134,7 +134,7 @@ public class SQLComandes {
 			while (rs.next()) {
 				String test = rs.getString("estatComanda");
 				
-				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("total"), rs.getString("idEmpresa"),rs.getString("pagat"), rs.getString("dataLimit"));
+				com = new ComandaCl(rs.getString("estatComanda"), rs.getString("numComanda"), rs.getString("idProducte"), rs.getString("data"), rs.getString("hores"), rs.getString("total"), rs.getString("idEmpresa"),rs.getString("pagat"), rs.getString("dataLimit"),rs.getString("descripcio"));
 
 				miLista.add(com);
 			}
