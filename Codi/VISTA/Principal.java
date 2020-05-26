@@ -258,32 +258,6 @@ public class Principal {
 		btnNewButton.setBounds(221, 332, 125, 44);
 		frame.getContentPane().add(btnNewButton);
 		
-		JButton button = new JButton("Generar Factura");
-		button.setForeground(Color.BLACK);
-		button.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				button.setBackground(Color.BLACK);
-				button.setForeground(Color.WHITE);
-			}
-			@Override
-			public void mouseExited(MouseEvent e) {
-				button.setBackground(Color.WHITE);
-				button.setForeground(Color.BLACK);
-			}
-		});
-		button.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
-		button.setFocusPainted(false);
-		button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		button.setBackground(Color.WHITE);
-		button.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
-		button.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		button.setBounds(488, 332, 125, 44);
-		frame.getContentPane().add(button);
-		
 		JButton button_1 = new JButton("Afegir Client");
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
@@ -448,7 +422,7 @@ public class Principal {
 		button_3.setFocusPainted(false);
 		button_3.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button_3.setBackground(Color.WHITE);
-		button_3.setBounds(345, 467, 143, 44);
+		button_3.setBounds(488, 332, 125, 44);
 		frame.getContentPane().add(button_3);
 
 		

@@ -188,6 +188,29 @@ public class SQLComandes {
 		return num;
 	}
 	
+	public String consultarDataComandes(String id) throws SQLException {
+		conectar();
+		String data = null;
+		sentencia = c.createStatement();
+		String consultaSql = "SELECT data FROM comanda WHERE numComanda = '"+id+"';";
+		
+		try {
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			
+			while (rs.next()) {
+				data = rs.getString("data");
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+		
+		return data;
+	}
+	
 	public int contarComandes() throws SQLException, ClassNotFoundException {
 		conectar();
 		int amount = 0;
@@ -266,6 +289,26 @@ public class SQLComandes {
 			c.close();
 			
 		return amount;
+	}
+	
+	public int contarComandesPerProd(String idProd) throws SQLException, ClassNotFoundException {
+		conectar();
+		int amount = 0;
+		sentencia = c.createStatement();
+
+		String consultaSql = "SELECT idProducte FROM comanda WHERE idProducte = '"+idProd+"';";
+		
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+		
+			while (rs.next()) {
+				++amount;
+			}
+			
+			rs.close();
+			sentencia.close();
+			c.close();
+		return amount;
+		
 	}
 	
 	public String consultarEstatComanda(String num) throws SQLException, ClassNotFoundException {

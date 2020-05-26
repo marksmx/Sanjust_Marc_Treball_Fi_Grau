@@ -55,6 +55,7 @@ public class SQLFactura {
 			rs.close();
 			sentencia.close();
 			c.close();
+			System.out.println("Linia creada correctament");
 		} catch (Exception e) {
 			System.out.println("ERROR");
 		}

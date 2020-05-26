@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -29,11 +30,14 @@ import javax.swing.border.BevelBorder;
 import org.omg.CORBA.portable.InputStream;
 
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import DADES.SQLClients;
 import DADES.SQLComandes;
 import DADES.SQLFactura;
+import DADES.SQLProductes;
 import MODEL.ComandaCl;
 import MODEL.LiniaFacturaCl;
 /**
@@ -46,6 +50,8 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 */
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.SwingConstants;
 
 
 
@@ -53,10 +59,15 @@ public class GenerarFactura {
 
 	SQLFactura sqlF = new SQLFactura();
 	SQLComandes sqlC = new SQLComandes();
-
+	SQLProductes sqlP = new SQLProductes();
+	SQLClients sqlCl = new SQLClients();
+	
 	JFrame frame;
 	private JTextField textField;
 	private String idEmpresa;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
 
 	/**
 	 * Create the application.
@@ -75,7 +86,7 @@ public class GenerarFactura {
 		frame.setResizable(false);
 		frame.getContentPane().setFocusable(false);
 		frame.getContentPane().setFocusTraversalKeysEnabled(false);
-		frame.setBounds(730, 300, 591, 437);
+		frame.setBounds(730, 300, 591, 494);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -122,12 +133,26 @@ public class GenerarFactura {
 		textField.setBorder(null);
 		textField.setBackground(Color.BLACK);
 		textField.setAutoscrolls(false);
-		textField.setBounds(194, 104, 212, 60);
+		textField.setBounds(193, 168, 212, 60);
 		frame.getContentPane().add(textField);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(204, 175, 190, 33);
+		JComboBox<String> comboBox = new JComboBox<String>();
+		comboBox.setBounds(203, 239, 190, 33);
 		frame.getContentPane().add(comboBox);
+		comboBox.addItem("");
+		comboBox.addItem("Gener");
+		comboBox.addItem("Febrer");
+		comboBox.addItem("Març");
+		comboBox.addItem("Abril");
+		comboBox.addItem("Maig");
+		comboBox.addItem("Juny");
+		comboBox.addItem("Juliol");
+		comboBox.addItem("Agost");
+		comboBox.addItem("Setembre");
+		comboBox.addItem("Octubre");
+		comboBox.addItem("Novembre");
+		comboBox.addItem("Desembre");
+		
 		
 		JButton btnNewButton_1 = new JButton("GENERAR FACTURA");
 		btnNewButton_1.setVisible(true);
@@ -151,33 +176,175 @@ public class GenerarFactura {
 		btnNewButton_1.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent e) {
-				String ruta = "C:\\Users\\Marc Sanjust\\Desktop\\test";
-				String contingut = "ID Comanda   Descripció    Unitats    Preu Unitat    Preu Total"+"\n";
-					try {
-						for(int i=0; sqlC.contarComandes()>=i; i++) {
-							ArrayList<ComandaCl> miLista = sqlC.consultarComandesClient(idEmpresa);
-							int unitats = 1;
-							//System.out.println("1" + miLista.get(i).getDescripcio() + Integer.toString(unitats) + miLista.get(i).getTotal() + miLista.get(i).getTotal());
-							sqlF.crearLiniaFactura("1", miLista.get(i).getDescripcio(), Integer.toString(unitats), miLista.get(i).getTotal(), miLista.get(i).getTotal());
-							contingut += "1"+ "    " + miLista.get(i).getDescripcio()+ "    " + Integer.toString(unitats) + "    "+ miLista.get(i).getTotal() + "    " + miLista.get(i).getTotal() +"\n";
-							FileOutputStream pdf = new FileOutputStream(ruta+".pdf");
-							Document doc = new Document();
-							PdfWriter.getInstance(doc, pdf);
-							doc.open();
-							doc.add(new Paragraph(contingut));
-							doc.close();
-						}
+				int contador = 0;
+				int unitats = 1;
+				double total = 0;
+				String ruta = "";
+				String preuNum = "";
+				double preuFinal = 0.0;
 
-					} catch (Exception e2) {
-						System.out.println("bruh");
+
+				if(comboBox.getSelectedIndex() == 0) {
+					
+					JOptionPane.showMessageDialog(null, "No has triat el mes a facturar!","ERROR",JOptionPane.ERROR_MESSAGE);
+					
+				} else {
+					
+					if(textField_3.getText().equals("")) {
+						
+						JOptionPane.showMessageDialog(null, "Has d'introduïr un ID de comanda!","ERROR",JOptionPane.ERROR_MESSAGE);
+						
+					} else {
+						
+						JFileChooser nouPdf = new JFileChooser();
+						int option = nouPdf.showSaveDialog(null);
+						
+						if(option == JFileChooser.APPROVE_OPTION) {
+							
+							File f = nouPdf.getSelectedFile();
+							ruta = f.toString();
+							
+						}
+						
+						String contingut = "";
+						
+						try {
+							
+							contingut += " Client: " + sqlCl.consultarNomClient(idEmpresa) + "\n";
+							contingut += "" + "\n";
+							
+						} catch (SQLException e1) {
+							
+							e1.printStackTrace();
+							
+						}
+						
+						contingut += "_ID COMANDA ___ DESCRIPCIÓ ___ UNITATS ___ PREU UNITAT ___ PREU TOTAL_"+"\n";
+						contingut += "______________________________________________________________________________"+"\n";
+						contingut += "" + "\n";
+						
+							try {
+								
+								ArrayList<ComandaCl> miLista = sqlC.consultarComandesClient(idEmpresa);
+								
+								for(int i=0; sqlC.contarComandes()>=i; i++) {
+									String mesComanda = "";
+									preuNum = "";
+
+									for(int y = 0; y<miLista.get(i).getTotal().length(); y++) {
+										
+										if(miLista.get(i).getTotal().charAt(y) != '€'){
+											
+											preuNum += miLista.get(i).getTotal().charAt(y);
+											
+										}
+										
+										if(miLista.get(i).getTotal().charAt(y) == '€') {
+											
+											System.out.println("Aqui");
+											System.out.println(preuNum);
+											preuFinal += Double.parseDouble(preuNum);
+											
+										}
+									}
+									
+									
+									for(int x=5; x<7; x++) {
+										
+										mesComanda += miLista.get(i).getData().charAt(x);
+									
+									}
+									
+									
+										if(Integer.parseInt(mesComanda)==comboBox.getSelectedIndex()) {
+											
+											String totalLinia = "";
+											double finalLinia = 0.0;
+
+											for(int z = 0; z<miLista.get(i).getTotal().length(); z++) {
+												
+												if(miLista.get(i).getTotal().charAt(z) != '€'){
+													
+													totalLinia += miLista.get(i).getTotal().charAt(z);
+													
+												}
+												
+												if(miLista.get(i).getTotal().charAt(z) == '€') {
+													
+													finalLinia += Double.parseDouble(totalLinia);
+													
+												}
+											}
+											
+											if(contador>0) {
+												
+												if(sqlP.consultarProducte(miLista.get(i).getIdProducte()).equals(sqlP.consultarProducte(miLista.get(i-1).getIdProducte()))) {
+													
+												} else {
+													
+													sqlF.crearLiniaFactura(textField_3.getText(), miLista.get(i).getDescripcio(), Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte())) , miLista.get(i).getTotal(), Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte()))+"€");
+													contingut += " "+textField_3.getText()+ " _________ " + sqlP.consultarProducte(miLista.get(i).getIdProducte()) + " ________ " + Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte())) + " ________ "+ miLista.get(i).getTotal() + " _________ " + Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte()))+"€" + " " +"\n";
+													
+												}
+												
+											} else {
+												
+												sqlF.crearLiniaFactura(textField_3.getText(), miLista.get(i).getDescripcio(), Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte())) , miLista.get(i).getTotal(), Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte()))+"€");
+												contingut += " "+textField_3.getText()+ " _________ " + sqlP.consultarProducte(miLista.get(i).getIdProducte()) + " ________ " + Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte())) + " ________ "+ miLista.get(i).getTotal() + " _________ " + Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte()))+"€" + " " +"\n";
+												
+											}
+											
+											++contador;
+											
+											if(sqlC.contarComandes()-1 == i) {
+												
+												contingut += ""+"\n";
+												preuFinal = Math.round(preuFinal * 100);
+												preuFinal = preuFinal/100;
+												contingut += "Total: "+ preuFinal +" €";
+												
+											}
+											
+											FileOutputStream pdf = new FileOutputStream(ruta+".pdf");
+											Document doc = new Document();
+											PdfWriter.getInstance(doc, pdf);
+											doc.open();
+	  										Paragraph test = new Paragraph(contingut);
+											test.setAlignment(Element.ALIGN_CENTER);
+											doc.add(test);
+											doc.close();
+											System.out.println("done");
+											
+										}
+										
+									}
+								
+								} catch (Exception e2) {
+								
+								System.out.println("bruh");
+								
+								}
 					}
-			}
-		});
-		btnNewButton_1.setBounds(204, 233, 190, 51);
+					
+				}
+				
+				if(contador>0) {
+					
+					JOptionPane.showMessageDialog(null, "S'ha creat la factura Correctament","",JOptionPane.DEFAULT_OPTION);
+					
+				} else {
+					
+					JOptionPane.showMessageDialog(null, "Aquest client no ha fet cap comanda durant el mes seleccionat.","AVÍS",JOptionPane.DEFAULT_OPTION);
+					
+				}
+				
+			}});
+		
+		btnNewButton_1.setBounds(203, 297, 190, 51);
 		frame.getContentPane().add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("TORNAR A INICI");
-		btnNewButton_2.setVisible(false);
+		btnNewButton_2.setVisible(true);
 		btnNewButton_2.setForeground(Color.BLACK);
 		btnNewButton_2.addMouseListener(new MouseAdapter() {
 			@Override
@@ -198,11 +365,41 @@ public class GenerarFactura {
 		btnNewButton_2.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					Client frm = new Client(idEmpresa);
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+				} catch (ClassNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				
 			}
 		});
-		btnNewButton_2.setBounds(204, 314, 190, 51);
+		btnNewButton_2.setBounds(203, 378, 190, 51);
 		frame.getContentPane().add(btnNewButton_2);
 		
+		textField_1 = new JTextField();
+		textField_1.setText("Número de Comanda");
+		textField_1.setSelectionColor(Color.GRAY);
+		textField_1.setForeground(Color.WHITE);
+		textField_1.setFont(new Font("HelveticaNeue", Font.PLAIN, 25));
+		textField_1.setFocusable(false);
+		textField_1.setFocusTraversalKeysEnabled(false);
+		textField_1.setEditable(false);
+		textField_1.setColumns(10);
+		textField_1.setBorder(null);
+		textField_1.setBackground(Color.BLACK);
+		textField_1.setAutoscrolls(false);
+		textField_1.setBounds(172, 79, 255, 51);
+		frame.getContentPane().add(textField_1);
 		
+		textField_3 = new JTextField();
+		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_3.setFont(new Font("HelveticaNeue", Font.PLAIN, 20));
+		textField_3.setBounds(204, 127, 190, 33);
+		frame.getContentPane().add(textField_3);
+		textField_3.setColumns(10);
 	}
 }
