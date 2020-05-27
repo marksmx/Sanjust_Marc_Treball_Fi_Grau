@@ -30,26 +30,20 @@ public class Info {
 	
 	private String idClient;
 	
-	/**
-	 * Create the application.
-	 * @throws SQLException 
-	 */
 	public Info(String idClient) throws SQLException {
+		
 		this.idClient = idClient;
 		initialize();
+		
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 * @throws SQLException 
-	 */
 	private void initialize() throws SQLException {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
 		frame.setBounds(750, 400, 500, 300);
 		frame.getContentPane().setLayout(null);
-
 		
 		textField = new JTextField();
 		textField.setText("Informació Client");
@@ -160,4 +154,5 @@ public class Info {
 		frame.getContentPane().add(textField_7);
 		
 	}
+	
 }

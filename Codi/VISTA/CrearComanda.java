@@ -38,6 +38,7 @@ import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
 public class CrearComanda {
+	
 	private String idClient;
 	private double iva;
 	private double total;
@@ -49,24 +50,15 @@ public class CrearComanda {
 	SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy"); 
 	JTextPane textPane_6 = new JTextPane();
 
-	/**
-	 * Launch the application.
-	 */
-
-	/**
-	 * Create the application.
-	 * @throws SQLException 
-	 */
 	public CrearComanda(String idClient) throws SQLException {
+		
 		this.idClient = idClient;
 		initialize();
+		
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 * @throws SQLException 
-	 */
 	private void initialize() throws SQLException {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -75,8 +67,6 @@ public class CrearComanda {
 		frame.setBounds(730, 300, 618, 434);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		//CAPÇALERA COMENÇAMENT
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -160,50 +150,67 @@ public class CrearComanda {
 
 		JButton button2 = new JButton("FINALITZAR COMANDA");
 		
-		
-	
-		
 		JButton button_1 = new JButton("TORNAR ENRERE");
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_1.setBackground(Color.BLACK);
 				button_1.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_1.setBackground(Color.WHITE);
 				button_1.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_1.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button_1.setFocusPainted(false);
 		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button_1.setBackground(Color.WHITE);
 		button_1.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button_1.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					if(textPane_2.getText().equals("")) {
+						
 						Client frm = new Client(idClient);
 						frm.frame.setVisible(true);
 						frame.setVisible(false);
+						
 					}else {
+						
 						CrearComanda frm = new CrearComanda(idClient);
 						frm.frame.setVisible(true);
 						frame.setVisible(false);
+						
 					}
 					
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				}
+				
 			}
+			
 		});
+		
 		button_1.setBounds(435, 327, 148, 53);
 		frame.getContentPane().add(button_1);
 		
@@ -213,7 +220,9 @@ public class CrearComanda {
 		comboBox.addItem("");
 		
 		for (int i = 0; i < miLista.size(); i++) {
+			
 			comboBox.addItem(miLista.get(i).getElement()+", "+miLista.get(i).getUnitats());
+			
 		}
 		
 		comboBox_1.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
@@ -222,71 +231,106 @@ public class CrearComanda {
 		comboBox_1.addItem("");
 
 		for (int i = 0; i < miLista2.size(); i++) {
+			
 			comboBox_1.addItem(miLista2.get(i).getElement()+", "+miLista2.get(i).getUnitats()+" per "+miLista2.get(i).getFrequencia());
+			
 		}
 
 		JButton button = new JButton("VALIDAR COMANDA");
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button.setBackground(Color.BLACK);
 				button.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button.setBackground(Color.WHITE);
 				button.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button.setFocusPainted(false);
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button.setBackground(Color.WHITE);
 		button.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				System.out.println();
 				
 				if(comboBox.getSelectedItem().equals("") && !comboBox_1.getSelectedItem().equals("") || !comboBox.getSelectedItem().equals("") && comboBox_1.getSelectedItem().equals("")) {
+					
 					button.setVisible(false);
 					button2.setVisible(true);
 					comboBox.enable(false);
 					comboBox_1.enable(false);
+					
 				}
 				
 				if(!comboBox.getSelectedItem().equals("") && !comboBox_1.getSelectedItem().equals("")) {
+					
 					JOptionPane.showMessageDialog(null, "Tria només un servei o un producte","ERROR",JOptionPane.ERROR_MESSAGE);
+					
 				}
 				
 				if(comboBox.getSelectedItem().equals("") && comboBox_1.getSelectedItem().equals("")) {
+					
 					JOptionPane.showMessageDialog(null, "No has triat cap servei ni producte","ERROR",JOptionPane.ERROR_MESSAGE);
+					
 				}
+				
 				if(!comboBox.getSelectedItem().equals("") && comboBox_1.getSelectedItem().equals("")) {
+					
 					textPane_2.setText(miLista.get(comboBox.getSelectedIndex()-1).getTotal());
+					
 				}
+				
 				if(comboBox.getSelectedItem().equals("") && !comboBox_1.getSelectedItem().equals("")) {
+					
 					textPane_2.setText(miLista2.get(comboBox_1.getSelectedIndex()-1).getTotal());
+					
 				}
+				
 			}
+			
 		});
+		
 		button.setBounds(283, 327, 148, 53);
 		frame.getContentPane().add(button);
 		
 		button2.setVisible(false);
 		button2.setForeground(Color.BLACK);
 		button2.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button2.setBackground(Color.BLACK);
 				button2.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button2.setBackground(Color.WHITE);
 				button2.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button2.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button2.setFocusPainted(false);
 		button2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -294,9 +338,13 @@ public class CrearComanda {
 		button2.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		
 		button2.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					if(comboBox.getSelectedIndex()>=1 && comboBox_1.getSelectedIndex()==0) {
+						
 						iva = Integer.parseInt(miLista.get(comboBox.getSelectedIndex()-1).getBase())*0.21;
 						total = Integer.parseInt(miLista.get(comboBox.getSelectedIndex()-1).getBase())+(Integer.parseInt(miLista.get(comboBox.getSelectedIndex()-1).getBase())*0.21);
 						String rec = Integer.toString(sqlC.contarComandes()+1);
@@ -304,17 +352,22 @@ public class CrearComanda {
 						LocalDate dataS = java.time.LocalDate.now();  
 						String totalS = Double.toString(total);
 						String dLimit = "";
-						if(comboBox_2.getSelectedItem().toString().equals("") || comboBox_3.getSelectedItem().toString().equals("") || comboBox_3.getSelectedItem().toString().equals("")) {
-							dLimit = "Sense data límit";
-						}else {
-							 dLimit =  comboBox_2.getSelectedItem().toString() + "-" + comboBox_3.getSelectedItem().toString() + "-" + comboBox_4.getSelectedItem().toString();
-						}
 						
+						if(comboBox_2.getSelectedItem().toString().equals("") || comboBox_3.getSelectedItem().toString().equals("") || comboBox_3.getSelectedItem().toString().equals("")) {
+							
+							dLimit = "Sense data límit";
+							
+						} else {
+							
+							dLimit =  comboBox_2.getSelectedItem().toString() + "-" + comboBox_3.getSelectedItem().toString() + "-" + comboBox_4.getSelectedItem().toString();
+							
+						}
 						
 						sqlC.crearComanda("p", rec, id, dataS.toString(), "", totalS, idClient, dLimit,textPane_6.getText());
 					} 
 					
 					if(comboBox_1.getSelectedIndex()>=1 && comboBox.getSelectedIndex()==0) {
+						
 						iva = Integer.parseInt(miLista2.get(comboBox_1.getSelectedIndex()-1).getBase())*0.21;
 						total = Integer.parseInt(miLista2.get(comboBox_1.getSelectedIndex()-1).getBase())+(Integer.parseInt(miLista2.get(comboBox_1.getSelectedIndex()-1).getBase())*0.21);
 						String rec = Integer.toString(sqlC.contarComandes()+1);
@@ -324,24 +377,36 @@ public class CrearComanda {
 						String ivaS = Double.toString(iva);
 						String totalS = Double.toString(total);
 						String dLimit = "";
+						
 						if(comboBox_2.getSelectedItem().toString().equals("") || comboBox_3.getSelectedItem().toString().equals("") || comboBox_3.getSelectedItem().toString().equals("")) {
+							
 							dLimit = "Sense data límit";
-						}else {
-							 dLimit =  comboBox_2.getSelectedItem().toString() + "-" + comboBox_3.getSelectedItem().toString() + "-" + comboBox_4.getSelectedItem().toString();
+							
+						} else {
+							
+							dLimit =  comboBox_2.getSelectedItem().toString() + "-" + comboBox_3.getSelectedItem().toString() + "-" + comboBox_4.getSelectedItem().toString();
+							 
 						}
 						
 						sqlC.crearComanda("p", rec, id, dataS.toString(), "", totalS, idClient, dLimit,textPane_6.getText());
+						
 					} 
 					
 					JOptionPane.showMessageDialog(null, "S'ha afegit la comanda","",JOptionPane.INFORMATION_MESSAGE);
 					Client frm = new Client(idClient);
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (ClassNotFoundException | SQLException e1) {
+					
 					e1.printStackTrace();
+					
 				}
+				
 			}
+			
 		});
+		
 		button2.setBounds(262, 327, 169, 53);
 		frame.getContentPane().add(button2);
 		
@@ -361,8 +426,11 @@ public class CrearComanda {
 		comboBox_2.setBounds(340, 147, 48, 36);
 		frame.getContentPane().add(comboBox_2);
 		comboBox_2.addItem("");
+		
 		for(int i = 1; i<=31; i++) {
+			
 			comboBox_2.addItem(Integer.toString(i));
+			
 		}
 
 		
@@ -414,14 +482,22 @@ public class CrearComanda {
 		comboBox_4.addItem("");
 
 		for(int x=0; x<4; x++) {
+			
 			String dataLlista = "";
 			int dataLlistInt = 0;
+			
 			for(int i=0; i<4; i++) {
+				
 				LocalDate data = java.time.LocalDate.now();
 				dataLlista += data.toString().charAt(i);
+				
 			}
+			
 			dataLlistInt = Integer.parseInt(dataLlista)+x;
 			comboBox_4.addItem(Integer.toString(dataLlistInt));
+			
 		}
+		
 	}
+	
 }

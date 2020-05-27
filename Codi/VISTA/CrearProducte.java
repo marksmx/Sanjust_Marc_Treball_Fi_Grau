@@ -24,6 +24,7 @@ import javax.swing.border.SoftBevelBorder;
 import DADES.SQLProductes;
 
 public class CrearProducte {
+	
 	SQLProductes sqlP = new SQLProductes();
 	JFrame frame;
 	private String curText="";
@@ -33,22 +34,14 @@ public class CrearProducte {
 	private boolean servei=false;
 	private int idCom = sqlP.contarProductes() + sqlP.contarServeis() + 1;
 
-
-	/**
-	 * Create the application.
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
-	 */
 	public CrearProducte() throws ClassNotFoundException, SQLException {
+		
 		initialize();
+		
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
-	 */
 	private void initialize() throws ClassNotFoundException, SQLException {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -253,29 +246,45 @@ public class CrearProducte {
 		JButton button_2 = new JButton("TORNAR A INICI");
 		button_2.setForeground(Color.BLACK);
 		button_2.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_2.setBackground(Color.BLACK);
 				button_2.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_2.setBackground(Color.WHITE);
 				button_2.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_2.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent arg0) {
+				
 				try {
+					
 					Principal frm = new Principal();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (ClassNotFoundException | SQLException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
+					
 				}
+				
 			}
+			
 		});
+		
 		button_2.setForeground(Color.BLACK);
 		button_2.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button_2.setFocusPainted(false);
@@ -284,37 +293,53 @@ public class CrearProducte {
 		button_2.setBounds(50, 352, 146, 35);
 		frame.getContentPane().add(button_2);
 		
-		
 		JButton button_3 = new JButton("CANCEL·LAR OPERACIÓ");
 		button_3.setForeground(Color.BLACK);
 		button_3.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_3.setBackground(Color.BLACK);
 				button_3.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_3.setBackground(Color.WHITE);
 				button_3.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_3.setVisible(false);
 		button_3.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					CrearProducte frm = new CrearProducte();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				}
+				
 			}
+			
 		});
+		
 		button_3.setForeground(Color.BLACK);
 		button_3.setFont(new Font("HelveticaNeue", Font.BOLD, 10));
 		button_3.setFocusPainted(false);
@@ -329,24 +354,34 @@ public class CrearProducte {
 		JButton button = new JButton("CREAR PRODUCTE");
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button.setBackground(Color.BLACK);
 				button.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button.setBackground(Color.WHITE);
 				button.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button.setFocusPainted(false);
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button.setBackground(Color.WHITE);
 		button.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				textPane.setBackground(Color.WHITE);
 				textPane.setEnabled(true);
 				textPane_5.setBackground(Color.WHITE);
@@ -362,31 +397,44 @@ public class CrearProducte {
 				button_5.setVisible(true);
 				producte = true;
 				servei = false;
+				
 			}
+			
 		});
+		
 		button.setBounds(50, 135, 146, 55);
 		frame.getContentPane().add(button);
 		
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_1.setBackground(Color.BLACK);
 				button_1.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_1.setBackground(Color.WHITE);
 				button_1.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_1.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button_1.setFocusPainted(false);
 		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button_1.setBackground(Color.WHITE);
 		button_1.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button_1.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				textPane.setBackground(Color.WHITE);
 				textPane.setEnabled(true);
 				textPane_2.setBackground(Color.WHITE);
@@ -404,61 +452,97 @@ public class CrearProducte {
 				button_5.setVisible(true);
 				producte = false;
 				servei = true;
+				
 			}
+			
 		});
+		
 		button_1.setBounds(50, 223, 146, 55);
 		frame.getContentPane().add(button_1);
 		
 		button_4.setForeground(Color.BLACK);
 		button_4.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_4.setBackground(Color.BLACK);
 				button_4.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_4.setBackground(Color.WHITE);
 				button_4.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_4.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				if(producte==true && servei==false) {
+					
 					if(textPane.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_11.getText().length()==0 || textPane_12.getText().length()==0 || textPane_6.getText().length()==0) {
+						
 						JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
+						
 					}else {
+						
 						try {
+							
 							Integer.parseInt(textPane_5.getText());
 							sqlP.crearProducte(textPane.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(),Integer.toString(idCom));
 							JOptionPane.showMessageDialog(null, "S'ha afegit correctament","",JOptionPane.INFORMATION_MESSAGE);
 							CrearProducte frm = new CrearProducte();
 							frm.frame.setVisible(true);
 							frame.setVisible(false);
+							
 						} catch (Exception e2) {
+							
 							JOptionPane.showMessageDialog(null, "Les unitats han de ser números!","ERROR",JOptionPane.ERROR_MESSAGE);
+							
 						}
+						
 					}
+					
 				}
 				
 				if(producte==false && servei==true) {
+					
 					if(textPane.getText().length()==0  || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_11.getText().length()==0 || textPane_12.getText().length()==0 || textPane_6.getText().length()==0) {
+						
 						JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
-					}else {
+						
+					} else {
+						
 						try {
+							
 							Integer.parseInt(textPane_5.getText());
 							sqlP.crearServei(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_8.getText(), textPane_11.getText(), textPane_12.getText(), Integer.toString(idCom));
 							JOptionPane.showMessageDialog(null, "S'ha afegit correctament","",JOptionPane.INFORMATION_MESSAGE);
 							CrearProducte frm = new CrearProducte();
 							frm.frame.setVisible(true);
 							frame.setVisible(false);
+							
 						} catch (Exception e2) {
+							
 							JOptionPane.showMessageDialog(null, "Les unitats han de ser números!","ERROR",JOptionPane.ERROR_MESSAGE);
+							
 						}
+						
 					}
+					
 				}
+				
 			}
+			
 		});
+		
 		button_4.setVisible(false);
 		button_4.setForeground(Color.BLACK);
 		button_4.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
@@ -468,39 +552,56 @@ public class CrearProducte {
 		button_4.setBounds(50, 188, 146, 55);
 		frame.getContentPane().add(button_4);
 		
-		
 		button_5.setForeground(Color.BLACK);
 		button_5.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_5.setBackground(Color.BLACK);
 				button_5.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_5.setBackground(Color.WHITE);
 				button_5.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_5.setVisible(false);
 		button_5.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				if(textPane_8.getText().equals("")) {
 					
 				} else {
+					
 					try {
+						
 						Integer.parseInt(textPane_8.getText());
 						iva = Integer.parseInt(textPane_8.getText()) * 0.21;
 						textPane_11.setText(Double.toString(iva));
 						total = Integer.parseInt(textPane_8.getText()) + iva;
 						textPane_12.setText(Double.toString(total));
+						
 					} catch (Exception e2) {
+						
 						JOptionPane.showMessageDialog(null, "Has d'introduïr un número!","ERROR",JOptionPane.ERROR_MESSAGE);
+						
 					}
 				
 				}
+				
 			}
+			
 		});
+		
 		button_5.setForeground(Color.BLACK);
 		button_5.setFont(new Font("HelveticaNeue", Font.BOLD, 10));
 		button_5.setFocusPainted(false);
@@ -508,7 +609,7 @@ public class CrearProducte {
 		button_5.setBackground(Color.WHITE);
 		button_5.setBounds(224, 352, 115, 35);
 		frame.getContentPane().add(button_5);
-		
 
 	}
+	
 }

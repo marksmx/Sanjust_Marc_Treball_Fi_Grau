@@ -25,26 +25,19 @@ import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 
 public class CrearClient {
+	
 	SQLClients sqlCl = new SQLClients();
 	JFrame frame;
 	private boolean fet=false;
-	/**
-	 * Launch the application.
-	 */
 
-	/**
-	 * Create the application.
-	 * @throws SQLException 
-	 */
 	public CrearClient() throws SQLException {
+		
 		initialize();
+		
 	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 * @throws SQLException 
-	 */
+	
 	private void initialize() throws SQLException {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -53,8 +46,6 @@ public class CrearClient {
 		frame.setBounds(730, 300, 473, 536);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
-		//CAPÇALERA COMENÇAMENT
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -81,8 +72,6 @@ public class CrearClient {
 		lblNewLabel.setIcon(new ImageIcon(CrearClient.class.getResource("/VISTA/img/logo.png")));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
-		
-		//CAPÇALERA FINAL
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setText("");
@@ -173,50 +162,59 @@ public class CrearClient {
 		textPane_7.setBounds(306, 201, 101, 42);
 		frame.getContentPane().add(textPane_7);
 		
-		
-		
-		//INICI BOTÓ CANCEL·LAR OPERACIÓ
-		
 		JButton button_1 = new JButton("CANCEL·LAR OPERACIÓ");
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_1.setBackground(Color.BLACK);
 				button_1.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_1.setBackground(Color.WHITE);
 				button_1.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_1.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button_1.setFocusPainted(false);
 		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button_1.setBackground(Color.WHITE);
 		button_1.setFont(new Font("HelveticaNeue", Font.BOLD, 10));
 		button_1.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					Principal frm = new Principal();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				}
 			
 			}
+			
 		});
+		
 		button_1.setBounds(246, 431, 150, 42);
 		frame.getContentPane().add(button_1);
-		
-		//FI BOTÓ CANCEL·LAR OPERACIÓ
-
 		
 		JTextPane textPane_8 = new JTextPane();
 		textPane_8.setText("");
@@ -240,64 +238,86 @@ public class CrearClient {
 		textPane_9.setBounds(209, 299, 47, 42);
 		frame.getContentPane().add(textPane_9);
 		
-		//INICI BOTÓ AFEGIR CLIENT
-		
-				JButton button = new JButton("AFEGIR CLIENT");
-				button.setForeground(Color.BLACK);
-				button.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mouseEntered(MouseEvent e) {
-						button.setBackground(Color.BLACK);
-						button.setForeground(Color.WHITE);
-					}
-					@Override
-					public void mouseExited(MouseEvent e) {
-						button.setBackground(Color.WHITE);
-						button.setForeground(Color.BLACK);
-					}
-				});
-				button.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
-				button.setFocusPainted(false);
-				button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-				button.setBackground(Color.WHITE);
-				button.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
-				button.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-						if(textPane.getText().length()==0 || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0) {
-							JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
-						}else {
-							if(textPane_5.getText().length()>9) {
-								JOptionPane.showMessageDialog(null, "El NIF és massa llarg","ERROR",JOptionPane.ERROR_MESSAGE);
-							} else {
-								sqlCl.crearClient(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_6.getText(), textPane_8.getText());
-								fet = true;
-							}
-						}
-						
-						if(fet == true) {
-							try {
-								Principal frm = new Principal();
-								frm.frame.setVisible(true);
-								frame.setVisible(false);
-							} catch (ClassNotFoundException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							} catch (SQLException e1) {
-								// TODO Auto-generated catch block
-								e1.printStackTrace();
-							}
-						} 
-						
-						fet = false;
-						
-					}
-				});
-				button.setBounds(71, 431, 150, 42);
-				frame.getContentPane().add(button);
+		JButton button = new JButton("AFEGIR CLIENT");
+		button.setForeground(Color.BLACK);
+		button.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
 				
-				//FI BOTÓ AFEGIR CLIENT
-	
+				button.setBackground(Color.BLACK);
+				button.setForeground(Color.WHITE);
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				button.setBackground(Color.WHITE);
+				button.setForeground(Color.BLACK);
+				
+			}
+			
+		});
+		
+		button.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button.setFocusPainted(false);
+		button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		button.setBackground(Color.WHITE);
+		button.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
+		button.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				if(textPane.getText().length()==0 || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0) {
+					
+					JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
+					
+				}else {
+					
+					if(textPane_5.getText().length()>9) {
+						
+						JOptionPane.showMessageDialog(null, "El NIF és massa llarg","ERROR",JOptionPane.ERROR_MESSAGE);
+						
+					} else {
+						
+						sqlCl.crearClient(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_6.getText(), textPane_8.getText());
+						
+						fet = true;
+						
+					}
+					
+				}
+				
+				if(fet == true) {
+					
+					try {
+						
+						Principal frm = new Principal();
+						frm.frame.setVisible(true);
+						frame.setVisible(false);
+						
+					} catch (ClassNotFoundException e1) {
+						
+						e1.printStackTrace();
+						
+					} catch (SQLException e1) {
+						
+						e1.printStackTrace();
+						
+					}
+					
+				} 
+				
+				fet = false;
+				
+			}
+			
+		});
+		
+		button.setBounds(71, 431, 150, 42);
+		frame.getContentPane().add(button);
+		
 	}
 
 }

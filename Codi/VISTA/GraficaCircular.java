@@ -16,15 +16,19 @@ import java.awt.Font;
 import javax.swing.JPanel;
 
 public class GraficaCircular extends javax.swing.JFrame {
+	
 	public JFrame frameCirc;
     boolean bandera = true;
 	
     public GraficaCircular() {
+    	
         initComponents();
+        
     }
     
   
     private void initComponents() {
+    	
     	frameCirc = new JFrame();
     	frameCirc.getContentPane().setBackground(Color.BLACK);
     	frameCirc.setResizable(false);
@@ -33,7 +37,6 @@ public class GraficaCircular extends javax.swing.JFrame {
     	frameCirc.setBounds(730, 300, 686, 551);
     	frameCirc.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frameCirc.getContentPane().setLayout(null);
-
         
         JLabel label_1 = new JLabel();
         label_1.setText("Tàsques Finalitzades");

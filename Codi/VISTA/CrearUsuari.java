@@ -31,10 +31,13 @@ public class CrearUsuari {
 
 
 	public CrearUsuari() {
+		
 		initialize();
+		
 	}
 	
 	private void initialize() {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -162,8 +165,6 @@ public class CrearUsuari {
 		textPane_7.setBounds(290, 181, 135, 42);
 		frame.getContentPane().add(textPane_7);
 		
-
-		
 		JTextPane textPane_8 = new JTextPane();
 		textPane_8.setText("");
 		textPane_8.setForeground(Color.BLACK);
@@ -189,43 +190,68 @@ public class CrearUsuari {
 		JButton button = new JButton("ACABAR I CONTINUAR");
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button.setBackground(Color.BLACK);
 				button.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button.setBackground(Color.WHITE);
 				button.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button.setFocusPainted(false);
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button.setBackground(Color.WHITE);
 		button.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				if(textPane.getText().length()==0 || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0 || textPane_6.getText().length()==0) {
+					
 					JOptionPane.showMessageDialog(null, "Has deixat camps sense omplir!","ERROR",JOptionPane.ERROR_MESSAGE);
-				}else {
+					
+				} else {
+					
 					if(textPane_5.getText().length()>9) {
+						
 						JOptionPane.showMessageDialog(null, "El DNI és massa llarg","ERROR",JOptionPane.ERROR_MESSAGE);
+						
 					} else {
+						
 						sqlU.crearPerfil(textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_8.getText(), textPane_6.getText());
+						
 						try {
+							
 							LogIn frm = new LogIn();
 							frm.frame.setVisible(true);
 							frame.setVisible(false);
+							
 						} catch (SQLException e1) {
+							
 							e1.printStackTrace();
+							
 						}
 						
 					}
+					
 				}
+				
 			}
+			
 		});
+		
 		button.setBounds(159, 377, 159, 42);
 		frame.getContentPane().add(button);
 	}

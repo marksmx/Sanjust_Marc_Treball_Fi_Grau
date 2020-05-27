@@ -50,48 +50,47 @@ public class LogIn {
 	SQLUsuari sqlU = new SQLUsuari();
 	
 	public static void main(String[] args) {
+		
 		EventQueue.invokeLater(new Runnable() {
+			
 			public void run() {
+				
 				try {
+					
 					window = new LogIn();
+					
 				} catch (Exception e) {
+					
 					e.printStackTrace();
+					
 				}
+				
 			}
+			
 		});
+		
 	}
 	
-	public void trobarBBDD() throws SQLException {
-	    File miDir = new File (".");
-	    try {
-			System.out.println ("Directorio actual: " + miDir.getCanonicalPath()+"\\DADES\\onTimeDB.db");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the application.
-	 * @throws SQLException 
-	 */
 	public LogIn() throws SQLException {
-		trobarBBDD();
+		
 		initialize();
 
 		if(sqlU.exist() == false) {
+			
 			CrearUsuari frm = new CrearUsuari();
 			frm.frame.setVisible(true);
 			frame.setVisible(false);
+			
 		} else {
+			
 			frame.setVisible(true);
+			
 		}
+		
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -174,33 +173,48 @@ public class LogIn {
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setForeground(Color.BLACK);
 		btnEntrar.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				btnEntrar.setBackground(Color.BLACK);
 				btnEntrar.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				btnEntrar.setBackground(Color.WHITE);
 				btnEntrar.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		btnEntrar.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		btnEntrar.setFocusPainted(false);
 		btnEntrar.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		btnEntrar.setBackground(Color.WHITE);
 		btnEntrar.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		btnEntrar.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					if(sqlU.iniciarSessió(textField.getText(), passwordField.getText()) == true) {
+						
 						try {
+							
 							Principal frm = new Principal();
 							frm.frame.setVisible(true);
 							frame.setVisible(false);
+							
 						} catch (ClassNotFoundException e1) {
-							// TODO Auto-generated catch block
+							
 							e1.printStackTrace();
+							
 						}
 						
 					} else {
@@ -208,10 +222,15 @@ public class LogIn {
 					}
 					
 				} catch (SQLException e1) {
+					
 					e1.printStackTrace();
+					
 				}
+				
 			}
+			
 		});
+		
 		btnEntrar.setBounds(177, 237, 117, 53);
 		frame.getContentPane().add(btnEntrar);
 		
@@ -226,5 +245,7 @@ public class LogIn {
 		textPane_1.setBackground(Color.BLACK);
 		textPane_1.setBounds(177, 93, 133, 27);
 		frame.getContentPane().add(textPane_1);
+		
 	}
+	
 }

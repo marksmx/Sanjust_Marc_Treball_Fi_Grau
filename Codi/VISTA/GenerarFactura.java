@@ -12,6 +12,8 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,8 +55,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.SwingConstants;
 
-
-
 public class GenerarFactura {
 
 	SQLFactura sqlF = new SQLFactura();
@@ -69,18 +69,15 @@ public class GenerarFactura {
 	private JTextField textField_2;
 	private JTextField textField_3;
 
-	/**
-	 * Create the application.
-	 */
 	public GenerarFactura(String idEmpresa) {
+		
 		this.idEmpresa = idEmpresa;
 		initialize();
+		
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -89,7 +86,6 @@ public class GenerarFactura {
 		frame.setBounds(730, 300, 591, 494);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
 		
 	//CAPÇALERA COMENÇAMENT
 		
@@ -113,8 +109,6 @@ public class GenerarFactura {
 		txtLogIn.setFont(new Font("HelveticaNeue", Font.PLAIN, 50));
 		txtLogIn.setText("OnTime Agency");
 		txtLogIn.setColumns(10);
-		
-		
 		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(Client.class.getResource("/VISTA/img/logo.png")));
@@ -158,32 +152,45 @@ public class GenerarFactura {
 		btnNewButton_1.setVisible(true);
 		btnNewButton_1.setForeground(Color.BLACK);
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				btnNewButton_1.setBackground(Color.BLACK);
 				btnNewButton_1.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				btnNewButton_1.setBackground(Color.WHITE);
 				btnNewButton_1.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		btnNewButton_1.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		btnNewButton_1.setFocusPainted(false);
 		btnNewButton_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		btnNewButton_1.setBackground(Color.WHITE);
 		btnNewButton_1.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		btnNewButton_1.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(java.awt.event.ActionEvent e) {
+				
+				boolean totsIguals = false;
 				int contador = 0;
 				int unitats = 1;
 				double total = 0;
 				String ruta = "";
 				String preuNum = "";
 				double preuFinal = 0.0;
+				int tope = 0;
+				LocalDate dataS = java.time.LocalDate.now();  
 
-
+				
 				if(comboBox.getSelectedIndex() == 0) {
 					
 					JOptionPane.showMessageDialog(null, "No has triat el mes a facturar!","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -209,7 +216,8 @@ public class GenerarFactura {
 						String contingut = "";
 						
 						try {
-							
+							contingut += dataS + "\n";
+							contingut += "" + "\n";
 							contingut += " Client: " + sqlCl.consultarNomClient(idEmpresa) + "\n";
 							contingut += "" + "\n";
 							
@@ -227,7 +235,8 @@ public class GenerarFactura {
 								
 								ArrayList<ComandaCl> miLista = sqlC.consultarComandesClient(idEmpresa);
 								
-								for(int i=0; sqlC.contarComandes()>=i; i++) {
+								for(int i=0; sqlC.contarComandesClient(idEmpresa)>=i; i++) {
+									
 									String mesComanda = "";
 									preuNum = "";
 
@@ -241,9 +250,8 @@ public class GenerarFactura {
 										
 										if(miLista.get(i).getTotal().charAt(y) == '€') {
 											
-											System.out.println("Aqui");
-											System.out.println(preuNum);
 											preuFinal += Double.parseDouble(preuNum);
+											sqlF.crearFactura(textField_3.getText(), dataS.toString(), sqlCl.consultarEmpresaClient(idEmpresa), sqlCl.consultarNomClient(idEmpresa), Double.toString(preuFinal)+"€");
 											
 										}
 									}
@@ -254,7 +262,6 @@ public class GenerarFactura {
 										mesComanda += miLista.get(i).getData().charAt(x);
 									
 									}
-									
 									
 										if(Integer.parseInt(mesComanda)==comboBox.getSelectedIndex()) {
 											
@@ -278,30 +285,52 @@ public class GenerarFactura {
 											
 											if(contador>0) {
 												
-												if(sqlP.consultarProducte(miLista.get(i).getIdProducte()).equals(sqlP.consultarProducte(miLista.get(i-1).getIdProducte()))) {
+												if(tope<=sqlC.contarComandesPerProd(miLista.get(i).getIdProducte(), idEmpresa) && !sqlP.consultarProducte(miLista.get(i).getIdProducte()).equals(sqlP.consultarProducte(miLista.get(i-1).getIdProducte()))) {
 													
-												} else {
-													
-													sqlF.crearLiniaFactura(textField_3.getText(), miLista.get(i).getDescripcio(), Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte())) , miLista.get(i).getTotal(), Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte()))+"€");
-													contingut += " "+textField_3.getText()+ " _________ " + sqlP.consultarProducte(miLista.get(i).getIdProducte()) + " ________ " + Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte())) + " ________ "+ miLista.get(i).getTotal() + " _________ " + Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte()))+"€" + " " +"\n";
+													sqlF.crearLiniaFactura(textField_3.getText(), sqlP.consultarProducte(miLista.get(i).getIdProducte()), Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte(), idEmpresa)) , miLista.get(i).getTotal(), Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte(), idEmpresa))+"€");
+													contingut += " "+textField_3.getText()+ " _________ " + sqlP.consultarProducte(miLista.get(i).getIdProducte()) + " ________ " + Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte(), idEmpresa)) + " ________ "+ miLista.get(i).getTotal() + " _________ " + Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte(), idEmpresa))+"€" + " " +"\n";
+													tope++;
 													
 												}
 												
 											} else {
 												
-												sqlF.crearLiniaFactura(textField_3.getText(), miLista.get(i).getDescripcio(), Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte())) , miLista.get(i).getTotal(), Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte()))+"€");
-												contingut += " "+textField_3.getText()+ " _________ " + sqlP.consultarProducte(miLista.get(i).getIdProducte()) + " ________ " + Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte())) + " ________ "+ miLista.get(i).getTotal() + " _________ " + Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte()))+"€" + " " +"\n";
-												
+											
 											}
 											
 											++contador;
 											
-											if(sqlC.contarComandes()-1 == i) {
+											if(sqlC.contarComandesClient(idEmpresa)-1 == i) {
+												
+												for(int f = 0; contador > f; f++) {
+													
+													if(sqlP.consultarProducte(miLista.get(f).getIdProducte()).equals(sqlP.consultarProducte(miLista.get(contador-1).getIdProducte()))) {
+														
+														totsIguals = true;
+														
+													} else {
+														
+														totsIguals = false;
+														f = contador;
+														
+													}
+													
+												}
+
+												if(totsIguals == true) {
+													
+													sqlF.crearLiniaFactura(textField_3.getText(), sqlP.consultarProducte(miLista.get(i).getIdProducte()), Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte(), idEmpresa)) , miLista.get(i).getTotal(), Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte(), idEmpresa))+"€");
+													contingut += " "+textField_3.getText()+ " _________ " + sqlP.consultarProducte(miLista.get(i).getIdProducte()) + " ________ " + Integer.toString(sqlC.contarComandesPerProd(miLista.get(i).getIdProducte(), idEmpresa)) + " ________ "+ miLista.get(i).getTotal() + " _________ " + Double.toString(finalLinia*sqlC.contarComandesPerProd(miLista.get(i).getIdProducte(), idEmpresa))+"€" + " " +"\n";
+													
+												}
+												
 												
 												contingut += ""+"\n";
 												preuFinal = Math.round(preuFinal * 100);
 												preuFinal = preuFinal/100;
 												contingut += "Total: "+ preuFinal +" €";
+												
+											
 												
 											}
 											
@@ -313,7 +342,6 @@ public class GenerarFactura {
 											test.setAlignment(Element.ALIGN_CENTER);
 											doc.add(test);
 											doc.close();
-											System.out.println("done");
 											
 										}
 										
@@ -321,12 +349,12 @@ public class GenerarFactura {
 								
 								} catch (Exception e2) {
 								
-								System.out.println("bruh");
+									System.out.println("ERROR");
 								
 								}
-					}
+							}
 					
-				}
+						}
 				
 				if(contador>0) {
 					
@@ -338,7 +366,9 @@ public class GenerarFactura {
 					
 				}
 				
-			}});
+			}
+			
+		});
 		
 		btnNewButton_1.setBounds(203, 297, 190, 51);
 		frame.getContentPane().add(btnNewButton_1);
@@ -347,36 +377,54 @@ public class GenerarFactura {
 		btnNewButton_2.setVisible(true);
 		btnNewButton_2.setForeground(Color.BLACK);
 		btnNewButton_2.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				btnNewButton_2.setBackground(Color.BLACK);
 				btnNewButton_2.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				btnNewButton_2.setBackground(Color.WHITE);
 				btnNewButton_2.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		btnNewButton_2.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		btnNewButton_2.setFocusPainted(false);
 		btnNewButton_2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		btnNewButton_2.setBackground(Color.WHITE);
 		btnNewButton_2.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
 		btnNewButton_2.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					Client frm = new Client(idEmpresa);
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (ClassNotFoundException e1) {
+					
 					e1.printStackTrace();
+					
 				} catch (SQLException e1) {
+					
 					e1.printStackTrace();
+					
 				}
 				
 			}
+			
 		});
+		
 		btnNewButton_2.setBounds(203, 378, 190, 51);
 		frame.getContentPane().add(btnNewButton_2);
 		
@@ -401,5 +449,7 @@ public class GenerarFactura {
 		textField_3.setBounds(204, 127, 190, 33);
 		frame.getContentPane().add(textField_3);
 		textField_3.setColumns(10);
+		
 	}
+	
 }

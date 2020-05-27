@@ -61,6 +61,35 @@ public class SQLFactura {
 		}
 	}
 	
+	public void crearFactura(String numero, String data, String empresa, String concepte, String total) {
+		conectar();
+		String consultaSql = "INSERT INTO facturaMensual (numero, data, empresa, concepte, total)"+
+		"VALUES ("
+		+ "'"+numero+"'"
+		+","
+		+ "'"+data+"'"
+		+","
+		+ "'"+empresa+"'"
+		+","
+		+ "'"+concepte+"'"
+		+","
+		+ "'"+total+"')"
+		+ ";";
+		
+		System.out.println(consultaSql);
+		
+		try {
+			sentencia = c.createStatement();
+			ResultSet rs = sentencia.executeQuery(consultaSql);
+			rs.close();
+			sentencia.close();
+			c.close();
+			System.out.println("Factura creada correctament");
+		} catch (Exception e) {
+			System.out.println("ERROR");
+		}
+	}
+	
 	public ArrayList<LiniaFacturaCl> consultarLiniaFactura() throws SQLException {
 		conectar();
 		ArrayList<LiniaFacturaCl> miLista = new ArrayList<LiniaFacturaCl>();
@@ -86,4 +115,7 @@ public class SQLFactura {
 		
 		return miLista;
 	}
+	
+	
+	
 }

@@ -23,22 +23,19 @@ import DADES.SQLClients;
 import javax.swing.JComboBox;
 
 public class EinesAdmin {
+	
 	SQLClients sqlCl = new SQLClients();
 	JComboBox comboBox = new JComboBox();
-
 	JFrame frame;
 
-	/**
-	 * Create the application.
-	 */
 	public EinesAdmin() {
+		
 		initialize();
+		
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -79,62 +76,95 @@ public class EinesAdmin {
 		JButton btnNewButton = new JButton("Eliminar Client");
 		btnNewButton.setForeground(Color.BLACK);
 		btnNewButton.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				btnNewButton.setBackground(Color.BLACK);
 				btnNewButton.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				btnNewButton.setBackground(Color.WHITE);
 				btnNewButton.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		btnNewButton.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		btnNewButton.setFocusPainted(false);
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		btnNewButton.setBackground(Color.WHITE);
 		btnNewButton.setFont(new Font("HelveticaNeue", Font.BOLD, 20));
 		btnNewButton.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					sqlCl.eliminarClient(Integer.toString(comboBox.getSelectedIndex()));
 					EinesAdmin frm = new EinesAdmin();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (SQLException e1) {
+					
 					e1.printStackTrace();
+					
 				}
+				
 			}
+			
 		});
+		
 		btnNewButton.setBounds(57, 113, 219, 53);
 		frame.getContentPane().add(btnNewButton);
 		
 		JButton button_1 = new JButton("Tornar al Inici");
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_1.setBackground(Color.BLACK);
 				button_1.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_1.setBackground(Color.WHITE);
 				button_1.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					Principal frm = new Principal();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (Exception e2) {
-					// TODO: handle exception
+					
+					System.out.println("ERROR");
+					
 				}
+				
 			}
+			
 		});
+		
 		button_1.setForeground(Color.BLACK);
 		button_1.setFont(new Font("HelveticaNeue", Font.BOLD, 20));
 		button_1.setFocusPainted(false);
@@ -146,13 +176,21 @@ public class EinesAdmin {
 		comboBox.setBounds(57, 189, 219, 35);
 		frame.getContentPane().add(comboBox);
 		comboBox.addItem("");
+		
 		try {
+			
 			for(int i=1; i<=sqlCl.contarClients();i++) {
+				
 				comboBox.addItem(sqlCl.consultarNomClient(Integer.toString(i)));
+				
 			}
+			
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
+			
 		}
+		
 	}
+	
 }

@@ -34,6 +34,7 @@ import MODEL.*;
 import java.awt.Label;
 
 public class Principal {
+	
 	SQLComandes sqlC = new SQLComandes();
 	SQLClients sqlCl = new SQLClients();
 	SQLProductes sqlPr = new SQLProductes();
@@ -51,37 +52,47 @@ public class Principal {
 	private boolean isSelected = false;
 	
 	public Principal() throws ClassNotFoundException, SQLException {
+		
 		initialize();
 		construirTaula();
 		construirTauler();
+		
 	}
 	
 	//INICI FUNCIONS TAULA PRINCIPAL
 
 	private void construirTaula() throws ClassNotFoundException, SQLException {
+		
 		String cap[] = {"Empresa","Concepte", "NIF", "ID"};
 		String info[][] = obtenirMatriu();
 		
 		table_1 = new JTable(info, cap);
 		table_1.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
+				
 				isSelected = true;
 				System.out.println("ara");
+				
 			}
+			
 		});
+		
 		scrollPane.setViewportView(table_1);
 
 	}
 	
 	
 	private String[][] obtenirMatriu() throws ClassNotFoundException, SQLException {
+		
 		SQLClients sqlU = new SQLClients();
 			ArrayList<ClientCl> miLista = sqlU.consultarClient();
 			
 			String matInfo[][] = new String[miLista.size()] [4];
 
 			for (int i = 0; i < miLista.size(); i++) {
+				
 				matInfo[i][0] = miLista.get(i).getEmpresa()+"";
 				matInfo[i][1] = miLista.get(i).getConcepte()+"";
 				matInfo[i][2] = miLista.get(i).getNif()+"";
@@ -89,8 +100,8 @@ public class Principal {
 
 			}
 			
-	
 		return matInfo;
+		
 	}
 
 	//FI FUNCIONS TAULA PRINCIPAL
@@ -98,6 +109,7 @@ public class Principal {
 	/**INICI FUNCIONS TAULER*/
 
 		private void construirTauler() throws ClassNotFoundException, SQLException {
+			
 			String cap[] = {"Tauler"};
 			String info[][] = obtenirMatr();
 			
@@ -108,19 +120,30 @@ public class Principal {
 		
 		
 		private String[][] obtenirMatr() throws ClassNotFoundException, SQLException {
+			
 			ArrayList<ComandaCl> miLista = sqlC.consultarComandes();
 			String matInfo[][] = new String[miLista.size()] [2];
+			
 			try {
+				
 				if(sqlC.contarComandes()==0) {
+					
 				} else {
+					
 					for (int x = 0; x < miLista.size(); x++) {
+						
 						matInfo[x][0] = sqlC.consultarEstatComanda(Integer.toString(x+1)) + " " + sqlCl.consultarNomClient(miLista.get(x).getIdEmpresa())+" - "+sqlPr.consultarProducte(miLista.get(x).getIdProducte());
+						
 					}
+					
 				}
 				
 			} catch (Exception e) {
+				
 				System.out.println("");
+				
 			}
+			
 			return matInfo;
 
 		}
@@ -129,6 +152,7 @@ public class Principal {
 	
 	
 	private void initialize() {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -138,7 +162,7 @@ public class Principal {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-	//CAPÇALERA COMENÇAMENT
+		//CAPÇALERA COMENÇAMENT
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -166,7 +190,7 @@ public class Principal {
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
-	//CAPÇALERA FINAL
+		//CAPÇALERA FINAL
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.GREEN);
@@ -222,109 +246,159 @@ public class Principal {
 		JButton btnNewButton = new JButton("Consultar Client");
 		btnNewButton.setForeground(Color.BLACK);
 		btnNewButton.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				btnNewButton.setBackground(Color.BLACK);
 				btnNewButton.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				btnNewButton.setBackground(Color.WHITE);
 				btnNewButton.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		btnNewButton.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		btnNewButton.setFocusPainted(false);
 		btnNewButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		btnNewButton.setBackground(Color.WHITE);
 		btnNewButton.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		btnNewButton.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					if(isSelected == false) {
 						
 					} else {
+						
 						Client frm = new Client(table_1.getModel().getValueAt(table_1.getSelectedRow(), 3).toString());
 						frm.frame.setVisible(true);
-						frame.setVisible(false);	
+						frame.setVisible(false);
+						
 					}
+					
 				} catch (ClassNotFoundException | SQLException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				}
 			
 			}
+			
 		});
+		
 		btnNewButton.setBounds(221, 332, 125, 44);
 		frame.getContentPane().add(btnNewButton);
 		
 		JButton button_1 = new JButton("Afegir Client");
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_1.setBackground(Color.BLACK);
 				button_1.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_1.setBackground(Color.WHITE);
 				button_1.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_1.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button_1.setFocusPainted(false);
 		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button_1.setBackground(Color.WHITE);
 		button_1.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button_1.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					CrearClient frm = new CrearClient();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				}
+				
 			}
+			
 		});
+		
 		button_1.setBounds(182, 404, 164, 44);
 		frame.getContentPane().add(button_1);
 		
 		JButton button_2 = new JButton("Afegir Producte/Servei");
 		button_2.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_2.setBackground(Color.BLACK);
 				button_2.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_2.setBackground(Color.WHITE);
 				button_2.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_2.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button_2.setFocusPainted(false);
 		button_2.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button_2.setBackground(Color.WHITE);
 		button_2.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button_2.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					CrearProducte frm = new CrearProducte();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				}
+				
 			}
+			
 		});
+		
 		button_2.setBounds(488, 404, 164, 44);
 		frame.getContentPane().add(button_2);
 		
@@ -333,7 +407,6 @@ public class Principal {
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(182, 144, 470, 171);
 		frame.getContentPane().add(scrollPane);
-		
 		scrollPane.setViewportView(table_1);
 
 		//FI SCROLL PANEL
@@ -346,32 +419,43 @@ public class Principal {
 		scrollPane_1.setViewportView(table_2);
 		
 		//FI SCROLL PANEL
+		
 		try {
 			
 			if(sqlC.contarComandes()>0) {
+				
 				perF = sqlC.contarComandesFin() * 100 / sqlC.contarComandes();
 				perEP = sqlC.contarComandesEnProces() * 100 / sqlC.contarComandes();
 				perP = sqlC.contarComandesP() * 100 / sqlC.contarComandes();
+				
 			}
 
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
+			
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
+			
 			e1.printStackTrace();
+			
 		}
 		
 		if(perF>0) {
+			
 			perF = perF+60;
+			
 		}
 
 		if(perEP>0) {
+			
 			perEP = perEP+60;
+			
 		}
 
 		if(perP>0) {
+			
 			perP = perP+60;
+			
 		}
 
 		System.out.println(perF);
@@ -395,28 +479,45 @@ public class Principal {
 		JButton button_3 = new JButton("Eines d'Admin");
 		button_3.setForeground(Color.BLACK);
 		button_3.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_3.setBackground(Color.BLACK);
 				button_3.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_3.setBackground(Color.WHITE);
 				button_3.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_3.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					EinesAdmin frm = new EinesAdmin();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (Exception e2) {
+					
 					System.out.println("ERROR");
+					
 				}
+				
 			}
+			
 		});
+		
 		button_3.setForeground(Color.BLACK);
 		button_3.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button_3.setFocusPainted(false);
@@ -425,6 +526,6 @@ public class Principal {
 		button_3.setBounds(488, 332, 125, 44);
 		frame.getContentPane().add(button_3);
 
-		
 	}
+	
 }

@@ -42,35 +42,32 @@ public class ModificarClient {
 	JTextPane textPane_6 = new JTextPane();
 	JTextPane textPane_8 = new JTextPane();
 
-	/**
-	 * Create the application.
-	 * @throws SQLException 
-	 */
-	
 	public void omplirCamps() throws SQLException {
 
 	ArrayList<ClientCl> miLista = sqlCl.consultarClientperID(idClient);
 		
 		for (int i = 0; i < miLista.size(); i++) {
+			
 			textPane.setText(miLista.get(i).getEmpresa());
 			textPane_2.setText(miLista.get(i).getConcepte());
 			textPane_5.setText(miLista.get(i).getNif());
 			textPane_6.setText(miLista.get(i).getId());
 			textPane_8.setText(miLista.get(i).getMail());
+			
 		}
+		
 	}
 	
 	public ModificarClient(String idClient) throws SQLException {
+		
 		this.idClient = idClient;
 		initialize();
 		omplirCamps();
+		
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 * @throws SQLException 
-	 */
 	private void initialize() throws SQLException {
+		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -192,45 +189,59 @@ public class ModificarClient {
 		textPane_7.setBounds(306, 201, 101, 42);
 		frame.getContentPane().add(textPane_7);
 		
-		
-		
 		//INICI BOTÓ CANCEL·LAR OPERACIÓ
 		
 		JButton button_1 = new JButton("CANCEL·LAR OPERACIÓ");
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button_1.setBackground(Color.BLACK);
 				button_1.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button_1.setBackground(Color.WHITE);
 				button_1.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button_1.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button_1.setFocusPainted(false);
 		button_1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button_1.setBackground(Color.WHITE);
 		button_1.setFont(new Font("HelveticaNeue", Font.BOLD, 10));
 		button_1.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
+					
 					Client frm = new Client(idClient);
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
+					
 				} catch (ClassNotFoundException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					
 					e1.printStackTrace();
+					
 				}
 			
 			}
+			
 		});
+		
 		button_1.setBounds(246, 431, 150, 42);
 		frame.getContentPane().add(button_1);
 		
@@ -259,64 +270,84 @@ public class ModificarClient {
 		
 		//INICI BOTÓ AFEGIR CLIENT
 		
-
-	
-		
 		JButton button = new JButton("APLICAR CANVIS");
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				
 				button.setBackground(Color.BLACK);
 				button.setForeground(Color.WHITE);
+				
 			}
+			
 			@Override
 			public void mouseExited(MouseEvent e) {
+				
 				button.setBackground(Color.WHITE);
 				button.setForeground(Color.BLACK);
+				
 			}
+			
 		});
+		
 		button.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		button.setFocusPainted(false);
 		button.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		button.setBackground(Color.WHITE);
 		button.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
 		button.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				
 				if(textPane_5.getText().length()>9) {
+					
 					JOptionPane.showMessageDialog(null, "El NIF és massa llarg","ERROR",JOptionPane.ERROR_MESSAGE);
+					
 				} else {
+					
 					if(textPane.getText().length()==0 || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0) {
+						
 						JOptionPane.showMessageDialog(null, "Hi ha camps vuits!","ERROR",JOptionPane.ERROR_MESSAGE);
+						
 					} else {
+						
 						sqlCl.modificarClient(idClient, textPane.getText(), textPane_2.getText(), textPane_5.getText(), textPane_6.getText(), textPane_8.getText());
 						fet = true;
+						
 					}
+					
 				}
 				
 				if(fet == true) {
+					
 					try {
+						
 						Client frm = new Client(idClient);
 						frm.frame.setVisible(true);
 						frame.setVisible(false);
+						
 					} catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
+						
 					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
+						
 					}
+					
 				} 
 				
 				fet = false;
 				
 			}
+			
 		});
+		
 		button.setBounds(71, 431, 150, 42);
 		frame.getContentPane().add(button);
-		
-		//FI BOTÓ AFEGIR CLIENT
 
 	}
 
