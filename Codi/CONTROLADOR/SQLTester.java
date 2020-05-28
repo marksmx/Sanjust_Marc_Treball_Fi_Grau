@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import DADES.*;
 import MODEL.ComandaCl;
 
+
+/** FUNCIÓ PER  */
+
 public class SQLTester {
 	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		SQLUsuari sqlU = new SQLUsuari();

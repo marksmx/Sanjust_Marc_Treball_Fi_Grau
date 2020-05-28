@@ -28,11 +28,22 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class ModificarClient {
+	
+	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+
 	SQLClients sqlCl = new SQLClients();
+	
+
+	/** DECLARACIÓ GLOBAL D'ALGUNES VARIABLES */
+
+	private String idClient;
+
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS, DE CAMPS DE TEXT I ALTRES */
+
 	JFrame frame;
 	private boolean fet=false;
-	private String idClient;
-	
 	JTextPane textPane = new JTextPane();
 	JTextPane textPane_1 = new JTextPane();
 	JTextPane textPane_2 = new JTextPane();
@@ -41,6 +52,11 @@ public class ModificarClient {
 	JTextPane textPane_5 = new JTextPane();
 	JTextPane textPane_6 = new JTextPane();
 	JTextPane textPane_8 = new JTextPane();
+	JButton button = new JButton("APLICAR CANVIS");
+	JButton button_1 = new JButton("CANCEL·LAR OPERACIÓ");
+
+	
+	/** FUNCIÓ PER A OMPLIR ELS CAMPS AMB LA INFORMACIÓ DEL CLIENT QUE VOLEM MODIFICAR */
 
 	public void omplirCamps() throws SQLException {
 
@@ -58,6 +74,9 @@ public class ModificarClient {
 		
 	}
 	
+	
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
+
 	public ModificarClient(String idClient) throws SQLException {
 		
 		this.idClient = idClient;
@@ -66,8 +85,14 @@ public class ModificarClient {
 		
 	}
 
+	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+
 	private void initialize() throws SQLException {
 		
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
+
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -76,8 +101,9 @@ public class ModificarClient {
 		frame.setBounds(730, 300, 473, 536);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+
 		
-		//CAPÇALERA COMENÇAMENT
+		/** Inici del conjunt d'elements que composen la capçalera */
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -101,11 +127,12 @@ public class ModificarClient {
 		txtLogIn.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("New label");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\VISTA\\img\\logo.png"));
+		lblNewLabel.setIcon(new ImageIcon(ModificarClient.class.getResource("/VISTA/img/logo.png")));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
-		//CAPÇALERA FINAL
+		/** Fi del conjunt d'elements que composen la capçalera */
+		
 		
 		textPane.setText("");
 		textPane.setForeground(Color.BLACK);
@@ -189,9 +216,31 @@ public class ModificarClient {
 		textPane_7.setBounds(306, 201, 101, 42);
 		frame.getContentPane().add(textPane_7);
 		
-		//INICI BOTÓ CANCEL·LAR OPERACIÓ
+		textPane_8.setText("");
+		textPane_8.setForeground(Color.BLACK);
+		textPane_8.setFont(new Font("Dialog", Font.PLAIN, 22));
+		textPane_8.setFocusTraversalKeysEnabled(false);
+		textPane_8.setFocusCycleRoot(false);
+		textPane_8.setBackground(Color.WHITE);
+		textPane_8.setBounds(71, 344, 325, 35);
+		frame.getContentPane().add(textPane_8);
 		
-		JButton button_1 = new JButton("CANCEL·LAR OPERACIÓ");
+		JTextPane textPane_9 = new JTextPane();
+		textPane_9.setText("Mail");
+		textPane_9.setForeground(Color.WHITE);
+		textPane_9.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
+		textPane_9.setFocusable(false);
+		textPane_9.setFocusTraversalKeysEnabled(false);
+		textPane_9.setFocusCycleRoot(false);
+		textPane_9.setEditable(false);
+		textPane_9.setBackground(Color.BLACK);
+		textPane_9.setBounds(209, 299, 47, 42);
+		frame.getContentPane().add(textPane_9);
+		
+
+		/** Inici conjunt de codi que composa els botons */
+		/** Inici botó "Cancel·lar Operació" */
+		
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
 			
@@ -224,6 +273,8 @@ public class ModificarClient {
 				
 				try {
 					
+					/** En apretar el botó, ens tornarà a la pantalla del client en questió */
+					
 					Client frm = new Client(idClient);
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
@@ -245,32 +296,11 @@ public class ModificarClient {
 		button_1.setBounds(246, 431, 150, 42);
 		frame.getContentPane().add(button_1);
 		
-		//FI BOTÓ CANCEL·LAR OPERACIÓ
+		/** Fi botó "Cancel·lar Operació" */
+
+
+		/** Inici botó "Aplicar Canvis" */
 		
-		textPane_8.setText("");
-		textPane_8.setForeground(Color.BLACK);
-		textPane_8.setFont(new Font("Dialog", Font.PLAIN, 22));
-		textPane_8.setFocusTraversalKeysEnabled(false);
-		textPane_8.setFocusCycleRoot(false);
-		textPane_8.setBackground(Color.WHITE);
-		textPane_8.setBounds(71, 344, 325, 35);
-		frame.getContentPane().add(textPane_8);
-		
-		JTextPane textPane_9 = new JTextPane();
-		textPane_9.setText("Mail");
-		textPane_9.setForeground(Color.WHITE);
-		textPane_9.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
-		textPane_9.setFocusable(false);
-		textPane_9.setFocusTraversalKeysEnabled(false);
-		textPane_9.setFocusCycleRoot(false);
-		textPane_9.setEditable(false);
-		textPane_9.setBackground(Color.BLACK);
-		textPane_9.setBounds(209, 299, 47, 42);
-		frame.getContentPane().add(textPane_9);
-		
-		//INICI BOTÓ AFEGIR CLIENT
-		
-		JButton button = new JButton("APLICAR CANVIS");
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
 			
@@ -300,6 +330,8 @@ public class ModificarClient {
 		button.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				
+				/** En apretar el botó, es comprova que els camps introduïts compleixin els requisíts abans d'aplicar els canvis */
 				
 				if(textPane_5.getText().length()>9) {
 					
@@ -348,7 +380,9 @@ public class ModificarClient {
 		
 		button.setBounds(71, 431, 150, 42);
 		frame.getContentPane().add(button);
-
+		
+		/** Fi botó "Aplicar Canvis" */
+		/** Fi conjunt de codi que composa els botons */
 	}
 
 }

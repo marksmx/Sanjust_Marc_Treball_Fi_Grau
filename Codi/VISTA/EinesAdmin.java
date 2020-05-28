@@ -24,9 +24,21 @@ import javax.swing.JComboBox;
 
 public class EinesAdmin {
 	
+	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+
 	SQLClients sqlCl = new SQLClients();
-	JComboBox comboBox = new JComboBox();
+
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS, DE CAMPS DE TEXT I ALTRES */
+	
 	JFrame frame;
+	JComboBox comboBox = new JComboBox();
+	JButton btnNewButton = new JButton("Eliminar Client");
+	JButton button_1 = new JButton("Tornar al Inici");
+
+	
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
 
 	public EinesAdmin() {
 		
@@ -34,8 +46,14 @@ public class EinesAdmin {
 		
 	}
 
+	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+
 	private void initialize() {
 		
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
+
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -45,7 +63,8 @@ public class EinesAdmin {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-	//CAPÇALERA COMENÇAMENT
+		
+		/** Inici del conjunt d'elements que composen la capçalera */
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -73,7 +92,12 @@ public class EinesAdmin {
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
-		JButton btnNewButton = new JButton("Eliminar Client");
+		/** Fi del conjunt d'elements que composen la capçalera */
+
+		
+		/** Inici conjunt de codi botons */
+		/** Inici codi botó "Eliminar Client" */
+
 		btnNewButton.setForeground(Color.BLACK);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			
@@ -106,6 +130,8 @@ public class EinesAdmin {
 				
 				try {
 					
+					/** En clicar el botó, s'eliminarà el client seleccionat */
+					
 					sqlCl.eliminarClient(Integer.toString(comboBox.getSelectedIndex()));
 					EinesAdmin frm = new EinesAdmin();
 					frm.frame.setVisible(true);
@@ -124,7 +150,11 @@ public class EinesAdmin {
 		btnNewButton.setBounds(57, 113, 219, 53);
 		frame.getContentPane().add(btnNewButton);
 		
-		JButton button_1 = new JButton("Tornar al Inici");
+		/** Fi codi botó "Eliminar Client" */
+
+		
+		/** Inici codi botó "Tornar al Inici" */
+
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
 			
@@ -150,6 +180,8 @@ public class EinesAdmin {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
+					
+					/** En clicar el botó, es tornarà a la pantalla d'inici */
 					
 					Principal frm = new Principal();
 					frm.frame.setVisible(true);
@@ -179,7 +211,7 @@ public class EinesAdmin {
 		
 		try {
 			
-			for(int i=1; i<=sqlCl.contarClients();i++) {
+			for(int i=1; i<=sqlCl.recompteClients();i++) {
 				
 				comboBox.addItem(sqlCl.consultarNomClient(Integer.toString(i)));
 				
@@ -190,6 +222,9 @@ public class EinesAdmin {
 			e1.printStackTrace();
 			
 		}
+		
+		/** Fi codi botó "Tornar al Inici" */
+		/** Fi conjunt de codi botons */
 		
 	}
 	

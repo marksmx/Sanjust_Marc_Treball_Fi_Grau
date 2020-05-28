@@ -57,17 +57,33 @@ import javax.swing.SwingConstants;
 
 public class GenerarFactura {
 
+	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+
 	SQLFactura sqlF = new SQLFactura();
 	SQLComandes sqlC = new SQLComandes();
 	SQLProductes sqlP = new SQLProductes();
 	SQLClients sqlCl = new SQLClients();
 	
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS, DE CAMPS DE TEXT I ALTRES */
+
 	JFrame frame;
 	private JTextField textField;
-	private String idEmpresa;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	JComboBox<String> comboBox = new JComboBox<String>();
+	JButton btnNewButton_1 = new JButton("GENERAR FACTURA");
+	JButton btnNewButton_2 = new JButton("TORNAR A INICI");
+
+	
+	/** DECLARACIÓ GLOBAL D'ALGUNES VARIABLES */
+
+	private String idEmpresa;
+
+
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
 
 	public GenerarFactura(String idEmpresa) {
 		
@@ -76,8 +92,14 @@ public class GenerarFactura {
 		
 	}
 
+	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+
 	private void initialize() {
 		
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
+
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -87,7 +109,8 @@ public class GenerarFactura {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-	//CAPÇALERA COMENÇAMENT
+		
+		/** Inici del conjunt d'elements que composen la capçalera */
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -115,6 +138,9 @@ public class GenerarFactura {
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
+		/** Fi del conjunt d'elements que composen la capçalera */
+
+		
 		textField = new JTextField();
 		textField.setText("Mes a Facturar");
 		textField.setSelectionColor(Color.GRAY);
@@ -130,7 +156,9 @@ public class GenerarFactura {
 		textField.setBounds(193, 168, 212, 60);
 		frame.getContentPane().add(textField);
 		
-		JComboBox<String> comboBox = new JComboBox<String>();
+		
+		/** Inici codi Combo Box */
+		
 		comboBox.setBounds(203, 239, 190, 33);
 		frame.getContentPane().add(comboBox);
 		comboBox.addItem("");
@@ -147,8 +175,11 @@ public class GenerarFactura {
 		comboBox.addItem("Novembre");
 		comboBox.addItem("Desembre");
 		
+		/** Fi codi Combo Box */
+
+		/** Inici conjunt codi botons */
+		/** Inici botó "Generar Factura" */
 		
-		JButton btnNewButton_1 = new JButton("GENERAR FACTURA");
 		btnNewButton_1.setVisible(true);
 		btnNewButton_1.setForeground(Color.BLACK);
 		btnNewButton_1.addMouseListener(new MouseAdapter() {
@@ -373,7 +404,11 @@ public class GenerarFactura {
 		btnNewButton_1.setBounds(203, 297, 190, 51);
 		frame.getContentPane().add(btnNewButton_1);
 		
-		JButton btnNewButton_2 = new JButton("TORNAR A INICI");
+		/** Fi botó "Generar Factura" */
+
+		
+		/** Inici botó "Tornar a Inici" */
+
 		btnNewButton_2.setVisible(true);
 		btnNewButton_2.setForeground(Color.BLACK);
 		btnNewButton_2.addMouseListener(new MouseAdapter() {
@@ -427,6 +462,9 @@ public class GenerarFactura {
 		
 		btnNewButton_2.setBounds(203, 378, 190, 51);
 		frame.getContentPane().add(btnNewButton_2);
+		
+		/** Fi botó "Tornar a Inici" */
+		/** Fi conjunt codi botons */
 		
 		textField_1 = new JTextField();
 		textField_1.setText("Número de Comanda");

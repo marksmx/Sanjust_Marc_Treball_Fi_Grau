@@ -29,35 +29,44 @@ import javax.swing.JComboBox;
 
 public class FiltreComandes {
 	
+	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+
 	SQLComandes sqlC = new SQLComandes();
 	SQLClients sqlCl = new SQLClients();
 	SQLProductes sqlP = new SQLProductes();
 	
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS, DE CAMPS DE TEXT I ALTRES */
+
 	public JFrame frame;
 	private JTable table;
 	private JScrollPane scrollPane; 
 	private String idEmpresa;
-	
 	private boolean filtrar1 = false;
 	private boolean filtrar2 = false;
 	private boolean filtrar3 = false;
-	
 	JComboBox<String> comboBox = new JComboBox<String>();
 	JComboBox<String> comboBox_1 = new JComboBox<String>();
 	JComboBox<String> comboBox_2 = new JComboBox<String>();
-	
-	JButton button = new JButton("FILTRAR PER MES (CREARIÓ)");
+	JButton button = new JButton("FILTRAR PER MES (CREACIÓ)");
 	JButton button_1 = new JButton("FILTRAR PER ESTAT");
 	JButton button_2 = new JButton("FILTRAR PER PAGAMENT");
+	JButton button_3 = new JButton("TORNAR AL INICI");
 
+	
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
+	
 	public FiltreComandes(String idEmpresa) throws ClassNotFoundException, SQLException {
 		
 		this.idEmpresa = idEmpresa;
 		initialize();
 		
 	}
+
 	
-	/** FILTRAR PER MES	 */
+	/** FUNCIÓ PER A CONSTRUÏR LA TAULA DE COMANDES DEL CLIENT */
+	/** Depenent del filtre que utilitzem, s'utilitzarà una funció per a omplir la taula o una altre */
 	
 	private void construirTaula() throws ClassNotFoundException, SQLException {
 		
@@ -235,8 +244,14 @@ public class FiltreComandes {
 		
 	}
 	
+	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+
 	private void initialize() {
 		
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
+
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -245,8 +260,9 @@ public class FiltreComandes {
 		frame.setBounds(730, 300, 743, 569);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+
 		
-		//CAPÇALERA COMENÇAMENT
+		/** Inici del conjunt d'elements que composen la capçalera */
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -274,12 +290,59 @@ public class FiltreComandes {
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
-		//CAPÇALERA FINAL
+		/** Fi del conjunt d'elements que composen la capçalera */
+		
+		
+		/** Inici del Scroll Panel que conté la taula */
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(40, 276, 655, 181);
 		frame.getContentPane().add(scrollPane);
 		scrollPane.setViewportView(table);
+		
+		/** Fi del Scroll Panel que conté la taula */
+
+		
+		/** Inici conjunt de codi que composa els comboBox */
+
+		comboBox.setBounds(80, 201, 146, 30);
+		frame.getContentPane().add(comboBox);
+		comboBox.addItem("");
+		for(int i=01; i<=12; i++) {
+			
+			if(Integer.toString(i).length() == 1) {
+				
+				comboBox.addItem("0"+Integer.toString(i));
+				
+			}
+			
+			if(Integer.toString(i).length() == 2) {
+				
+				comboBox.addItem(Integer.toString(i));
+				
+			}
+			
+		}
+		
+		comboBox_1.setBounds(295, 203, 146, 30);
+		frame.getContentPane().add(comboBox_1);
+		comboBox_1.addItem("");
+		comboBox_1.addItem("Pendent");
+		comboBox_1.addItem("En Procés");
+		comboBox_1.addItem("Finalitzat");
+		comboBox_1.addItem("Cancel·lat");
+		
+		comboBox_2.setBounds(517, 201, 146, 30);
+		frame.getContentPane().add(comboBox_2);
+		comboBox_2.addItem("");
+		comboBox_2.addItem("Pagat");
+		comboBox_2.addItem("No Pagat");
+		
+		/** Fi conjunt de codi que composa els comboBox */
+
+		
+		/** Inici conjunt de codi que composa els botons */
+		/** Inici botó "Filtrar per Mes de creació" */
 		
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
@@ -331,34 +394,12 @@ public class FiltreComandes {
 		
 		button.setBounds(40, 135, 226, 55);
 		frame.getContentPane().add(button);
+
+		/** Fi botó "Filtrar per Mes de creació" */
+
 		
-		comboBox.setBounds(80, 201, 146, 30);
-		frame.getContentPane().add(comboBox);
-		comboBox.addItem("");
-		for(int i=01; i<=12; i++) {
-			
-			if(Integer.toString(i).length() == 1) {
-				
-				comboBox.addItem("0"+Integer.toString(i));
-				
-			}
-			
-			if(Integer.toString(i).length() == 2) {
-				
-				comboBox.addItem(Integer.toString(i));
-				
-			}
-			
-		}
-		
-		comboBox_1.setBounds(295, 203, 146, 30);
-		frame.getContentPane().add(comboBox_1);
-		comboBox_1.addItem("");
-		comboBox_1.addItem("Pendent");
-		comboBox_1.addItem("En Procés");
-		comboBox_1.addItem("Finalitzat");
-		comboBox_1.addItem("Cancel·lat");
-	
+		/** Inici botó "Filtrar per Pagament" */
+
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
 			
@@ -410,12 +451,11 @@ public class FiltreComandes {
 		button_1.setBounds(295, 135, 146, 55);
 		frame.getContentPane().add(button_1);
 		
-		comboBox_2.setBounds(517, 201, 146, 30);
-		frame.getContentPane().add(comboBox_2);
-		comboBox_2.addItem("");
-		comboBox_2.addItem("Pagat");
-		comboBox_2.addItem("No Pagat");
+		/** Fi botó "Filtrar per Pagament" */
+
 		
+		/** Inici botó "Filtrar per Pagament" */
+
 		button_2.setForeground(Color.BLACK);
 		button_2.addMouseListener(new MouseAdapter() {
 			
@@ -467,7 +507,11 @@ public class FiltreComandes {
 		button_2.setBounds(467, 135, 228, 55);
 		frame.getContentPane().add(button_2);
 	
-		JButton button_3 = new JButton("TORNAR AL INICI");
+		/** Fi botó "Filtrar per Pagament" */
+
+		
+		/** Inici botó "Tornar al Inici" */
+
 		button_3.setForeground(Color.BLACK);
 		button_3.addMouseListener(new MouseAdapter() {
 			
@@ -516,7 +560,11 @@ public class FiltreComandes {
 		button_3.setBackground(Color.WHITE);
 		button_3.setBounds(295, 469, 146, 55);
 		frame.getContentPane().add(button_3);
-	
+		
+		/** Fi botó "Tornar al Inici" */
+		/** Fi conjunt de codi que composa els botons */
+
+		
 	}
 	
 }

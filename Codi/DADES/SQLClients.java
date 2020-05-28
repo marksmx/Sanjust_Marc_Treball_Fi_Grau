@@ -23,16 +23,21 @@ import java.io.IOException;
 
 public class SQLClients {
 	
+	/** DECLARACIÓ INICIAL DE VARIABLES I ALTRES */
+	
 	Connection c;
 	JComponent frame;
 	Statement sentencia;
+	
+	
+	/** FUNCIO CONNEXIÓ A LA BASE DE DADES */
 	
 	public Connection conectar() {
 		
 		try {
 			
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:C:\\Users\\Marc Sanjust\\eclipse-workspace\\ProjecteFiGrau\\src\\DADES\\onTimeDB.db");
+			c = DriverManager.getConnection("jdbc:sqlite:onTimeDB.db");
 			System.out.println("Exito al conectar con base de datos");
 
 		} catch (Exception e) {
@@ -43,6 +48,9 @@ public class SQLClients {
 
 		return c;
 	}
+	
+	
+	/** FUNCIÓ PER A CREAR UN CLIENT */
 	
 	public void crearClient(String empresa, String concepte, String nif, String id, String mail) {
 		
@@ -76,6 +84,9 @@ public class SQLClients {
 		
 	}
 	
+	
+	/** FUNCIÓ PER A MODIFICAR UN CLIENT */
+
 	public void modificarClient(String actId, String empresa, String concepte, String nif, String id, String mail) {
 		
 		conectar();
@@ -107,7 +118,9 @@ public class SQLClients {
 		}
 		
 	}
+
 	
+	/** FUNCIO PER A CONSULTAR A TOTS ELS CLIENTS */
 	
 	public ArrayList<ClientCl> consultarClient() throws SQLException {
 		
@@ -142,6 +155,9 @@ public class SQLClients {
 		
 	}
 	
+	
+	/** FUNCIO PER A CONSULTAR CLIENTS A TRAVÉS DEL SEU ID */
+	
 	public ArrayList<ClientCl> consultarClientperID(String id) throws SQLException {
 		
 		conectar();
@@ -174,6 +190,9 @@ public class SQLClients {
 		return miLista;
 		
 	}
+
+	
+	/** FUNCIO PER A CONSULTAR EL CONCEPTE D'UN CLIENT A TRAVÉS DEL SEU ID */
 	
 	public String consultarNomClient(String id) throws SQLException {
 		
@@ -206,6 +225,9 @@ public class SQLClients {
 		return fullName;
 		
 	}
+
+	
+	/** FUNCIO PER A CONSULTAR LA EMPRESA D'UN CLIENT A TRAVÉS DEL SEU ID */
 	
 	public String consultarEmpresaClient(String id) throws SQLException {
 		
@@ -238,6 +260,9 @@ public class SQLClients {
 		return fullName;
 		
 	}
+
+	
+	/** FUNCIO PER A CONSULTAR EL MAIL D'UN CLIENT A TRAVÉS DEL SEU ID */
 	
 	public String consultarMailClient(String id) throws SQLException {
 		
@@ -271,6 +296,9 @@ public class SQLClients {
 		
 	}
 	
+	
+	/** FUNCIO PER A FER UN RECOMPTE DELS CLIENTS QUE TENIM GUARDATS */
+
 	public int recompteClients() throws SQLException {
 		
 		conectar();
@@ -301,6 +329,9 @@ public class SQLClients {
 		return rec;
 		
 	}
+
+	
+	/** FUNCIO PER A ELIMINAR CLIENTS A TRAVÉS DEL SEU ID */
 	
 	public void eliminarClient(String idClient) throws SQLException {
 		
@@ -322,36 +353,6 @@ public class SQLClients {
 			
 		}
 		
-	}
-	
-	public int contarClients() throws SQLException {
-		
-		conectar();
-		int quant = 0;
-		sentencia = c.createStatement();
-		String consultaSql = "SELECT * FROM client;";
-
-		try {
-			
-			ResultSet rs = sentencia.executeQuery(consultaSql);
-			
-			while (rs.next()) {
-				
-				++quant;
-				
-			}
-			
-			rs.close();
-			sentencia.close();
-			c.close();
-			
-		} catch (Exception e) {
-			
-			System.out.println("ERROR");
-			
-		}
-		
-		return quant;
 	}
 	
 }

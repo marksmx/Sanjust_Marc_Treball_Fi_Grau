@@ -39,16 +39,33 @@ import javax.swing.JScrollPane;
 
 public class CrearComanda {
 	
+	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+	
+	SQLProductes sqlP = new SQLProductes();
+	SQLComandes sqlC = new SQLComandes();
+
+	
+	/** DECLARACIÓ GLOBAL D'ALGUNES VARIABLES */
+
 	private String idClient;
 	private double iva;
 	private double total;
-	SQLProductes sqlP = new SQLProductes();
-	SQLComandes sqlC = new SQLComandes();
+	
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS I DE CAMPS DE TEXT */
+
 	JFrame frame;
+	JButton button = new JButton("VALIDAR COMANDA");
+	JButton button_1 = new JButton("TORNAR ENRERE");
+	JButton button2 = new JButton("FINALITZAR COMANDA");
 	ArrayList<ProducteCl> miLista = sqlP.veureProducte();
 	ArrayList<ServeiCl> miLista2 = sqlP.veureServei();
 	SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy"); 
 	JTextPane textPane_6 = new JTextPane();
+
+	
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
 
 	public CrearComanda(String idClient) throws SQLException {
 		
@@ -57,7 +74,13 @@ public class CrearComanda {
 		
 	}
 
+	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+
 	private void initialize() throws SQLException {
+
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
 		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -68,6 +91,9 @@ public class CrearComanda {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		
+		/** Inici del conjunt d'elements que composen la capçalera */
+
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(0, 0, 612, 82);
@@ -94,6 +120,8 @@ public class CrearComanda {
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
+		/** Fi del conjunt d'elements que composen la capçalera */
+
 		JTextPane textPane = new JTextPane();
 		textPane.setText("Afegir Servei");
 		textPane.setForeground(Color.WHITE);
@@ -140,7 +168,9 @@ public class CrearComanda {
 		textPane_3.setBackground(Color.BLACK);
 		textPane_3.setBounds(337, 241, 117, 36);
 		frame.getContentPane().add(textPane_3);
+
 		
+		/** Inici declaració dels "ComboBox" */
 		
 		JComboBox<String> comboBox = new JComboBox<String>();
 		JComboBox<String> comboBox_1 = new JComboBox<String>();
@@ -148,9 +178,66 @@ public class CrearComanda {
 		JComboBox<String> comboBox_3 = new JComboBox<String>();
 		JComboBox<String> comboBox_4 = new JComboBox<String>();
 
-		JButton button2 = new JButton("FINALITZAR COMANDA");
 		
-		JButton button_1 = new JButton("TORNAR ENRERE");
+		comboBox.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
+		comboBox.setBounds(135, 115, 128, 36);
+		frame.getContentPane().add(comboBox);
+		comboBox.addItem("");
+		
+		for (int i = 0; i < miLista.size(); i++) {
+			
+			comboBox.addItem(miLista.get(i).getElement()+", "+miLista.get(i).getUnitats());
+			
+		}
+		
+		comboBox_1.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
+		comboBox_1.setBounds(135, 199, 128, 36);
+		frame.getContentPane().add(comboBox_1);
+		comboBox_1.addItem("");
+
+		for (int i = 0; i < miLista2.size(); i++) {
+			
+			comboBox_1.addItem(miLista2.get(i).getElement()+", "+miLista2.get(i).getUnitats()+" per "+miLista2.get(i).getFrequencia());
+			
+		}
+
+		comboBox_2.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
+		comboBox_2.setBounds(340, 147, 48, 36);
+		frame.getContentPane().add(comboBox_2);
+		comboBox_2.addItem("");
+		
+		for(int i = 1; i<=31; i++) {
+			
+			comboBox_2.addItem(Integer.toString(i));
+			
+		}
+		
+		comboBox_3.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
+		comboBox_3.setBounds(406, 147, 117, 36);
+		frame.getContentPane().add(comboBox_3);
+		comboBox_3.addItem("");
+		comboBox_3.addItem("Gener");
+		comboBox_3.addItem("Febrer");
+		comboBox_3.addItem("Març");
+		comboBox_3.addItem("Abril");
+		comboBox_3.addItem("Maig");
+		comboBox_3.addItem("Juny");
+		comboBox_3.addItem("Juliol");
+		comboBox_3.addItem("Agost");
+		comboBox_3.addItem("Setembre");
+		comboBox_3.addItem("Octubre");
+		comboBox_3.addItem("Novembre");
+		comboBox_3.addItem("Desembre");
+
+		comboBox_4.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
+		comboBox_4.setBounds(533, 147, 69, 36);
+		frame.getContentPane().add(comboBox_4);
+		
+		/** Fi declaració dels "ComboBox" */
+
+
+		/** Inici botó "Tornar Enrere" */
+		
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
 			
@@ -183,6 +270,8 @@ public class CrearComanda {
 				
 				try {
 					
+					/** Depenent de si hem començat la comanda o no, tornarem al inici o es refrescarà la pestanya */
+					
 					if(textPane_2.getText().equals("")) {
 						
 						Client frm = new Client(idClient);
@@ -214,29 +303,11 @@ public class CrearComanda {
 		button_1.setBounds(435, 327, 148, 53);
 		frame.getContentPane().add(button_1);
 		
-		comboBox.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
-		comboBox.setBounds(135, 115, 128, 36);
-		frame.getContentPane().add(comboBox);
-		comboBox.addItem("");
-		
-		for (int i = 0; i < miLista.size(); i++) {
-			
-			comboBox.addItem(miLista.get(i).getElement()+", "+miLista.get(i).getUnitats());
-			
-		}
-		
-		comboBox_1.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
-		comboBox_1.setBounds(135, 199, 128, 36);
-		frame.getContentPane().add(comboBox_1);
-		comboBox_1.addItem("");
+		/** Fi botó "Tornar Enrere" */
 
-		for (int i = 0; i < miLista2.size(); i++) {
-			
-			comboBox_1.addItem(miLista2.get(i).getElement()+", "+miLista2.get(i).getUnitats()+" per "+miLista2.get(i).getFrequencia());
-			
-		}
+		
+		/** Inici botó "Validar Comanda" */
 
-		JButton button = new JButton("VALIDAR COMANDA");
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
 			
@@ -267,7 +338,7 @@ public class CrearComanda {
 			
 			public void actionPerformed(ActionEvent e) {
 				
-				System.out.println();
+				/** Al clicar el botó, es comprobaràn els camps, i si tot està correcte es podrà finalitzar la creació de la comanda */
 				
 				if(comboBox.getSelectedItem().equals("") && !comboBox_1.getSelectedItem().equals("") || !comboBox.getSelectedItem().equals("") && comboBox_1.getSelectedItem().equals("")) {
 					
@@ -309,6 +380,11 @@ public class CrearComanda {
 		button.setBounds(283, 327, 148, 53);
 		frame.getContentPane().add(button);
 		
+		/** Fi botó "Validar Comanda" */
+
+
+		/** Inici botó "Finalitzar Comanda" */
+		
 		button2.setVisible(false);
 		button2.setForeground(Color.BLACK);
 		button2.addMouseListener(new MouseAdapter() {
@@ -342,6 +418,8 @@ public class CrearComanda {
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
+					
+					/** Al clicar el botó, es crearà una comanda amb la informació introduïda */
 					
 					if(comboBox.getSelectedIndex()>=1 && comboBox_1.getSelectedIndex()==0) {
 						
@@ -410,6 +488,9 @@ public class CrearComanda {
 		button2.setBounds(262, 327, 169, 53);
 		frame.getContentPane().add(button2);
 		
+		/** Fi botó "Finalitzar Comanda" */
+
+		
 		JTextPane textPane_5 = new JTextPane();
 		textPane_5.setText("Data Límit");
 		textPane_5.setForeground(Color.WHITE);
@@ -421,39 +502,6 @@ public class CrearComanda {
 		textPane_5.setBackground(Color.BLACK);
 		textPane_5.setBounds(406, 93, 117, 36);
 		frame.getContentPane().add(textPane_5);
-		
-		comboBox_2.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
-		comboBox_2.setBounds(340, 147, 48, 36);
-		frame.getContentPane().add(comboBox_2);
-		comboBox_2.addItem("");
-		
-		for(int i = 1; i<=31; i++) {
-			
-			comboBox_2.addItem(Integer.toString(i));
-			
-		}
-
-		
-		comboBox_3.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
-		comboBox_3.setBounds(406, 147, 117, 36);
-		frame.getContentPane().add(comboBox_3);
-		comboBox_3.addItem("");
-		comboBox_3.addItem("Gener");
-		comboBox_3.addItem("Febrer");
-		comboBox_3.addItem("Març");
-		comboBox_3.addItem("Abril");
-		comboBox_3.addItem("Maig");
-		comboBox_3.addItem("Juny");
-		comboBox_3.addItem("Juliol");
-		comboBox_3.addItem("Agost");
-		comboBox_3.addItem("Setembre");
-		comboBox_3.addItem("Octubre");
-		comboBox_3.addItem("Novembre");
-		comboBox_3.addItem("Desembre");
-
-		comboBox_4.setFont(new Font("HelveticaNeue", Font.PLAIN, 11));
-		comboBox_4.setBounds(533, 147, 69, 36);
-		frame.getContentPane().add(comboBox_4);
 		
 		JTextPane textPane_4 = new JTextPane();
 		textPane_4.setText("Descripció Comanda");

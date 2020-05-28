@@ -35,22 +35,39 @@ import java.awt.Label;
 
 public class Principal {
 	
+	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+
 	SQLComandes sqlC = new SQLComandes();
 	SQLClients sqlCl = new SQLClients();
 	SQLProductes sqlPr = new SQLProductes();
+
 	
-	public JFrame frame;
-	private JTable table_1;
-	private JTable table_2;
+	/** DECLARACIÓ GLOBAL D'ALGUNES VARIABLES */
+
 	private int filaIndex;
 	private int columnaIndex;
 	private int perF = 0;
 	private int perEP = 0;
 	private int perP = 0;
+	private boolean isSelected = false;
+
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS, DE CAMPS DE TEXT I ALTRES */
+
+	public JFrame frame;
+	private JTable table_1;
+	private JTable table_2;
 	private JScrollPane scrollPane;
 	private JScrollPane scrollPane_1;
-	private boolean isSelected = false;
+	JButton btnNewButton = new JButton("Consultar Client");
+	JButton button_1 = new JButton("Afegir Client");
+	JButton button_2 = new JButton("Afegir Producte/Servei");
+	JButton button_3 = new JButton("Eines d'Admin");
+
 	
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
+
 	public Principal() throws ClassNotFoundException, SQLException {
 		
 		initialize();
@@ -59,7 +76,8 @@ public class Principal {
 		
 	}
 	
-	//INICI FUNCIONS TAULA PRINCIPAL
+	/** INICI FUNCIONS TAULA PRINCIPAL */
+	/** FUNCIÓ PER A CONSTRUÏR LA TAULA DE CLIENTS */
 
 	private void construirTaula() throws ClassNotFoundException, SQLException {
 		
@@ -73,7 +91,6 @@ public class Principal {
 			public void mouseReleased(MouseEvent arg0) {
 				
 				isSelected = true;
-				System.out.println("ara");
 				
 			}
 			
@@ -84,6 +101,8 @@ public class Principal {
 	}
 	
 	
+	/** FUNCIÓ PER A RECOPILAR LA INFORMACIÓ DELS CLIENTS AMB LA QUE S'OMPLIRÀ LA TAULA */
+
 	private String[][] obtenirMatriu() throws ClassNotFoundException, SQLException {
 		
 		SQLClients sqlU = new SQLClients();
@@ -104,9 +123,11 @@ public class Principal {
 		
 	}
 
-	//FI FUNCIONS TAULA PRINCIPAL
+	/** FI FUNCIONS TAULA PRINCIPAL */
 
+	
 	/**INICI FUNCIONS TAULER*/
+	/** FUNCIÓ PER A CONSTRUÏR LA TAULA DEL TAULER DE RECORDATORIS */
 
 		private void construirTauler() throws ClassNotFoundException, SQLException {
 			
@@ -118,6 +139,8 @@ public class Principal {
 
 		}
 		
+		
+		/** FUNCIÓ PER A RECOPILAR LA INFORMACIÓ DE LES COMANDES AMB LA QUE S'OMPLIRÀ EL TAULER DE RECORDATORIS */
 		
 		private String[][] obtenirMatr() throws ClassNotFoundException, SQLException {
 			
@@ -150,9 +173,14 @@ public class Principal {
 
 	/**FI FUNCIONS TAULER*/
 	
-	
+		
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+
 	private void initialize() {
 		
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
+
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -162,7 +190,8 @@ public class Principal {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
-		//CAPÇALERA COMENÇAMENT
+		
+		/** Inici del conjunt d'elements que composen la capçalera */
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -190,7 +219,7 @@ public class Principal {
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
-		//CAPÇALERA FINAL
+		/** Fi del conjunt d'elements que composen la capçalera */
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.GREEN);
@@ -206,6 +235,20 @@ public class Principal {
 		panel_3.setBackground(Color.WHITE);
 		panel_3.setBounds(403, 93, 30, 30);
 		frame.getContentPane().add(panel_3);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(Color.GREEN);
+		panel_4.setBounds(19, 155, perF, 30);
+		frame.getContentPane().add(panel_4);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(Color.YELLOW);
+		panel_5.setBounds(19, 191, perEP, 30);
+		frame.getContentPane().add(panel_5);
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setBounds(19, 227, perP, 30);
+		frame.getContentPane().add(panel_6);
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setText("Finalitzats");
@@ -243,7 +286,10 @@ public class Principal {
 		textPane_2.setBounds(443, 93, 137, 27);
 		frame.getContentPane().add(textPane_2);
 		
-		JButton btnNewButton = new JButton("Consultar Client");
+		
+		/** Inici conjunt codi que composa els botons */
+		/** Inici codi botó "Consultar Client" */
+		
 		btnNewButton.setForeground(Color.BLACK);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			
@@ -299,7 +345,11 @@ public class Principal {
 		btnNewButton.setBounds(221, 332, 125, 44);
 		frame.getContentPane().add(btnNewButton);
 		
-		JButton button_1 = new JButton("Afegir Client");
+		/** Fi codi botó "Consultar Client" */
+
+		
+		/** Inici codi botó "Afegir Client" */
+
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
 			
@@ -349,7 +399,11 @@ public class Principal {
 		button_1.setBounds(182, 404, 164, 44);
 		frame.getContentPane().add(button_1);
 		
-		JButton button_2 = new JButton("Afegir Producte/Servei");
+		/** Fi codi botó "Afegir Client" */
+
+		
+		/** Inici codi botó "Afegir Producte/Servei" */
+
 		button_2.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -402,23 +456,10 @@ public class Principal {
 		button_2.setBounds(488, 404, 164, 44);
 		frame.getContentPane().add(button_2);
 		
-		//INICI SCROLL PANEL
-		
-		scrollPane = new JScrollPane();
-		scrollPane.setBounds(182, 144, 470, 171);
-		frame.getContentPane().add(scrollPane);
-		scrollPane.setViewportView(table_1);
+		/** Fi codi botó "Afegir Producte/Servei" */
 
-		//FI SCROLL PANEL
 
-		//INICI SCROLL PANEL
-
-		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(19, 318, 153, 130);
-		frame.getContentPane().add(scrollPane_1);
-		scrollPane_1.setViewportView(table_2);
-		
-		//FI SCROLL PANEL
+		/** Inici codi Gràfic de Barres */
 		
 		try {
 			
@@ -458,25 +499,11 @@ public class Principal {
 			
 		}
 
-		System.out.println(perF);
-		System.out.println(perEP);
-		System.out.println(perP);
+		/** Fi codi Gràfic de Barres */
+
 		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(Color.GREEN);
-		panel_4.setBounds(19, 155, perF, 30);
-		frame.getContentPane().add(panel_4);
+		/** Inici codi botó "Eines d'Admin" */
 		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(Color.YELLOW);
-		panel_5.setBounds(19, 191, perEP, 30);
-		frame.getContentPane().add(panel_5);
-		
-		JPanel panel_6 = new JPanel();
-		panel_6.setBounds(19, 227, perP, 30);
-		frame.getContentPane().add(panel_6);
-		
-		JButton button_3 = new JButton("Eines d'Admin");
 		button_3.setForeground(Color.BLACK);
 		button_3.addMouseListener(new MouseAdapter() {
 			
@@ -526,6 +553,29 @@ public class Principal {
 		button_3.setBounds(488, 332, 125, 44);
 		frame.getContentPane().add(button_3);
 
+		/** Fi codi botó "Eines d'Admin" */
+		/** Fi conjunt codi que composa els botons */
+		
+		
+		/** Inici Scroll Panel que conté la taula de Clients */
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(182, 144, 470, 171);
+		frame.getContentPane().add(scrollPane);
+		scrollPane.setViewportView(table_1);
+
+		/** Fi Scroll Panel que conté la taula de Clients */
+
+
+		/** Inici Scroll Panel que conté el tauler */
+
+		scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(19, 318, 153, 130);
+		frame.getContentPane().add(scrollPane_1);
+		scrollPane_1.setViewportView(table_2);
+		
+		/** Fi Scroll Panel que conté el tauler */
+		
 	}
 	
 }

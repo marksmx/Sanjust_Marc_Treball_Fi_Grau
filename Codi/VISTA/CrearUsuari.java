@@ -25,10 +25,19 @@ import DADES.*;
 
 public class CrearUsuari {
 
-	SQLUsuari sqlU = new SQLUsuari();
-	public JFrame frame;
 	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
 
+	SQLUsuari sqlU = new SQLUsuari();
+	
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS I DE CAMPS DE TEXT */
+
+	public JFrame frame;
+	JButton button = new JButton("ACABAR I CONTINUAR");
+
+
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
 
 	public CrearUsuari() {
 		
@@ -36,8 +45,14 @@ public class CrearUsuari {
 		
 	}
 	
+	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+
 	private void initialize() {
 		
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
+
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);
@@ -46,8 +61,9 @@ public class CrearUsuari {
 		frame.setBounds(730, 300, 473, 478);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+
 		
-		//CAPÇALERA COMENÇAMENT
+		/** Inici del conjunt d'elements que composen la capçalera */
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -75,7 +91,7 @@ public class CrearUsuari {
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
-		//CAPÇALERA FINAL
+		/** Fi del conjunt d'elements que composen la capçalera */
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setText("");
@@ -186,8 +202,10 @@ public class CrearUsuari {
 		textPane_9.setBackground(Color.BLACK);
 		textPane_9.setBounds(215, 269, 47, 42);
 		frame.getContentPane().add(textPane_9);
+
 		
-		JButton button = new JButton("ACABAR I CONTINUAR");
+		/** Inici codi botó "Acabar i Continuar" */
+		
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
 			
@@ -254,6 +272,9 @@ public class CrearUsuari {
 		
 		button.setBounds(159, 377, 159, 42);
 		frame.getContentPane().add(button);
+		
+		/** Fi codi botó "Acabar i Continuar" */
+		
 	}
 
 }

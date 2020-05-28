@@ -16,6 +16,14 @@ import javax.swing.SwingConstants;
 
 public class Info {
 	
+	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+
+	SQLClients sqlC = new SQLClients();
+
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS, DE CAMPS DE TEXT I ALTRES */
+
 	JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
@@ -26,10 +34,14 @@ public class Info {
 	private JTextField textField_6;
 	private JTextField textField_7;
 
-	SQLClients sqlC = new SQLClients();
 	
+	/** DECLARACIÓ GLOBAL D'ALGUNES VARIABLES */
+
 	private String idClient;
 	
+	
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
+
 	public Info(String idClient) throws SQLException {
 		
 		this.idClient = idClient;
@@ -37,8 +49,14 @@ public class Info {
 		
 	}
 
+	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+
 	private void initialize() throws SQLException {
 		
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
+
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setResizable(false);

@@ -35,26 +35,37 @@ import java.util.ArrayList;
 
 public class Client {
 
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+	
 	SQLComandes sqlC = new SQLComandes();
 	SQLClients sqlCl = new SQLClients();
 	SQLProductes sqlP = new SQLProductes();
 	
-	LocalTime data2S  =java.time.LocalTime.now();
+	
+	/** DECLARACIÓ GLOBAL D'ALGUNES VARIABLES */
 
+	LocalTime data2S  = java.time.LocalTime.now();
 	private String idEmpresa;
-	JFrame frame;
 	private JTable table;
 	private JScrollPane scrollPane; 
+	
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS I DE CAMPS DE TEXT */
+
+	JFrame frame;
 	JButton button = new JButton("INICIAR PROJECTE");
 	JButton button2 = new JButton("FINALITZAR PROJECTE");
 	JButton btnNewButton_1 = new JButton("ELIMINAR PROJECTE");
 	JButton btnNewButton_2 = new JButton("ANULAR PROJECTE");
 	JButton btnNewButton_3 = new JButton("RECUPERAR PROJECTE");
 	JButton button_4 = new JButton("MARCAR COM A PAGAT");
+	JButton button_5 = new JButton("FILTRAR COMANDA");
 	JButton button4 = new JButton("CALCULAR COST TOTAL");
 	JButton button_6 = new JButton("VEURE DESCRIPCIÓ");
-	JButton button_f = new JButton("MARCAR COM FINALITZAT");
 	private JTextField textField;
+
+	
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
 
 	public Client(String idEmpresa) throws ClassNotFoundException, SQLException {
 		
@@ -64,6 +75,10 @@ public class Client {
 		
 	}
 
+	
+	/** FUNCIÓ PER A CONSTRUÏR LA TAULA DE COMANDES DEL CLIENT */
+	/** També es controla quins botóns de control de comanda apareixen disponíbles i quins no */
+
 	private void construirTaula() throws ClassNotFoundException, SQLException {
 		
 		String cap[] = {"Producte","Estat", "Data", "Data Límit", "Hores", "Cost Total", "Numero Comanda","Pagat"};
@@ -71,8 +86,11 @@ public class Client {
 		
 		table = new JTable(info, cap);
 		table.addMouseListener(new MouseAdapter() {
+			
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
+				
+				/** Per defecte, els botons de gestió de comanda estàn deshabilitats */
 				
 				button.setVisible(false);
 				button2.setVisible(false);
@@ -84,6 +102,8 @@ public class Client {
 				button_6.setVisible(true);
 
 				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("p")) {
+					
+					/** Si la comanda seleccionada està "Pendent", s'habilitaran els botons d'Iniciar i el d'Eliminar projecte */
 					
 					button.setVisible(true);
 					button_4.setVisible(false);
@@ -97,6 +117,8 @@ public class Client {
 				
 				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("ep")) {
 					
+					/** Si la comanda seleccionada està "En Procés", s'habilitaran els botons d'Anul·lar i Finlaitzar projecte */
+					
 					button2.setVisible(true);
 					button_4.setVisible(false);
 					button4.setVisible(false);
@@ -109,6 +131,8 @@ public class Client {
 				
 				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("f")) {
 					
+					/** Si la comanda seleccionada està "Finalitzada", s'habilitaran els botons de Calcular cost total i Marcar com a Pagat */
+
 					String lTest = (String)table.getModel().getValueAt(table.getSelectedRow(),5);
 					lTest.length();
 					
@@ -131,6 +155,8 @@ public class Client {
 				
 				if(table.getModel().getValueAt(table.getSelectedRow(), 1).equals("c")) {
 					
+					/** Si la comanda seleccionada està "Cancel·lada", s'habilitarà el botó de Recuperar Projecte */
+					
 					button.setVisible(false);
 					button2.setVisible(false);
 					btnNewButton_1.setVisible(false);
@@ -140,18 +166,24 @@ public class Client {
 					
 				}
 				
-				if(table.getModel().getValueAt(table.getSelectedRow(), 7).equals("si")) {
+				if(!table.getModel().getValueAt(table.getSelectedRow(), 7).equals("no")) {
 					
 					button_4.setVisible(false);
 					
 				}
+				
 			}
+			
 		});
 		
 		scrollPane.setViewportView(table);
 		
 	}
 	
+	
+	/** FUNCIÓ PER A RECOPILAR LA INFORMACIÓ DE LES COMANDES AMB LA QUE S'OMPLIRÁ LA TAULA */
+	/** Amb la consulta "consultarComandesClient" poden recorre totes les comandes que pertanyen a aquest client i anar assignant-les a una posició d'un ArrayList */
+	/** Aquest ArrayList es retorna un cop omplert i es torna a distribuïr a la funció anterior, on cada posició del Array s'assigna a una fila */
 	
 	private String[][] obtenirMatriu() throws ClassNotFoundException, SQLException {
 		
@@ -176,7 +208,12 @@ public class Client {
 	}
 	
 	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+	
 	private void initialize() {
+	
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
 		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -188,7 +225,7 @@ public class Client {
 		frame.getContentPane().setLayout(null);
 		
 		
-	//CAPÇALERA COMENÇAMENT
+		/** Inici del conjunt d'elements que composen la capçalera */
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -211,25 +248,35 @@ public class Client {
 		txtLogIn.setText("OnTime Agency");
 		txtLogIn.setColumns(10);
 		
-		
-		
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(Client.class.getResource("/VISTA/img/logo.png")));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
-	//CAPÇALERA FINAL
+		/** Fi del conjunt d'elements que composen la capçalera */
+
+		
+		/** Inici del "Scroll Panel" que conté la taula de comandes */
 		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(30, 138, 655, 181);
 		frame.getContentPane().add(scrollPane);
 		scrollPane.setViewportView(table);
 
+		/** Fi del "Scroll Panel" que conté la taula de comandes */
+
+		
+		/** Inici del "JPanel" que emmagatzema els botóns de la dreta de la pantalla */
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.WHITE);
 		panel_1.setBounds(712, 81, 162, 346);
 		frame.getContentPane().add(panel_1);
 		panel_1.setLayout(null);
+		
+		
+		/** Inici del conjunt de codi que composa als botons de la dreta de la pantalla */
+		/** Inici del botó "Afegir Comanda" */
 		
 		JButton btnNewButton = new JButton("AFEGIR COMANDA");
 		btnNewButton.setForeground(Color.BLACK);
@@ -264,6 +311,8 @@ public class Client {
 				
 				try {
 					
+					/** Al clicar el botó, s'obrirà la pantalla "CrearComanda" */
+					
 					CrearComanda frm = new CrearComanda(idEmpresa);
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
@@ -280,6 +329,11 @@ public class Client {
 		
 		btnNewButton.setBounds(0, 0, 162, 69);
 		panel_1.add(btnNewButton);
+		
+		/** Fi del botó "Afegir Comanda" */
+
+		
+		/** Inici del botó "Info Contacte" */
 		
 		JButton btnConsultarInformaciDe = new JButton("INFO CONTACTE");
 		btnConsultarInformaciDe.setForeground(Color.BLACK);
@@ -314,6 +368,8 @@ public class Client {
 				
 				try {
 					
+					/** En clicar, s'obrirà una pestanya que mostrarà alguna informació del client */
+					
 					Info frm = new Info(idEmpresa);
 					frm.frame.setVisible(true); 
 					
@@ -329,6 +385,11 @@ public class Client {
 		
 		btnConsultarInformaciDe.setBounds(0, 68, 162, 69);
 		panel_1.add(btnConsultarInformaciDe);
+		
+		/** Fi del botó "Info Contacte" */
+
+		
+		/** Inici del botó "Modificar Client" */
 		
 		JButton button_1 = new JButton("MODIFICAR CLIENT");
 		button_1.setForeground(Color.BLACK);
@@ -363,6 +424,8 @@ public class Client {
 				
 				try {
 					
+					/** En clicar aquest botó, s'obrirà la pantalla "ModificarClient" */
+					
 					ModificarClient frm = new ModificarClient(idEmpresa);
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
@@ -379,6 +442,11 @@ public class Client {
 		
 		button_1.setBounds(0, 135, 162, 69);
 		panel_1.add(button_1);
+		
+		/** Fi del botó "Modificar Client" */
+
+		
+		/** Inici del botó "Generar Factura" */
 		
 		JButton button_2 = new JButton("GENERAR FACTURA");
 		button_2.setForeground(Color.BLACK);
@@ -411,6 +479,8 @@ public class Client {
 			
 			public void actionPerformed(ActionEvent e) {
 				
+				/** En clicar aquest botó, s'obrirà la pantalla "GenerarFactura" */
+				
 				GenerarFactura frm = new GenerarFactura(idEmpresa);
 				frm.frame.setVisible(true);
 				frame.setVisible(false);
@@ -422,6 +492,11 @@ public class Client {
 		button_2.setBounds(0, 203, 162, 69);
 		panel_1.add(button_2);
 		
+		/** Fi del botó "Generar Factura" */
+		
+		
+		/** Inici del botó "Tornar Enrere" */
+
 		JButton button_3 = new JButton("TORNAR ENRERE");
 		button_3.setForeground(Color.BLACK);
 		button_3.addMouseListener(new MouseAdapter() {
@@ -455,6 +530,8 @@ public class Client {
 				
 				try {
 					
+					/** En clicar el botó, tornarem a la pantalla principal */
+					
 					Principal frm = new Principal();
 					frm.frame.setVisible(true); 
 					frame.setVisible(false); 
@@ -471,6 +548,13 @@ public class Client {
 		
 		button_3.setBounds(0, 270, 162, 76);
 		panel_1.add(button_3);
+		
+		/** Fi del conjunt de codi que composa als botons de la dreta */
+		/** Fi del "JPanel" que conté als botons de la dretaq */
+
+		
+		/** Inici del conjun de codi que composa als botons de tractament de comanda */
+		/** Inici del botó "Eliminar Projecte" */
 		
 		btnNewButton_1.setVisible(false);
 		btnNewButton_1.setForeground(Color.BLACK);
@@ -505,6 +589,8 @@ public class Client {
 				
 				try {
 					
+					/** En clicar el botó, s'eliminarà la comanda seleccionada */
+					
 					sqlC.eliminarComandes(table.getModel().getValueAt(table.getSelectedRow(), 6).toString(), idEmpresa);
 					Client frm = new Client(idEmpresa);
 					frm.frame.setVisible(true); 
@@ -515,6 +601,7 @@ public class Client {
 					e1.printStackTrace();
 					
 				}
+				
 				catch (ClassNotFoundException e1) {
 					
 					e1.printStackTrace();
@@ -527,6 +614,11 @@ public class Client {
 		
 		btnNewButton_1.setBounds(30, 342, 190, 51);
 		frame.getContentPane().add(btnNewButton_1);
+		
+		/** Fi del botó "Eliminar Projecte" */
+
+		
+		/** Inici del botó "Anular Projecte" */
 		
 		btnNewButton_2.setVisible(false);
 		btnNewButton_2.setForeground(Color.BLACK);
@@ -561,6 +653,8 @@ public class Client {
 				
 				try {
 					
+					/** En clicar el botó, es modificara l'estat de la comanda a "Cancel·lat" */
+					
 					sqlC.modificarEstatComanda("c", table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
 					Client frm = new Client(idEmpresa);
 					frm.frame.setVisible(true); 
@@ -584,7 +678,12 @@ public class Client {
 		
 		btnNewButton_2.setBounds(30, 342, 190, 51);
 		frame.getContentPane().add(btnNewButton_2);
+
+		/** Fi del botó "Anular Projecte" */
+
 		
+		/** Inici del botó "Recuperar Projecte" */
+
 		btnNewButton_3.setVisible(false);
 		btnNewButton_3.setForeground(Color.BLACK);
 		btnNewButton_3.addMouseListener(new MouseAdapter() {
@@ -617,6 +716,8 @@ public class Client {
 				
 				try {
 					
+					/** En clicar el botó, es modificara l'estat de la comanda a "En Procés" */
+					
 					sqlC.modificarEstatComanda("ep", table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
 					Client frm = new Client(idEmpresa);
 					frm.frame.setVisible(true); 
@@ -641,57 +742,11 @@ public class Client {
 		btnNewButton_3.setBounds(30, 342, 190, 51);
 		frame.getContentPane().add(btnNewButton_3);
 		
-		button4.setForeground(Color.BLACK);
-		button4.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				button4.setBackground(Color.BLACK);
-				button4.setForeground(Color.WHITE);
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				button4.setBackground(Color.WHITE);
-				button4.setForeground(Color.BLACK);
-				
-			}
-			
-		});
+		/** Fi del botó "Recuperar Projecte" */
+
 		
-		button4.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
-		button4.setVisible(false);
-		button4.setFocusPainted(false);
-		button4.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		button4.setBackground(Color.WHITE);
-		button4.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
-		button4.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				try {
-					
-					double cTot = Double.valueOf((String)table.getModel().getValueAt(table.getSelectedRow(),5)) * Double.valueOf((String) table.getModel().getValueAt(table.getSelectedRow(),4));
-					sqlC.incrementarPreu(table.getModel().getValueAt(table.getSelectedRow(),6).toString(), cTot+"€");
-					Client frm = new Client(idEmpresa);
-					frm.frame.setVisible(true);
-					frame.setVisible(false);
-					
-				} catch (ClassNotFoundException | SQLException e1) {
-					
-					e1.printStackTrace();
-					
-				}
-				
-			}
-			
-		});
+		/** Inici del botó "Calcular Cost Total" */
 		
-		button4.setBounds(263, 342, 190, 51);
-		frame.getContentPane().add(button4);
 		button_4.setForeground(Color.BLACK);
 		button_4.addMouseListener(new MouseAdapter() {
 			
@@ -725,6 +780,8 @@ public class Client {
 				
 				try {
 					
+					/** En clicar el botó, es calculará el cost total de la comanda */
+					
 					sqlC.modificarPagament(table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
 					Client frm = new Client(idEmpresa);
 					frm.frame.setVisible(true);
@@ -743,55 +800,10 @@ public class Client {
 		button_4.setBounds(495, 343, 190, 51);
 		frame.getContentPane().add(button_4);
 		
-		JButton button_5 = new JButton("FILTRAR COMANDA");
-		button_5.setForeground(Color.BLACK);
-		button_5.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				button_5.setBackground(Color.BLACK);
-				button_5.setForeground(Color.WHITE);
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				button_5.setBackground(Color.WHITE);
-				button_5.setForeground(Color.BLACK);
-				
-			}
-			
-		});
+		/** Fi del botó "Calcular Cost Total" */
+
 		
-		button_5.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
-		button_5.setFocusPainted(false);
-		button_5.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		button_5.setBackground(Color.WHITE);
-		button_5.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
-		button_5.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				
-				try {
-					
-					FiltreComandes frm = new FiltreComandes(idEmpresa);
-					frm.frame.setVisible(true); 
-					frame.setVisible(false); 
-					
-				} catch (ClassNotFoundException | SQLException e1) {
-					
-					e1.printStackTrace();
-					
-				}
-				
-			}
-			
-		});
-		
-		button_5.setBounds(176, 90, 190, 37);
-		frame.getContentPane().add(button_5);
+		/** Inici del botó "Iniciar Projecte" */
 		
 		button.setVisible(false);
 		button.setForeground(Color.BLACK);
@@ -826,6 +838,8 @@ public class Client {
 				
 				try {
 					
+					/** En clicar el botó, es modificara l'estat de la comanda a "En Procés" */
+					
 					sqlC.modificarEstatComanda("ep", table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
 					sqlC.iniciarComanda(table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
 					Client frm = new Client(idEmpresa);
@@ -844,6 +858,11 @@ public class Client {
 		
 		button.setBounds(263, 342, 190, 51);
 		frame.getContentPane().add(button);
+		
+		/** Fi del botó "Iniciar Projecte" */
+
+		
+		/** Inici del botó "Finalitzar Projecte" */
 		
 		button2.setVisible(false);
 		button2.setForeground(Color.BLACK);
@@ -878,6 +897,8 @@ public class Client {
 				
 				try {
 					
+					/** En clicar el botó, es modificara l'estat de la comanda a "Finalitzat" */
+					
 					sqlC.modificarEstatComanda("f", table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
 					sqlC.finalitzarComanda(table.getModel().getValueAt(table.getSelectedRow(),6).toString(), table.getModel().getValueAt(table.getSelectedRow(), 4).toString());
 					Client frm = new Client(idEmpresa);
@@ -897,46 +918,11 @@ public class Client {
 		button2.setBounds(263, 342, 190, 51);
 		frame.getContentPane().add(button2);
 		
-		button_f.setVisible(false);
-		button_f.setForeground(Color.BLACK);
-		button_f.addMouseListener(new MouseAdapter() {
-			
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				
-				button_f.setBackground(Color.BLACK);
-				button_f.setForeground(Color.WHITE);
-				
-			}
-			
-			@Override
-			public void mouseExited(MouseEvent e) {
-				
-				button_f.setBackground(Color.WHITE);
-				button_f.setForeground(Color.BLACK);
-				
-			}
-			
-		});
-		
-		button_f.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
-		button_f.setFocusPainted(false);
-		button_f.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		button_f.setBackground(Color.WHITE);
-		button_f.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
-		button_f.addActionListener(new ActionListener() {
-			
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-			
-		});
-		
-		button_f.setBounds(263, 342, 190, 51);
-		frame.getContentPane().add(button_f);
+		/** Fi del botó "Finalitzar Projecte" */
+
 		
 		textField = new JTextField();
-		textField.setBackground(Color.BLACK);
+		textField.setBackground(new Color(0, 0, 0));
 		
 		try {
 			
@@ -957,8 +943,70 @@ public class Client {
 		textField.setColumns(10);
 		textField.setBorder(null);
 		textField.setAutoscrolls(false);
-		textField.setBounds(24, 93, 196, 47);
+		textField.setBounds(24, 93, 146, 37);
 		frame.getContentPane().add(textField);
+
+		/** Fi del conjun de codi que composa als botons de tractament de comanda */
+
+		
+		/** Inici del conjun de codi que composa als botons de la part de dalt */
+		/** Inici codi botó "Filtrar Comanda" */
+		
+		button_5.setForeground(Color.BLACK);
+		button_5.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				button_5.setBackground(Color.BLACK);
+				button_5.setForeground(Color.WHITE);
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				button_5.setBackground(Color.WHITE);
+				button_5.setForeground(Color.BLACK);
+				
+			}
+			
+		});
+		
+		button_5.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button_5.setFocusPainted(false);
+		button_5.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		button_5.setBackground(Color.WHITE);
+		button_5.setFont(new Font("HelveticaNeue", Font.BOLD, 12));
+		button_5.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+
+				/** En clicar aquest botó, s'obrirà la pantalla "FiltreComandes" */
+
+				try {
+					
+					FiltreComandes frm = new FiltreComandes(idEmpresa);
+					frm.frame.setVisible(true); 
+					frame.setVisible(false); 
+					
+				} catch (ClassNotFoundException | SQLException e1) {
+					
+					e1.printStackTrace();
+					
+				}
+				
+			}
+			
+		});
+		
+		button_5.setBounds(176, 90, 190, 37);
+		frame.getContentPane().add(button_5);
+		
+		/** Fi codi botó "Filtrar Comanda" */
+
+		
+		/** Inici codi boto "Veure Descripció" */
 		
 		button_6.setFocusPainted(false);
 		button_6.setForeground(Color.BLACK);
@@ -986,6 +1034,8 @@ public class Client {
 			
 			public void actionPerformed(ActionEvent e) {
 				
+				/** En clicar aquest botó s'obrirà un panell de text mostrant la descripció de el que vol el client */
+				
 				try {
 					
 					JOptionPane.showMessageDialog(null, sqlC.veureDescripcio(table.getModel().getValueAt(table.getSelectedRow(), 6).toString()),"Info Comanda",JOptionPane.INFORMATION_MESSAGE);
@@ -1011,6 +1061,9 @@ public class Client {
 		button_6.setBackground(Color.WHITE);
 		button_6.setBounds(412, 90, 190, 37);
 		frame.getContentPane().add(button_6);
+		
+		/** Fi codi boto "Veure Descripció" */
+		/** Fi del conjun de codi que composa als botons de la part de dalt */
 		
 	}
 	

@@ -39,7 +39,17 @@ import DADES.*;
 
 public class LogIn {
 
+	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+
+	SQLUsuari sqlU = new SQLUsuari();
+
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS, DE CAMPS DE TEXT I ALTRES */
+	
 	public JFrame frame;
+	JButton btnEntrar = new JButton("Entrar");
+
 	private JTextField txtLogIn;
 	JTextField textField;
 	private JPasswordField passwordField;
@@ -47,7 +57,8 @@ public class LogIn {
 	private JTextPane textPane;
 	static LogIn window;
 
-	SQLUsuari sqlU = new SQLUsuari();
+
+	/** EN AQUEST MAIN SERÀ ON S'INICIARÀ L'EXECUCIÓ DEL PROGRAMA */
 	
 	public static void main(String[] args) {
 		
@@ -71,6 +82,9 @@ public class LogIn {
 		
 	}
 	
+	
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
+	
 	public LogIn() throws SQLException {
 		
 		initialize();
@@ -89,7 +103,13 @@ public class LogIn {
 		
 	}
 
+	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+	
 	private void initialize() {
+		
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
 		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -99,8 +119,9 @@ public class LogIn {
 		frame.setBounds(730, 300, 472, 347);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+
 		
-		//CAPÇALERA COMENÇAMENT
+		/** Inici del conjunt d'elements que composen la capçalera */
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -128,7 +149,8 @@ public class LogIn {
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
 		
-		//CAPÇALERA FINAL
+		/** Fi del conjunt d'elements que composen la capçalera */
+		
 		
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBackground(Color.BLACK);
@@ -170,7 +192,9 @@ public class LogIn {
 		passwordField.setBounds(279, 41, 127, 35);
 		layeredPane.add(passwordField);
 		
-		JButton btnEntrar = new JButton("Entrar");
+		
+		/** Inici codi botó "Entratr" */
+		
 		btnEntrar.setForeground(Color.BLACK);
 		btnEntrar.addMouseListener(new MouseAdapter() {
 			
@@ -191,6 +215,9 @@ public class LogIn {
 			}
 			
 		});
+		
+		/** Fi codi botó "Entratr" */
+
 		
 		btnEntrar.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
 		btnEntrar.setFocusPainted(false);

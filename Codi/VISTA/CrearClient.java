@@ -26,9 +26,25 @@ import java.awt.event.ActionEvent;
 
 public class CrearClient {
 	
+	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+	
 	SQLClients sqlCl = new SQLClients();
-	JFrame frame;
+	
+	
+	/** DECLARACIÓ GLOBAL D'ALGUNES VARIABLES */
+	
 	private boolean fet=false;
+
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS I DE CAMPS DE TEXT */
+
+	JFrame frame;
+	JButton button = new JButton("AFEGIR CLIENT");
+	JButton button_1 = new JButton("CANCEL·LAR OPERACIÓ");
+	
+
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
 
 	public CrearClient() throws SQLException {
 		
@@ -36,7 +52,13 @@ public class CrearClient {
 		
 	}
 	
+	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+
 	private void initialize() throws SQLException {
+
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
 		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -47,6 +69,9 @@ public class CrearClient {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
+		
+		/** Inici del conjunt d'elements que composen la capçalera */
+
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(0, 0, 688, 82);
@@ -72,6 +97,9 @@ public class CrearClient {
 		lblNewLabel.setIcon(new ImageIcon(CrearClient.class.getResource("/VISTA/img/logo.png")));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
+		
+		/** Fi del conjunt d'elements que composen la capçalera */
+
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setText("");
@@ -162,7 +190,34 @@ public class CrearClient {
 		textPane_7.setBounds(306, 201, 101, 42);
 		frame.getContentPane().add(textPane_7);
 		
-		JButton button_1 = new JButton("CANCEL·LAR OPERACIÓ");
+		
+		
+		JTextPane textPane_8 = new JTextPane();
+		textPane_8.setText("");
+		textPane_8.setForeground(Color.BLACK);
+		textPane_8.setFont(new Font("Dialog", Font.PLAIN, 22));
+		textPane_8.setFocusTraversalKeysEnabled(false);
+		textPane_8.setFocusCycleRoot(false);
+		textPane_8.setBackground(Color.WHITE);
+		textPane_8.setBounds(71, 344, 325, 35);
+		frame.getContentPane().add(textPane_8);
+		
+		JTextPane textPane_9 = new JTextPane();
+		textPane_9.setText("Mail");
+		textPane_9.setForeground(Color.WHITE);
+		textPane_9.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
+		textPane_9.setFocusable(false);
+		textPane_9.setFocusTraversalKeysEnabled(false);
+		textPane_9.setFocusCycleRoot(false);
+		textPane_9.setEditable(false);
+		textPane_9.setBackground(Color.BLACK);
+		textPane_9.setBounds(209, 299, 47, 42);
+		frame.getContentPane().add(textPane_9);
+		
+		
+		/** Inici conjunt de codi dels botóns */
+		/** Inici del botó "Cancel·lar Operació" */
+		
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
 			
@@ -195,6 +250,8 @@ public class CrearClient {
 				
 				try {
 					
+					/** En clicar el botó, tornarem a la pantalla principal */
+					
 					Principal frm = new Principal();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
@@ -216,29 +273,11 @@ public class CrearClient {
 		button_1.setBounds(246, 431, 150, 42);
 		frame.getContentPane().add(button_1);
 		
-		JTextPane textPane_8 = new JTextPane();
-		textPane_8.setText("");
-		textPane_8.setForeground(Color.BLACK);
-		textPane_8.setFont(new Font("Dialog", Font.PLAIN, 22));
-		textPane_8.setFocusTraversalKeysEnabled(false);
-		textPane_8.setFocusCycleRoot(false);
-		textPane_8.setBackground(Color.WHITE);
-		textPane_8.setBounds(71, 344, 325, 35);
-		frame.getContentPane().add(textPane_8);
+		/** Fi del botó "Cancel·lar Operació" */
+
 		
-		JTextPane textPane_9 = new JTextPane();
-		textPane_9.setText("Mail");
-		textPane_9.setForeground(Color.WHITE);
-		textPane_9.setFont(new Font("HelveticaNeue", Font.PLAIN, 22));
-		textPane_9.setFocusable(false);
-		textPane_9.setFocusTraversalKeysEnabled(false);
-		textPane_9.setFocusCycleRoot(false);
-		textPane_9.setEditable(false);
-		textPane_9.setBackground(Color.BLACK);
-		textPane_9.setBounds(209, 299, 47, 42);
-		frame.getContentPane().add(textPane_9);
+		/** Inici del botó "Afegir Client" */
 		
-		JButton button = new JButton("AFEGIR CLIENT");
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
 			
@@ -268,6 +307,8 @@ public class CrearClient {
 		button.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				
+				/** En clicar el botó, comprovará els camps i afegirà un nou client */
 				
 				if(textPane.getText().length()==0 || textPane_2.getText().length()==0 || textPane_5.getText().length()==0 || textPane_8.getText().length()==0) {
 					
@@ -317,6 +358,9 @@ public class CrearClient {
 		
 		button.setBounds(71, 431, 150, 42);
 		frame.getContentPane().add(button);
+	
+		/** Fi del botó "Afegir Client" */
+		/** Fi conjunt de codi dels botóns */
 		
 	}
 

@@ -25,8 +25,13 @@ import DADES.SQLProductes;
 
 public class CrearProducte {
 	
+	/** IMPORTACIÓ I DECLARACIÓ DELS CONTROLADORS DE CONSULTES SQL QUE S'UTILITZEN EN AQUESTA PANTALLA */
+	
 	SQLProductes sqlP = new SQLProductes();
-	JFrame frame;
+	
+	
+	/** DECLARACIÓ GLOBAL D'ALGUNES VARIABLES */
+
 	private String curText="";
 	private double iva = 0;
 	private double total = 0;
@@ -34,13 +39,33 @@ public class CrearProducte {
 	private boolean servei=false;
 	private int idCom = sqlP.contarProductes() + sqlP.contarServeis() + 1;
 
+	
+	/** DECLARACIÓ DEL JFRAME, DE BOTONS I DE CAMPS DE TEXT */
+
+	JFrame frame;
+	JButton button = new JButton("CREAR PRODUCTE");
+	JButton button_1 = new JButton("CREAR SERVEI");
+	JButton button_2 = new JButton("TORNAR A INICI");
+	JButton button_3 = new JButton("CANCEL·LAR OPERACIÓ");
+	JButton button_4 = new JButton("CREAR");
+	JButton button_5 = new JButton("CALCULAR PREU");
+
+	
+	/** FUNCIÓ PER A CRIDAR A LA FUNCIÓ QUE COMPOSA ELS ELEMENTS DE LA PANTALLA I A LES FUNCIONS DE CONSTRUCCIÓ DE LA TAULA */
+
 	public CrearProducte() throws ClassNotFoundException, SQLException {
 		
 		initialize();
 		
 	}
 
+	
+	/** FUNCIÓ ON ES CONSTRUEIXEN TOTS ELS ELEMENTS DE LA PANTALLA I S'APLIQUEN LES CONSULTES SQL, ENTRE ALTRES FUNCIONS */
+
 	private void initialize() throws ClassNotFoundException, SQLException {
+
+		
+		/** Aquí es declaren les característiques que tindrà la base de la pantalla (resolució, color, mida fixe) */
 		
 		frame = new JFrame();
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -51,7 +76,8 @@ public class CrearProducte {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
-		//CAPÇALERA COMENÇAMENT
+		
+		/** Inici del conjunt d'elements que composen la capçalera */
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
@@ -78,8 +104,9 @@ public class CrearProducte {
 		lblNewLabel.setIcon(new ImageIcon(CrearProducte.class.getResource("/VISTA/img/logo.png")));
 		lblNewLabel.setBounds(0, 0, 102, 82);
 		panel.add(lblNewLabel);
+
+		/** Fi del conjunt d'elements que composen la capçalera */
 		
-		//CAPÇALERA FINAL
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setEnabled(false);
@@ -242,8 +269,11 @@ public class CrearProducte {
 		textPane_13.setBackground(Color.BLACK);
 		textPane_13.setBounds(621, 309, 55, 42);
 		frame.getContentPane().add(textPane_13);
+
 		
-		JButton button_2 = new JButton("TORNAR A INICI");
+		/** Inici conjunt codi botons */
+		/** Inici botó "Tornar a Inici" */
+		
 		button_2.setForeground(Color.BLACK);
 		button_2.addMouseListener(new MouseAdapter() {
 			
@@ -271,6 +301,8 @@ public class CrearProducte {
 				
 				try {
 					
+					/** Al clicar el botó, tornarem a la pantalla principal */
+					
 					Principal frm = new Principal();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
@@ -293,7 +325,11 @@ public class CrearProducte {
 		button_2.setBounds(50, 352, 146, 35);
 		frame.getContentPane().add(button_2);
 		
-		JButton button_3 = new JButton("CANCEL·LAR OPERACIÓ");
+		/** Fi botó "Tornar a Inici" */
+
+		
+		/** Inici botó "Cancel·lar Operació" */
+
 		button_3.setForeground(Color.BLACK);
 		button_3.addMouseListener(new MouseAdapter() {
 			
@@ -322,6 +358,8 @@ public class CrearProducte {
 				
 				try {
 					
+					/** Al clicar el botó, es reinicia la pantalla */
+					
 					CrearProducte frm = new CrearProducte();
 					frm.frame.setVisible(true);
 					frame.setVisible(false);
@@ -348,10 +386,11 @@ public class CrearProducte {
 		button_3.setBounds(50, 309, 146, 35);
 		frame.getContentPane().add(button_3);
 		
-		JButton button_5 = new JButton("CALCULAR PREU");
-		JButton button_4 = new JButton("CREAR");
-		JButton button_1 = new JButton("CREAR SERVEI");
-		JButton button = new JButton("CREAR PRODUCTE");
+		/** Fi botó "Cancel·lar Operació" */
+
+
+		/** Inici botó "Crear Producte" */
+
 		button.setForeground(Color.BLACK);
 		button.addMouseListener(new MouseAdapter() {
 			
@@ -382,6 +421,8 @@ public class CrearProducte {
 			
 			public void actionPerformed(ActionEvent e) {
 				
+				/** Al clicar el botó, es creará un producte amb les característiques que li hem introduït */
+				
 				textPane.setBackground(Color.WHITE);
 				textPane.setEnabled(true);
 				textPane_5.setBackground(Color.WHITE);
@@ -405,6 +446,11 @@ public class CrearProducte {
 		button.setBounds(50, 135, 146, 55);
 		frame.getContentPane().add(button);
 		
+		/** Fi botó "Crear Producte" */
+
+		
+		/** Inici botó "Crear Servei" */
+
 		button_1.setForeground(Color.BLACK);
 		button_1.addMouseListener(new MouseAdapter() {
 			
@@ -435,6 +481,8 @@ public class CrearProducte {
 			
 			public void actionPerformed(ActionEvent e) {
 				
+				/** Al clicar el botó, es creará un servei amb les característiques que li hem introduït */
+
 				textPane.setBackground(Color.WHITE);
 				textPane.setEnabled(true);
 				textPane_2.setBackground(Color.WHITE);
@@ -460,6 +508,11 @@ public class CrearProducte {
 		button_1.setBounds(50, 223, 146, 55);
 		frame.getContentPane().add(button_1);
 		
+		/** Fi botó "Crear Servei" */
+
+		
+		/** Inici botó "Crear" */
+
 		button_4.setForeground(Color.BLACK);
 		button_4.addMouseListener(new MouseAdapter() {
 			
@@ -484,6 +537,8 @@ public class CrearProducte {
 		button_4.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				
+				/** Al clicar el botó, es comprovaràn els camps i es crearà el producte o servei en qüestió */
 				
 				if(producte==true && servei==false) {
 					
@@ -552,6 +607,11 @@ public class CrearProducte {
 		button_4.setBounds(50, 188, 146, 55);
 		frame.getContentPane().add(button_4);
 		
+		/** Fi botó "Crear" */
+
+		
+		/** Inici botó "Calcular Preu" */
+
 		button_5.setForeground(Color.BLACK);
 		button_5.addMouseListener(new MouseAdapter() {
 			
@@ -577,6 +637,8 @@ public class CrearProducte {
 		button_5.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
+				
+				/** Al clicar el botó, es calcularà el iva i el preu final a partir del preu base */
 				
 				if(textPane_8.getText().equals("")) {
 					
@@ -609,7 +671,10 @@ public class CrearProducte {
 		button_5.setBackground(Color.WHITE);
 		button_5.setBounds(224, 352, 115, 35);
 		frame.getContentPane().add(button_5);
-
+		
+		/** Fi botó "Calcular Preu" */
+		/** Fi conjunt codi botons */
+		
 	}
 	
 }
