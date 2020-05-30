@@ -53,7 +53,7 @@ public class SQLUsuari {
 	public boolean exist() throws SQLException {
 		
 		conectar();
-		String consultaSql = " SELECT COUNT(*) FROM usuari;";
+		String consultaSql = "SELECT COUNT(*) FROM usuari;";
 
 		try {
 			

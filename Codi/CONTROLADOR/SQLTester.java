@@ -14,7 +14,7 @@ public class SQLTester {
 		SQLComandes sqlCo = new SQLComandes();
 		SQLProductes sqlP = new SQLProductes();
 		sqlC.conectar();
-		//sqlU.exist();
+		sqlU.exist();
 		//sqlU.crearPerfil("", "", "", "", "");
 		//sqlU.iniciarSessió("qwd", "qwd");
 		//sqlC.consultarClient();
