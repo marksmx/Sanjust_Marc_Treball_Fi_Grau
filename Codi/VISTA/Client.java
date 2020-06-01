@@ -134,13 +134,15 @@ public class Client {
 					/** Si la comanda seleccionada està "Finalitzada", s'habilitaran els botons de Calcular cost total i Marcar com a Pagat */
 
 					String lTest = (String)table.getModel().getValueAt(table.getSelectedRow(),5);
+					System.out.println(lTest);
+					System.out.println(lTest.charAt(lTest.length()-1));
 					lTest.length();
 					
 					if(lTest.charAt(lTest.length()-1) == '€') {
 						
 						button4.setVisible(false);
 						
-					}else {
+					} else {
 						
 						button4.setVisible(true);
 						
@@ -331,6 +333,111 @@ public class Client {
 		panel_1.add(btnNewButton);
 		
 		/** Fi del botó "Afegir Comanda" */
+
+		/** Inici del botó "Calcular Cost Total" */
+		
+		button4.setForeground(Color.BLACK);
+		button4.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				button4.setBackground(Color.BLACK);
+				button4.setForeground(Color.WHITE);
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				button4.setBackground(Color.WHITE);
+				button4.setForeground(Color.BLACK);
+				
+			}
+			
+		});
+		
+		button4.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button4.setVisible(false);
+		button4.setFocusPainted(false);
+		button4.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		button4.setBackground(Color.WHITE);
+		button4.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
+		button4.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					
+					double cTot = Double.valueOf((String)table.getModel().getValueAt(table.getSelectedRow(),5)) * Double.valueOf((String) table.getModel().getValueAt(table.getSelectedRow(),4));
+					sqlC.incrementarPreu(table.getModel().getValueAt(table.getSelectedRow(),6).toString(), cTot+"€");
+					Client frm = new Client(idEmpresa);
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+					
+				} catch (ClassNotFoundException | SQLException e1) {
+					
+					e1.printStackTrace();
+					
+				}
+				
+			}
+			
+		});
+		
+		button4.setBounds(263, 342, 190, 51);
+		frame.getContentPane().add(button4);
+		button_4.setForeground(Color.BLACK);
+		button_4.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+				button_4.setBackground(Color.BLACK);
+				button_4.setForeground(Color.WHITE);
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+				button_4.setBackground(Color.WHITE);
+				button_4.setForeground(Color.BLACK);
+				
+			}
+			
+		});
+		
+		button_4.setBorder(new BevelBorder(BevelBorder.RAISED, Color.GRAY, Color.GRAY, Color.GRAY, Color.GRAY));
+		button_4.setVisible(false);
+		button_4.setFocusPainted(false);
+		button_4.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+		button_4.setBackground(Color.WHITE);
+		button_4.setFont(new Font("HelveticaNeue", Font.BOLD, 13));
+		button_4.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				
+				try {
+					
+					sqlC.modificarPagament(table.getModel().getValueAt(table.getSelectedRow(), 6).toString());
+					Client frm = new Client(idEmpresa);
+					frm.frame.setVisible(true);
+					frame.setVisible(false);
+					
+				} catch (ClassNotFoundException | SQLException e1) {
+					
+					e1.printStackTrace();
+					
+				}
+				
+			}
+			
+		});
+		
+		button_4.setBounds(495, 343, 190, 51);
+		frame.getContentPane().add(button_4);
+		/** Fi del botó "Calcular Cost Total" */
 
 		
 		/** Inici del botó "Info Contacte" */
