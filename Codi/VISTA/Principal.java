@@ -235,20 +235,7 @@ public class Principal {
 		panel_3.setBackground(Color.WHITE);
 		panel_3.setBounds(403, 93, 30, 30);
 		frame.getContentPane().add(panel_3);
-		
-		JPanel panel_4 = new JPanel();
-		panel_4.setBackground(Color.GREEN);
-		panel_4.setBounds(19, 155, perF, 30);
-		frame.getContentPane().add(panel_4);
-		
-		JPanel panel_5 = new JPanel();
-		panel_5.setBackground(Color.YELLOW);
-		panel_5.setBounds(19, 191, perEP, 30);
-		frame.getContentPane().add(panel_5);
-		
-		JPanel panel_6 = new JPanel();
-		panel_6.setBounds(19, 227, perP, 30);
-		frame.getContentPane().add(panel_6);
+
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setText("Finalitzats");
@@ -575,6 +562,21 @@ public class Principal {
 		scrollPane_1.setViewportView(table_2);
 		
 		/** Fi Scroll Panel que conté el tauler */
+		
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBackground(Color.GREEN);
+		panel_4.setBounds(19, 155, perF, 30);
+		frame.getContentPane().add(panel_4);
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setBackground(Color.YELLOW);
+		panel_5.setBounds(19, 191, perEP, 30);
+		frame.getContentPane().add(panel_5);
+		
+		JPanel panel_6 = new JPanel();
+		panel_6.setBounds(19, 227, perP, 30);
+		frame.getContentPane().add(panel_6);
 		
 	}
 	
